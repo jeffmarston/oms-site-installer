@@ -3,7 +3,7 @@
     <b-row>
       <b-col cols="12" xl="6">
         <transition name="slide">
-          <b-card :header="caption">
+          <b-card header="caption">
             <b-table
               hover
               striped
@@ -19,9 +19,6 @@
                 <b-badge :variant="getBadge(data.item.status)">{{data.item.status}}</b-badge>
               </template>
             </b-table>
-            <!-- <nav>
-          <b-pagination size="sm" :total-rows="getRowCount(items)" :per-page="perPage" v-model="currentPage" prev-text="Prev" next-text="Next" hide-goto-end-buttons/>
-            </nav>-->
           </b-card>
         </transition>
       </b-col>
@@ -33,7 +30,7 @@
 import { shuffleArray } from "@/shared/utils";
 import cTable from "./Table.vue";
 
-const someData = () =>
+const serverData = () =>
   shuffleArray([
     {
       servername: "EZE-APP01",
@@ -44,7 +41,7 @@ const someData = () =>
     {
       servername: "EZE-APP02",
       registered: "2012/02/01",
-      status: "Banned",
+      status: "Stopped",
       link: "eze-app02"
     },
     {
@@ -74,7 +71,7 @@ const someData = () =>
     {
       servername: "EZE-APP07",
       registered: "2012/02/01",
-      status: "Banned",
+      status: "Stopped",
       link: "eze-app03"
     },
     {
@@ -90,8 +87,8 @@ export default {
   components: { cTable },
   data: () => {
     return {
-      items: someData,
-      itemsArray: someData(),
+      items: serverData,
+      itemsArray: serverData(),
       fields: [
         { key: "servername", label: "Server", sortable: true },
         { key: "registered", label: "Up Since" },
@@ -105,10 +102,14 @@ export default {
     },
     getBadge(status) {
       return status === "Active"
-        ? "success"  : status === "Inactive"
-        ? "secondary": status === "Pending"
-        ? "warning"  : status === "Banned"
-        ? "danger"   : "primary";
+        ? "success"
+        : status === "Inactive"
+        ? "secondary"
+        : status === "Pending"
+        ? "warning"
+        : status === "Stopped"
+        ? "danger"
+        : "primary";
     }
   }
 };

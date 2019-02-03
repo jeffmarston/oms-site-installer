@@ -32,7 +32,7 @@ const someData = () =>
     {
       service: "Analytics",
       registered: "2012/02/01",
-      status: "Banned",
+      status: "Stopped",
       _rowVariant: "danger"
     },
     {

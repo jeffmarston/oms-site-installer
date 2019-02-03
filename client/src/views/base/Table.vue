@@ -110,7 +110,7 @@ export default {
         ? "secondary"
         : status === "Pending"
         ? "warning"
-        : status === "Banned"
+        : status === "Stopped"
         ? "danger"
         : "primary";
     },

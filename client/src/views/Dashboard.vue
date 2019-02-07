@@ -1,7 +1,7 @@
 <template>
   <div class="animated fadeIn">
     <b-row>
-      <b-col sm="6" lg="3">
+      <b-col sm="4" lg="2">
         <b-card no-body class="bg-primary" @click="$router.push('prod')">
           <b-card-body class="pb-0">
             <h4 class="mb-0">Prod</h4>
@@ -9,7 +9,7 @@
           </b-card-body>
         </b-card>
       </b-col>
-      <b-col sm="6" lg="3">
+      <b-col sm="4" lg="2">
         <b-card no-body class="bg-warning" @click="$router.push('uat')">
           <b-card-body class="pb-0">
             <h4 class="mb-0">UAT</h4>
@@ -17,7 +17,7 @@
           </b-card-body>
         </b-card>
       </b-col>
-      <b-col sm="6" lg="3">
+      <b-col sm="4" lg="2">
         <b-card no-body class="bg-danger" @click="$router.push('dev')">
           <b-card-body class="pb-0">
             <h4 class="mb-0">Dev Test</h4>

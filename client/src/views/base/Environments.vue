@@ -10,15 +10,7 @@
     </b-row>
 
     <b-row>
-      <b-col sm="6">
-        <b-card header="Available Versions">
-          <ul>
-            <li v-for="item in availableInstallers">{{item}}</li>
-          </ul>
-        </b-card>
-      </b-col>
-
-      <b-col sm="6">
+      <b-col sm="12">
         <b-card>
           <div slot="header">
             <strong>Prepare Upgrade</strong>
@@ -33,25 +25,25 @@
                 value="Please select"
               ></b-form-select>
               <b-input-group-append>
-                <b-button variant="primary" @click="downloadClicked()">Download</b-button>
+                <b-button variant="primary" @click="downloadClicked()">Prepare Upgrade</b-button>
               </b-input-group-append>
             </b-input-group>
           </b-form-group>
           <b-alert :show="isDownloading" variant="info">
-              <i class="fa fa-spinner fa-spin fa-lg mt-4"></i>
-              Downloading installers for 2018.8
+            <i class="fa fa-spinner fa-spin fa-lg mt-4"></i>
+            Downloading installers for 2018.8
           </b-alert>
         </b-card>
       </b-col>
     </b-row>
 
-    <b-row>
+    <b-row v-if="isReadyToUpgrade">
       <b-col sm="12">
         <b-card>
           <div slot="header">
             <strong>Upgrade Progress</strong>
           </div>
-
+          <b-alert show variant="info">Target version = 2019.2</b-alert>
           <b-table hover striped :items="items" :fields="fields" @row-clicked="rowClicked">
             <template slot="role" slot-scope="data">
               <router-link :to="data.item.link">
@@ -87,14 +79,14 @@ const serverData = () =>
       role: "Clients",
       onTarget: "12/14",
       numMachines: 14,
-      numUpgraded: 12,
+      numUpgraded: 0,
       link: "/prod/clients"
     },
     {
       role: "Servers",
       onTarget: "8/8",
       numMachines: 8,
-      numUpgraded: 5,
+      numUpgraded: 0,
       link: "/prod/servers"
     },
     {
@@ -112,7 +104,8 @@ export default {
   data: () => {
     return {
       isDownloading: false,
-      availableInstallers: ['OMS 2018.5', 'OMS 2018.6'],
+      isReadyToUpgrade: false,
+      availableInstallers: ["OMS 2018.5", "OMS 2018.6"],
       items: serverData,
       itemsArray: serverData(),
       fields: [
@@ -127,33 +120,23 @@ export default {
     downloadClicked() {
       this.isDownloading = true;
       setTimeout(() => {
-        this.availableInstallers.push('OMS 2018.8');
+        this.availableInstallers.push("OMS 2018.8");
         this.isDownloading = false;
-      }, 3000);
+        this.isReadyToUpgrade = true;
+      }, 300);
     },
     rowClicked(item) {
       // this.$router.push({ path: item.link });
     },
     upgradeClicked(item) {
-      if (item.numMachines === item.numUpgraded) {
-        item.upgradeComplete = true;
-      } else {
-        item.numUpgraded++;
-        if (item.numMachines === item.numUpgraded) {
-          item.upgradeComplete = true;
-        }
+      for (let i = 0; i < item.numMachines; i++) {
+        setTimeout(() => {
+          item.numUpgraded++;
+          if (item.numMachines === item.numUpgraded) {
+            item.upgradeComplete = true;
+          }
+        }, i * 3000);
       }
-    },
-    getBadge(status) {
-      return status === "Active"
-        ? "success"
-        : status === "Inactive"
-        ? "secondary"
-        : status === "Pending"
-        ? "warning"
-        : status === "Stopped"
-        ? "danger"
-        : "primary";
     }
   }
 };

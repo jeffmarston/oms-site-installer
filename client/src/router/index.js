@@ -63,311 +63,116 @@ const User = () => import('@/views/users/User')
 
 Vue.use(Router)
 
+let routes = [
+  {
+    path: '/',
+    redirect: '/dashboard',
+    name: 'home',
+    component: DefaultContainer,
+    children: [
+      {
+        path: 'dashboard',
+        name: 'dashboard',
+        component: Dashboard
+      }
+    ]
+  },
+  {
+    path: '/pages',
+    redirect: '/pages/404',
+    name: 'Pages',
+    component: {
+      render(c) { return c('router-view') }
+    },
+    children: [
+      {
+        path: '404',
+        name: 'Page404',
+        component: Page404
+      },
+      {
+        path: '500',
+        name: 'Page500',
+        component: Page500
+      },
+      {
+        path: 'login',
+        name: 'Login',
+        component: Login
+      },
+      {
+        path: 'register',
+        name: 'Register',
+        component: Register
+      }
+    ]
+  }
+];
+
+let tree = [
+  {
+    env: "prod",
+    servers: [
+      { name: "ezeapp01" },
+      { name: "ezeapp02" },
+      { name: "ezeapp03" }
+    ],
+    clients: [
+      { name: "marston9020b" }
+    ]
+  }
+];
+
+function createMachine(num) {
+  return {
+    path: 'eze-app0' + num,
+    name: 'eze-app0' + num,
+    component: Machines
+  };
+}
+
+function createEnvironment(envObj) {
+  let roles = [{
+    path: 'upgrade',
+    component: Environments
+  },
+  {
+    path: 'servers',
+    name: 'servers',
+    redirect: 'servers/summary',      
+    component: {
+      render (c) { return c('router-view') }
+    },
+    children: [{
+      path: 'summary',
+      component: Cards
+    }]
+  }];
+  for (let i = 0; i < 8; i++) {
+    roles[1].children.push(createMachine(i));
+  }
+
+  let env = {
+    path: envObj.env.toLowerCase(),
+    name: envObj.env.toLowerCase(),
+    redirect: envObj.env.toLowerCase() + '/upgrade',
+    component: {
+      render(c) { return c('router-view') }
+    },
+    children: roles
+  };
+  return env;
+}
+
+console.log(routes);
+tree.forEach(env => {
+  routes[0].children.push(createEnvironment(env));
+});
+console.log(routes);
+
 export default new Router({
   mode: 'hash', // https://router.vuejs.org/api/#mode
   linkActiveClass: 'open active',
   scrollBehavior: () => ({ y: 0 }),
-  routes: [
-    {
-      path: '/',
-      redirect: '/dashboard',
-      name: 'Home',
-      component: DefaultContainer,
-      children: [
-        {
-          path: 'dashboard',
-          name: 'Dashboard',
-          component: Dashboard
-        },
-        {
-          path: 'prod',
-          name: 'prod',  
-          redirect: 'prod/summary',        
-          component: {
-            render (c) { return c('router-view') }
-          },
-          children: [
-            {
-              path: 'summary',
-              component: Environments
-            },
-            {
-              path: 'servers',
-              name: 'servers',
-              redirect: 'servers/summary',      
-              component: {
-                render (c) { return c('router-view') }
-              },
-              children: [
-                {
-                  path: 'summary',
-                  name: '',
-                  component: Servers
-                },
-                {
-                  path: 'eze-app01',
-                  name: 'eze-app01',
-                  component: Machines
-                },
-                {
-                  path: 'eze-app02',
-                  name: 'eze-app02',
-                  component: Machines
-                },
-                {
-                  path: 'eze-app03',
-                  name: 'eze-app03',
-                  component: Machines
-                }
-              ]
-            },
-            {
-              path: 'clients',
-              name: 'clients',
-              component: Servers
-            },
-            {
-              path: 'database',
-              name: 'database',
-              component: Servers
-            }
-          ]
-        },
-        {
-          path: 'servers',
-          name: 'Servers',
-          component: Servers
-        },
-        {
-          path: 'machines',
-          name: 'Machines',
-          component: Machines
-        },
-        {
-          path: 'users',
-          meta: { label: 'Users'},
-          component: {
-            render (c) { return c('router-view') }
-          },
-          children: [
-            {
-              path: '',
-              component: Users,
-            },
-            {
-              path: ':id',
-              meta: { label: 'User Details'},
-              name: 'User',
-              component: User,
-            },
-          ]
-        },
-        {
-          path: 'base',
-          redirect: '/base/cards',
-          name: 'Base',
-          component: {
-            render (c) { return c('router-view') }
-          },
-          children: [
-            {
-              path: 'cards',
-              name: 'Cards',
-              component: Cards
-            },
-            {
-              path: 'forms',
-              name: 'Forms',
-              component: Forms
-            },
-            {
-              path: 'switches',
-              name: 'Switches',
-              component: Switches
-            },
-            {
-              path: 'tables',
-              name: 'Tables',
-              component: Tables
-            },
-            {
-              path: 'tabs',
-              name: 'Tabs',
-              component: Tabs
-            },
-            {
-              path: 'breadcrumbs',
-              name: 'Breadcrumbs',
-              component: Breadcrumbs
-            },
-            {
-              path: 'carousels',
-              name: 'Carousels',
-              component: Carousels
-            },
-            {
-              path: 'collapses',
-              name: 'Collapses',
-              component: Collapses
-            },
-            {
-              path: 'jumbotrons',
-              name: 'Jumbotrons',
-              component: Jumbotrons
-            },
-            {
-              path: 'list-groups',
-              name: 'List Groups',
-              component: ListGroups
-            },
-            {
-              path: 'navs',
-              name: 'Navs',
-              component: Navs
-            },
-            {
-              path: 'navbars',
-              name: 'Navbars',
-              component: Navbars
-            },
-            {
-              path: 'paginations',
-              name: 'Paginations',
-              component: Paginations
-            },
-            {
-              path: 'popovers',
-              name: 'Popovers',
-              component: Popovers
-            },
-            {
-              path: 'progress-bars',
-              name: 'Progress Bars',
-              component: ProgressBars
-            },
-            {
-              path: 'tooltips',
-              name: 'Tooltips',
-              component: Tooltips
-            }
-          ]
-        },
-        {
-          path: 'buttons',
-          redirect: '/buttons/standard-buttons',
-          name: 'Buttons',
-          component: {
-            render (c) { return c('router-view') }
-          },
-          children: [
-            {
-              path: 'standard-buttons',
-              name: 'Standard Buttons',
-              component: StandardButtons
-            },
-            {
-              path: 'button-groups',
-              name: 'Button Groups',
-              component: ButtonGroups
-            },
-            {
-              path: 'dropdowns',
-              name: 'Dropdowns',
-              component: Dropdowns
-            },
-            {
-              path: 'brand-buttons',
-              name: 'Brand Buttons',
-              component: BrandButtons
-            }
-          ]
-        },
-        {
-          path: 'icons',
-          redirect: '/icons/font-awesome',
-          name: 'Icons',
-          component: {
-            render (c) { return c('router-view') }
-          },
-          children: [
-            {
-              path: 'coreui-icons',
-              name: 'CoreUI Icons',
-              component: CoreUIIcons
-            },
-            {
-              path: 'flags',
-              name: 'Flags',
-              component: Flags
-            },
-            {
-              path: 'font-awesome',
-              name: 'Font Awesome',
-              component: FontAwesome
-            },
-            {
-              path: 'simple-line-icons',
-              name: 'Simple Line Icons',
-              component: SimpleLineIcons
-            }
-          ]
-        },
-        {
-          path: 'notifications',
-          redirect: '/notifications/alerts',
-          name: 'Notifications',
-          component: {
-            render (c) { return c('router-view') }
-          },
-          children: [
-            {
-              path: 'alerts',
-              name: 'Alerts',
-              component: Alerts
-            },
-            {
-              path: 'badges',
-              name: 'Badges',
-              component: Badges
-            },
-            {
-              path: 'modals',
-              name: 'Modals',
-              component: Modals
-            }
-          ]
-        }
-      ]
-    },
-    {
-      path: '/pages',
-      redirect: '/pages/404',
-      name: 'Pages',
-      component: {
-        render (c) { return c('router-view') }
-      },
-      children: [
-        {
-          path: '404',
-          name: 'Page404',
-          component: Page404
-        },
-        {
-          path: '500',
-          name: 'Page500',
-          component: Page500
-        },
-        {
-          path: 'login',
-          name: 'Login',
-          component: Login
-        },
-        {
-          path: 'register',
-          name: 'Register',
-          component: Register
-        }
-      ]
-    }
-  ]
+  routes: routes
 })

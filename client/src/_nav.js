@@ -17,20 +17,20 @@ let items = [
   },
   {
     name: 'Servers',
-    url: '/prod/servers',
-    icon: 'icon-puzzle',
+    url: '/servers',
+    icon: 'cui-screen-smartphone',
     children: []
   },
   {
     name: 'Clients',
     url: '/clients',
-    icon: 'icon-puzzle',
+    icon: 'cui-screen-desktop',
     children: []
   },
   {
     name: 'Database',
     url: '/base/carousels',
-    icon: 'icon-puzzle',
+    icon: 'fa fa-database',
     children: []
   },
   {
@@ -41,6 +41,19 @@ let items = [
       element: '',
       attributes: {}
     }
+  },
+  {
+    name: 'Credentials',
+    url: '/credentials',
+    icon: 'icon-settings',
+    children: [{
+      name: 'Users',
+      url: '/credentials/users'
+    },
+    {
+      name: 'Services',
+      url: '/credentials/services'
+    }]
   },
   {
     name: 'Upgrade',

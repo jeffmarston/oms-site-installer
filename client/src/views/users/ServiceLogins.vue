@@ -7,7 +7,6 @@
             hover
             striped
             small
-            :fixed="fixed"
             responsive="sm"
             :items="items"
             :fields="fields"
@@ -45,18 +44,18 @@
           <h4>{{ selectedRow.name}}</h4>
           <b-form>
             <b-form-group
-              label="Email"
+              label="Username"
               label-for="horizEmail"
               :label-cols="3"
               :horizontal="true">
-              <b-form-input id="horizEmail" type="email" placeholder="Enter Email.." autocomplete="username email"></b-form-input>
+              <b-form-input id="horizEmail" :value="selectedRow.name"></b-form-input>
             </b-form-group>
             <b-form-group
               label="Password"
               label-for="horizPass"
               :label-cols="3"
               :horizontal="true">
-              <b-form-input id="horizPass" type="password" placeholder="Enter Password.." autocomplete="current-password"></b-form-input>
+              <b-form-input id="horizPass" type="password"></b-form-input>
             </b-form-group>
             <div slot="footer">
               <b-button type="submit" size="sm" variant="primary"><i class="fa fa-dot-circle-o"></i> Submit</b-button>
@@ -70,64 +69,31 @@
 </template>
 
 <script>
-import usersData from "./UsersData";
+import usersData from "./ServiceLoginData";
 export default {
-  name: "Users",
+  name: "ServiceLogins",
   props: {
     caption: {
       type: String,
-      default: "Users"
-    },
-    hover: {
-      type: Boolean,
-      default: true
-    },
-    striped: {
-      type: Boolean,
-      default: true
-    },
-    bordered: {
-      type: Boolean,
-      default: false
-    },
-    small: {
-      type: Boolean,
-      default: false
-    },
-    fixed: {
-      type: Boolean,
-      default: false
+      default: "Services"
     }
   },
   data: () => {
     return {
-      items: usersData.filter(user => user.id < 42),
+      items: usersData,
       selectedRow: null,
       fields: [
-        { key: "id" },
         { key: "name" },
-        { key: "registered" },
-        { key: "role" },
-        { key: "status" }
+        { key: "password" },
+        { key: "role" }
       ],
       currentPage: 1,
-      perPage: 5,
+      perPage: 10,
       totalRows: 0
     };
   },
   computed: {},
   methods: {
-    getBadge(status) {
-      return status === "Active"
-        ? "success"
-        : status === "Inactive"
-        ? "secondary"
-        : status === "Pending"
-        ? "warning"
-        : status === "Banned"
-        ? "danger"
-        : "primary";
-    },
     getRowCount(items) {
       return items.length;
     },

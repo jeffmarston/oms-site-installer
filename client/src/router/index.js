@@ -12,6 +12,10 @@ const UpgradeEnvironment = () => import('@/views/base/UpgradeEnvironment')
 const Services = () => import('@/views/base/Services')
 const ClientDetail = () => import('@/views/base/ClientDetail')
 const DatabaseDetail = () => import('@/views/base/DatabaseDetail')
+const Users = () => import('@/views/users/Users')
+const ServiceLogins = () => import('@/views/users/ServiceLogins')
+
+const Icons = () => import('@/views/icons/CoreUIIcons');
 
 // Views - Pages
 const Page404 = () => import('@/views/pages/Page404')
@@ -74,6 +78,30 @@ let routes = [
         path: 'upgrade',
         name: 'upgrade',
         component: UpgradeEnvironment
+      },
+      {
+        path: 'credentials',
+        name: 'credentials',
+        component: {
+          render(c) { return c('router-view') }
+        },
+        children: [
+          {
+            path: 'users',
+            name: 'users',
+            component: Users
+          },
+          {
+            path: 'services',
+            name: 'services',
+            component: ServiceLogins
+          }
+        ]
+      },
+      {
+        path: 'icons',
+        name: 'icons',
+        component: Icons
       }
     ]
   },

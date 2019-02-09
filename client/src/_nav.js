@@ -1,4 +1,4 @@
-
+const navTreeData = require('./nav-data.json');
 
 let items = [
   {
@@ -8,7 +8,7 @@ let items = [
   },
   {
     title: true,
-    name: 'Roles',
+    name: 'Runtime',
     class: '',
     wrapper: {
       element: '',
@@ -19,54 +19,55 @@ let items = [
     name: 'Servers',
     url: '/prod/servers',
     icon: 'icon-puzzle',
-    children: [{
-      name: 'Summary',
-      url: '/prod/servers/summary',
-      icon: 'icon-speedometer',
-    }]
+    children: []
   },
   {
-    name: 'Client',
-    url: '/client',
+    name: 'Clients',
+    url: '/clients',
     icon: 'icon-puzzle',
-    children: [
-      {
-        name: 'Upgrade',
-        url: '/prod/servers/summary',
-        icon: 'icon-arrow-up-circle'
-      },
-      {
-        name: 'marston9020b',
-        url: '/prod/servers/eze-app01',
-        icon: 'icon-screen-desktop'
-      },
-      {
-        name: 'cippy9020',
-        url: '/prod/servers/eze-app02',
-        icon: 'icon-screen-desktop'
-      },
-      {
-        name: 'orzechowski7090',
-        url: '/prod/servers/eze-app03',
-        icon: 'icon-screen-desktop'
-      }
-    ]
+    children: []
   },
   {
     name: 'Database',
     url: '/base/carousels',
-    icon: 'icon-puzzle'
+    icon: 'icon-puzzle',
+    children: []
+  },
+  {
+    title: true,
+    name: 'Administration',
+    class: '',
+    wrapper: {
+      element: '',
+      attributes: {}
+    }
+  },
+  {
+    name: 'Upgrade',
+    url: '/upgrade',
+    icon: 'icon-arrow-up-circle'
   }
 ]
 
-for (let i = 0; i < 8; i++) {
+let currentEnv = navTreeData;
+currentEnv.servers.forEach(svr => {
   items[2].children.push({
-    name: 'eze-app0' + i,
-    url: '/prod/servers/eze-app0' + i,
-    icon: 'icon-puzzle'
+    name: svr.name,
+    url: '/servers/' + svr.name
   });
-}
-
+});
+currentEnv.clients.forEach(cli => {
+  items[3].children.push({
+    name: cli.name,
+    url: '/clients/' + cli.name
+  });
+});
+currentEnv.database.forEach(db => {
+  items[4].children.push({
+    name: db.name,
+    url: '/database/' + db.name
+  });
+});
 
 export default {
   items: items

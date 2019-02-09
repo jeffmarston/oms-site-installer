@@ -123,7 +123,7 @@ export default {
         this.availableInstallers.push("OMS 2018.8");
         this.isDownloading = false;
         this.isReadyToUpgrade = true;
-      }, 300);
+      }, 3000);
     },
     rowClicked(item) {
       // this.$router.push({ path: item.link });

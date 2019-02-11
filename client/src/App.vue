@@ -23,4 +23,7 @@ export default {
   @import '~bootstrap-vue/dist/bootstrap-vue.css';
   // Import Main styles for this application
   @import 'assets/scss/style';
+  // Import ag-grid styles
+  @import "../node_modules/ag-grid-community/dist/styles/ag-grid.css";
+  @import "../node_modules/ag-grid-community/dist/styles/ag-theme-balham.css";
 </style>

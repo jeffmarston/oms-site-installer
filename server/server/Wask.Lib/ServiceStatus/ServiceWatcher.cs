@@ -11,11 +11,10 @@ namespace Wask.Lib.Model
     public class ServiceWatcher
     {
         private List<Service> _knownStates = new List<Service>();
-        private List<Service> _servicesToMonitor;
         private Timer _pollingTimer;
         private IHubContext _context;
         private string _channel = Constants.ServiceInfoChannel;
-        
+
 
         internal static void Init(List<Service> services)
         {
@@ -30,28 +29,31 @@ namespace Wask.Lib.Model
 
         private ServiceWatcher(List<Service> servicesToMonitor)
         {
-            _servicesToMonitor = servicesToMonitor;
-            foreach (var svc in _servicesToMonitor)
-            {
-                svc.status = ServiceUtils.GetServiceStatus(svc.name);
-                _knownStates.Add(svc);
-            }
+            _knownStates = servicesToMonitor;
             _context = GlobalHost.ConnectionManager.GetHubContext<EventHub>();
-            _pollingTimer = new Timer(DoPoll, null, 0, 3000);
+            _pollingTimer = new Timer(DoPoll, null, 0, 1000);
         }
 
         private void DoPoll(object state)
         {
-            foreach (var svc in _servicesToMonitor)
+            foreach (var prevState in _knownStates)
             {
-                var newStatus = ServiceUtils.GetServiceStatus(svc.name);
-                var prevState = _knownStates.Find(o => o.name == svc.name);
-                if (prevState != null && prevState.status != newStatus)
+                var newState = ServiceUtils.GetService(new ServiceController(prevState.name));
+
+                if (newState.pid > 0)
                 {
-                    Console.WriteLine($"Publish: [{svc.name}] is now {newStatus}.");
-                    prevState.status = newStatus;                    
-                    PublishServiceChange("serviceInfo.status", new List<Service>() { svc });
+                    var cpuTime = Math.Round((newState.cpuTimeSpan.TotalSeconds - prevState.cpuTimeSpan.TotalSeconds) / 10.0, 2);
+                    prevState.cpuTimeSpan = newState.cpuTimeSpan;
+                    Console.WriteLine($"Publish: [{prevState.name}]. diffTime = {cpuTime} %");
                 }
+
+                if (prevState != null && prevState.status != newState.status)
+                {
+                    prevState.status = newState.status;
+                    PublishServiceChange("serviceInfo.status", new List<Service>() { prevState });
+                    Console.WriteLine($"Publish: [{prevState.name}] is now {newState.status}.");
+                }
+
             }
         }
         private void PublishServiceChange(string eventName, List<Service> deltas)

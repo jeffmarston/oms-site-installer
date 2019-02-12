@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Configuration.Install;
+using System.Diagnostics;
 using System.Linq;
+using System.Management;
 using System.ServiceProcess;
 using Wask.Lib.Model;
 
@@ -27,80 +27,39 @@ namespace Wask.Lib.Utils
                 serviceController.Stop();
             }
         }
-
-        public static string GetServiceStatus(string svcName)
+        
+        public static Service GetService(ServiceController svcTemp)
         {
-            ServiceController svcController = ServiceController.GetServices().ToList().Find(o => o.ServiceName == svcName);
-            if (svcController == null)
-                return "";
-
-            switch (svcController.Status)
+            ManagementObject service = new ManagementObject(@"Win32_service.Name='" + svcTemp.ServiceName + "'");
+            object o = service.GetPropertyValue("ProcessId");
+            int processId = (int)((UInt32)o);
+            Process process = Process.GetProcessById(processId);
+            
+            var svc = new Service()
             {
-                case ServiceControllerStatus.StopPending:
-                    return "Stop Pending";
-                case ServiceControllerStatus.Stopped:
-                    return "Stopped";
-                case ServiceControllerStatus.StartPending:
-                    return "Start Pending";
-                case ServiceControllerStatus.Running:
-                    return "Running";
-            }
-            return "";
-        }
-
-        private const string serverBin = @"\Server\Bin";
-
-        private static string GetServicePrefix(string dirRoot)
-        {
-            string[] pieces = dirRoot.Split(new[] { '\\' }, StringSplitOptions.RemoveEmptyEntries);
-            return (pieces.Length > 0) ? pieces[pieces.Length - 1] : string.Empty;
-        }
-        private static string GenerateServiceName(string prefix, string filename)
-        {
-            string p = string.IsNullOrEmpty(prefix) ? string.Empty : prefix + " ";
-
-            string s = filename;
-            if (s.StartsWith("Eze.", StringComparison.InvariantCultureIgnoreCase))
+                name = svcTemp.ServiceName,
+                status = svcTemp.Status.ToString()
+            };
+            if (processId > 0)
             {
-                s = s.Substring(4);
+                svc.pid = processId;
+                svc.startTime = process.StartTime;
+                svc.cpuTimeSpan = process.TotalProcessorTime;
+                svc.memory = process.PrivateMemorySize64;
             }
 
-            if (s.EndsWith(".Svc.exe", StringComparison.InvariantCultureIgnoreCase))
-            {
-                s = s.Substring(0, s.Length - 8);
-            }
-            s = s.Replace(".", " ");
-            return p + s;
+            return svc;
         }
 
         public static List<Service> GetAllEzeServices()
         {
             var svcContollers = ServiceController.GetServices().ToList().Where(o => o.ServiceName.StartsWith("Mainline"));
             var services = new List<Service>();
-            foreach (var svc in svcContollers)
+            foreach (var scTemp in svcContollers)
             {
-                services.Add(new Service() { path = svc.ServiceType.ToString(), name = svc.ServiceName });
+                services.Add(GetService(scTemp));
             }
             return services;
-        }
-
-        public static void InstallAndStart(string svcName, string svcDesc, string svcPath)
-        {
-            var processInstaller = new ServiceProcessInstaller();
-            var serviceInstaller = new ServiceInstaller { Parent = processInstaller };
-
-            var context = new InstallContext("install.log", null);
-            context.Parameters["assemblypath"] = svcPath;
-            serviceInstaller.Context = context;
-            serviceInstaller.ServiceName = svcName;
-            serviceInstaller.DisplayName = svcDesc;
-            serviceInstaller.Description = svcDesc;
-            serviceInstaller.StartType = ServiceStartMode.Manual;
-            serviceInstaller.Parent = processInstaller;
-            serviceInstaller.Install(new ListDictionary());
-
-            var serviceController = new ServiceController { ServiceName = svcName };
-            serviceController.Start();
         }
     }
 }

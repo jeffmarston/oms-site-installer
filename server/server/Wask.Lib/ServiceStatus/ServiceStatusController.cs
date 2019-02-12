@@ -87,11 +87,6 @@ namespace Wask.Lib.SignalR
                         ServiceUtils.StopService(svc.name);
                         returnMsg = "Stoping Service: " + svc.name;
                     }
-                    else if (action.ToLower() == "install")
-                    {
-                        ServiceUtils.InstallAndStart(svc.name, svc.name, svc.path);
-                        returnMsg = "Installing Service: " + svc.name;
-                    }
                     else
                     {
                         return BadRequest("Unsupported Action: " + action);

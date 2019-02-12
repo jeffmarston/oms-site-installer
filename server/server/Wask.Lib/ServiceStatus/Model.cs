@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
+using System;
 
 namespace Wask.Lib.Model
 {
@@ -10,12 +11,6 @@ namespace Wask.Lib.Model
             ConfigObject config = JsonConvert.DeserializeObject<ConfigObject>(json);
             return config;
         }
-    }
-
-    public class Profile
-    {
-        public string name { get; set; }
-        public string path { get; set; }
     }
 
     public class Restart
@@ -31,11 +26,15 @@ namespace Wask.Lib.Model
         public string path { get; set; }
         public string status { get; set; }
         public string name { get; set; }
+        public long memory { get; set; }
         public string instance { get; set; }
         public bool enabled { get; set; }
         public string exe { get; set; }
         public int pid { get; set; }
         public Restart restart { get; set; }
+        public DateTime startTime { get; internal set; }
+        
+        public TimeSpan cpuTimeSpan { get; internal set; }
 
         public override string ToString()
         {

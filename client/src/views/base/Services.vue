@@ -41,7 +41,6 @@
 </template>
 
 <script>
-//import SignalrHub from "../../services/SignalrHub";
 const _ = require("lodash");
 
 let signalrHub = null;
@@ -49,19 +48,20 @@ let onReady = function() {
   signalrHub.getServices();
 };
 
-// signalrHub = new SignalrHub(onReady);
-// let conn = signalrHub.connection;
+import SignalrHub from "../../services/SignalrHub";
+signalrHub = new SignalrHub(onReady);
+let conn = signalrHub.connection;
 
-// conn.on("AllServices", function(svcList) {
-//   serviceData.length = 0;
-//   svcList.forEach(svc => {
-//     serviceData.push({
-//       service: svc.name,
-//       status: svc.status,
-//       machine: svc.machineName
-//     });
-//   });
-// });
+conn.on("AllServices", function(svcList) {
+  serviceData.length = 0;
+  svcList.forEach(svc => {
+    serviceData.push({
+      service: svc.name,
+      status: svc.status,
+      machine: svc.machineName
+    });
+  });
+});
 
 // conn.on("Response", function (cmd, svc) {
 //   console.log(svc);
@@ -129,6 +129,13 @@ export default {
         resizable: true
       },
       {
+        headerName: "Memory",
+        field: "memory",
+        sortable: true,
+        filter: true,
+        resizable: true
+      },
+      {
         headerName: "Path",
         field: "path",
         sortable: true,
@@ -186,6 +193,8 @@ export default {
 
           // Examine the text in the response
           response.json().then(data => {
+            console.log(data);
+            data.memory = data.memory / 1024;
             this.rowData = data;
           });
         }

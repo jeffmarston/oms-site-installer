@@ -1,48 +1,25 @@
 <template>
   <div class="animated fadeIn">
-    <b-row class="ag-theme-balham">
+    <b-row>
       <b-col sm="6">
-        <b-card>
-          <ag-grid-vue
-            style="height: 500px;"
-            class="ag-theme-balham"
-            :columnDefs="columnDefs"
-            :rowData="rowData"
-            :gridOptions="gridOptions"
-            rowSelection="single"
-            suppressCellSelection
-            animate-rows
-            @grid-ready="onGridReady"
-            @row-selected="onRowSelected"
-            :getRowNodeId="getRowNodeId"
-          ></ag-grid-vue>
-        </b-card>
+        <ag-grid-vue
+          style="height: 500px;"
+          class="ag-theme-balham"
+          :columnDefs="columnDefs"
+          :rowData="rowData"
+          :gridOptions="gridOptions"
+          rowSelection="single"
+          suppressCellSelection
+          animate-rows
+          @grid-ready="onGridReady"
+          @row-selected="onRowSelected"
+          :getRowNodeId="getRowNodeId"
+        ></ag-grid-vue>
       </b-col>
-      <!-- <b-col sm="6">
-        <b-card no-header>
-          <div slot="header">
-            <strong>Services</strong>
-          </div>
-          <b-table
-            hover
-            responsive="sm"
-            small
-            :items="items"
-            :fields="fields"
-            @row-clicked="rowClicked"
-          >
-            <template slot="servername" slot-scope="data">
-              <strong>{{data.item.servername}}</strong>
-            </template>
-            <template slot="status" slot-scope="data">
-              <b-badge :variant="getBadge(data.item.status)">{{data.item.status}}</b-badge>
-            </template>
-          </b-table>
-        </b-card>
-      </b-col>-->
+
       <b-col sm="6" v-if="selectedRow">
         <b-card>
-          <h4>{{ selectedRow.service}}</h4>
+          <h4>{{ selectedRow.name}}</h4>
           <div>
             <b-button
               :variant="getButtonVariant(selectedRow.status, 'Start')"
@@ -115,15 +92,45 @@ export default {
   beforeMount() {
     this.columnDefs = [
       {
-        headerName: "Service",
-        field: "service",
+        headerName: "Status",
+        field: "status",
+        sortable: true,
+        filter: true,
+        resizable: true,
+        cellStyle: function(params) {
+          return params.data.status == "Stopped"
+            ? { color: "white", backgroundColor: "#f64846" }
+            : params.data.status == "Starting"
+            ? { color: "black", backgroundColor: "#ffc107" }
+            : params.data.status == "Running"
+            ? { color: "white", backgroundColor: "#4dbd74" }
+            : null;
+        }
+      },
+      {
+        headerName: "Name",
+        field: "name",
         sortable: true,
         filter: true,
         resizable: true
       },
       {
-        headerName: "Status",
-        field: "status",
+        headerName: "PID",
+        field: "pid",
+        sortable: true,
+        filter: true,
+        resizable: true
+      },
+      {
+        headerName: "CPU",
+        field: "cpu",
+        sortable: true,
+        filter: true,
+        resizable: true
+      },
+      {
+        headerName: "Path",
+        field: "path",
         sortable: true,
         filter: true,
         resizable: true
@@ -131,20 +138,20 @@ export default {
     ];
 
     this.rowData = [
-      { service: "Discovery", registered: todaysDate, status: "Running" },
-      { service: "Analytics", status: "Stopped", _rowVariant: "danger" },
-      { service: "Notification", status: "Running" },
-      { service: "Compliance", status: "Running" },
-      { service: "DataFeed", status: "Running" }
+      { name: "Discovery", status: "Running", cpu: 0 },
+      { name: "Analytics", status: "Stopped", cpu: 0 },
+      { name: "Notification", status: "Running", cpu: 0 },
+      { name: "Compliance", status: "Running", cpu: 0 },
+      { name: "DataFeed", status: "Running", cpu: 0 }
     ];
     this.gridOptions = {};
-    this.gridOptions.getRowClass = function(params) {
-      return params.data.status == "Stopped"
-        ? "danger"
-        : params.data.status == "Starting"
-        ? "warning"
-        : "";
-    };
+    // this.gridOptions.getRowClass = function(params) {
+    //   return params.data.status == "Stopped"
+    //     ? "danger"
+    //     : params.data.status == "Starting"
+    //     ? "warning"
+    //     : "";
+    // };
 
     // this.rowClassRules = {
     //   danger: params => {
@@ -158,12 +165,38 @@ export default {
     onGridReady(params) {
       this.gridApi = params.api;
       this.columnApi = params.columnApi;
+      this.populateGrid();
+      setInterval(() => {
+        this.gridApi.forEachNodeAfterFilter(row => {
+          let r = Math.random();
+          if (r < 0.6 && row.data.status === "Running") {
+            row.data.cpu = Math.floor(Math.random() * 101);
+            this.gridApi.redrawRows(row);
+          }
+        });
+      }, 1000);
+    },
+    populateGrid() {
+      fetch("http://localhost:9000/serviceInfo/service/Mainline").then(
+        response => {
+          if (response.status !== 200) {
+            console.error("Status Code: " + response.status);
+            return;
+          }
+
+          // Examine the text in the response
+          response.json().then(data => {
+            this.rowData = data;
+          });
+        }
+      );
     },
     onRowSelected() {
       this.selectedRow = this.gridApi.getSelectedRows()[0];
+      console.log(this.selectedRow);
     },
     getRowNodeId(data) {
-      return data.service;
+      return data.name;
     },
     startSvc() {
       //signalrHub.send("start", this.selectedRow.service);
@@ -193,7 +226,7 @@ export default {
       }
     },
     sendMsg(svc) {
-      signalrHub.send("start", svc);
+      //signalrHub.send("start", svc);
     }
   }
 };

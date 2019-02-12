@@ -1,8 +1,8 @@
 // Here you can add other styles
 
-.ag-theme-balham .danger {
-    background-color: lightcoral;
-}
-.ag-theme-balham .warning {
-    background-color: rgb(247, 216, 139);
+.ag-theme-balham {
+    .ag-row:not(.ag-row-first) {
+        border-width: 0;
+    }
+    font-size: 14px;
 }

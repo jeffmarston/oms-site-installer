@@ -19,7 +19,6 @@ namespace SignalRSimpleChat
         {
             try
             {
-
                 if (command == "start")
                 {
                     svcMgr.StartService(serviceName);

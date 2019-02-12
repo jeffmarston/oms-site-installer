@@ -1,9 +1,0 @@
-C:\Repo\ServiceHelper\bin\BranchProfile\profiles.json
-C:\Repo\ServiceHelper\bin\Wask.Console.exe.config
-C:\Repo\ServiceHelper\bin\Wask.Console.exe
-C:\Repo\ServiceHelper\bin\Wask.Console.pdb
-C:\Repo\ServiceHelper\server\Wask.Console\obj\Debug\Wask.Console.csprojResolveAssemblyReference.cache
-C:\Repo\ServiceHelper\server\Wask.Console\obj\Debug\Wask.Console.csproj.CoreCompileInputs.cache
-C:\Repo\ServiceHelper\server\Wask.Console\obj\Debug\Wask.Console.csproj.CopyComplete
-C:\Repo\ServiceHelper\server\Wask.Console\obj\Debug\Wask.Console.exe
-C:\Repo\ServiceHelper\server\Wask.Console\obj\Debug\Wask.Console.pdb

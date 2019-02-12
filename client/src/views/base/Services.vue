@@ -177,7 +177,7 @@ export default {
       }, 1000);
     },
     populateGrid() {
-      fetch("http://localhost:9000/serviceInfo/service/Mainline").then(
+      fetch("http://localhost:9000/serviceInfo/services").then(
         response => {
           if (response.status !== 200) {
             console.error("Status Code: " + response.status);

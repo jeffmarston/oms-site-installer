@@ -38,13 +38,13 @@
 <script>
     
     const connection = new signalR.HubConnectionBuilder()
-        .withUrl("/chat")
+        .withUrl("/ServiceMgmtHub")
         .build();
 
     connection.start().catch(err => console.error(err.toString()));
     
-    connection.on('Send', (nick, message) => {
-        appendLine(nick, message);    
+    connection.on('Response', (cmd, servicename) => {
+        appendLine(cmd, servicename);    
     });
 
     document.getElementById('frm-send-message').addEventListener('submit', event => {
@@ -53,7 +53,7 @@
 
         $('#message').val('');
     
-        connection.invoke('Send', nick, message);   
+        connection.invoke('Request', nick, message);   
         event.preventDefault();
     });
 

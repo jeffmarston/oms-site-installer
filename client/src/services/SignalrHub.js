@@ -3,7 +3,7 @@ const signalR = require('@aspnet/signalr');
 var readyFunction = null;
 
 let connection = new signalR.HubConnectionBuilder()
-.withUrl("http://localhost:9000/EventHub")
+.withUrl("http://localhost:5000/ServiceMgmtHub")
 .build();
 
 console.log('(1)');

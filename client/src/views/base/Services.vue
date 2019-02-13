@@ -52,24 +52,25 @@ import SignalrHub from "../../services/SignalrHub";
 signalrHub = new SignalrHub(onReady);
 let conn = signalrHub.connection;
 
-conn.on("AllServices", function(svcList) {
-  serviceData.length = 0;
-  svcList.forEach(svc => {
-    serviceData.push({
-      service: svc.name,
-      status: svc.status,
-      machine: svc.machineName
-    });
-  });
-});
-
-// conn.on("Response", function (cmd, svc) {
-//   console.log(svc);
-//   let serviceDelta = _.find(serviceData, o => o.service === svc.name);
-//   if (serviceDelta) {
-//     serviceDelta.status = svc.status;
-//   }
+// conn.on("AllServices", function(svcList) {
+//   serviceData.length = 0;
+//   svcList.forEach(svc => {
+//     serviceData.push({
+//       service: svc.name,
+//       status: svc.status,
+//       machine: svc.machineName
+//     });
+//   });
 // });
+
+conn.on("Response", function(cmd, svc) {
+  console.log("==================");
+  console.log(svc);
+  let serviceDelta = _.find(serviceData, o => o.service === svc.name);
+  if (serviceDelta) {
+    serviceDelta.status = svc.status;
+  }
+});
 
 let today = new Date();
 let todaysDate =
@@ -184,25 +185,24 @@ export default {
       }, 1000);
     },
     populateGrid() {
-      fetch("http://localhost:9000/serviceInfo/services").then(
-        response => {
-          if (response.status !== 200) {
-            console.error("Status Code: " + response.status);
-            return;
-          }
-
-          // Examine the text in the response
-          response.json().then(data => {
-            console.log(data);
-            data.memory = data.memory / 1024;
-            this.rowData = data;
-          });
+      fetch("http://localhost:5000/serviceInfo/services", {
+        mode: "cors"
+      }).then(response => {
+        if (response.status !== 200) {
+          console.error("!! Status Code: " + response.status);
+          console.error(response);
+          return;
         }
-      );
+
+        // Examine the text in the response
+        response.json().then(data => {
+          data.memory = data.memory / 1024;
+          this.rowData = data;
+        });
+      });
     },
     onRowSelected() {
       this.selectedRow = this.gridApi.getSelectedRows()[0];
-      console.log(this.selectedRow);
     },
     getRowNodeId(data) {
       return data.name;
@@ -210,22 +210,45 @@ export default {
     startSvc() {
       //signalrHub.send("start", this.selectedRow.service);
 
-      let row = this.selectedRow;
-      row.status = "Starting";
-      this.gridApi.redrawRows();
+      let svc = this.selectedRow;
+      fetch("http://localhost:5000/serviceInfo/startService", {
+        method: "POST",
+        mode: "cors",
+        cache: "no-cache",
+        headers: {
+          "Content-Type": "application/json"
+          // "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: JSON.stringify(svc) // body data type must match "Content-Type" header
+      }).then(response => response.json()); // parses response to JSON
 
-      setTimeout(() => {
-        row.status = "Running";
-        this.gridApi.redrawRows();
-      }, 2000);
+      // let row = this.selectedRow;
+      // row.status = "Starting";
+      // this.gridApi.redrawRows();
+
+      // setTimeout(() => {
+      //   row.status = "Running";
+      //   this.gridApi.redrawRows();
+      // }, 2000);
     },
     stopSvc() {
+      fetch("http://localhost:5000/serviceInfo/stopService", {
+        method: "POST",
+        mode: "cors",
+        cache: "no-cache",
+        headers: {
+          "Content-Type": "application/json"
+          // "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: JSON.stringify(svc) // body data type must match "Content-Type" header
+      }).then(response => response.json()); // parses response to JSON
+
       //signalrHub.send("stop", this.selectedRow.service);
-      let row = this.selectedRow;
-      setTimeout(() => {
-        row.status = "Stopped";
-        this.gridApi.redrawRows();
-      }, 500);
+      // let row = this.selectedRow;
+      // setTimeout(() => {
+      //   row.status = "Stopped";
+      //   this.gridApi.redrawRows();
+      // }, 500);
     },
     getButtonVariant(status, button) {
       if (button === "Start") {

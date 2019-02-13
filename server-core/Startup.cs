@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Wask.Lib.Model;
+using Wask.Lib.Utils;
 
 namespace SignalRSimpleChat
 {
@@ -24,7 +26,7 @@ namespace SignalRSimpleChat
                     .AllowAnyHeader()
                     .AllowCredentials()
                 //    .AllowAnyOrigin();
-                .WithOrigins("http://localhost:8081");
+                .WithOrigins("http://localhost:8080");
             }));
             services.AddSignalR();
         }
@@ -39,13 +41,6 @@ namespace SignalRSimpleChat
             {
                 routes.MapHub<ServiceMgmtHub>("/ServiceMgmtHub");
             });
-
-            //app.UseMvc(routes =>
-            //{
-            //    routes.MapRoute(
-            //        name: "default",
-            //        template: "{controller=Home}/{action=Index}/{id?}");
-            //});
 
             app.UseMvcWithDefaultRoute();
 

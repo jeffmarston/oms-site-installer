@@ -36,15 +36,15 @@ namespace Eze.AdminConsole.Model
             _pollingTimer = new Timer(DoPoll, null, 0, TimerIntervalMs);
         }
 
-
-
         private void DoPoll(object state)
         {
-            var newSvrStats = ServiceUtils.GetSystemInfo();// only works with 1 second interval;
+            var newSvrStats = ServiceUtils.GetSystemInfo();
             newSvrStats.cpuPercent = 100 - (newSvrStats.idleCpuTime - _lastServerStats.idleCpuTime) / (TimeSpan.TicksPerMillisecond * 10); // only works with 1 second interval;
             _lastServerStats = newSvrStats;
-            _context.Clients.All.SendAsync("Response", "serverStats", newSvrStats);
-
+            if (newSvrStats.cpuPercent >= 0 && newSvrStats.cpuPercent <= 100)
+            {
+                _context.Clients.All.SendAsync("Response", "serverStats", newSvrStats);
+            }
             foreach (var prevState in _lastServiceStates)
             {
                 var newState = ServiceUtils.GetService(new ServiceController(prevState.name));
@@ -53,7 +53,6 @@ namespace Eze.AdminConsole.Model
                 {
                     var cpuTime = Math.Round((newState.cpuTimeSpan.TotalSeconds - prevState.cpuTimeSpan.TotalSeconds) / 10.0, 2);
                     prevState.cpuTimeSpan = newState.cpuTimeSpan;
-                    // Console.WriteLine($"Publish: [{prevState.name}]. diffTime = {cpuTime} %");
                 }
 
                 if (prevState != null && prevState.status != newState.status)

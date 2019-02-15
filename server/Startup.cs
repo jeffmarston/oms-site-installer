@@ -3,6 +3,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Eze.AdminConsole.Model;
 using Eze.AdminConsole.Utils;
+using Microsoft.Extensions.FileProviders;
+using System.IO;
+using System.Diagnostics;
 
 namespace Eze.AdminConsole
 {
@@ -19,6 +22,7 @@ namespace Eze.AdminConsole
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+            services.AddSwaggerDocument();
             services.AddCors(options => options.AddPolicy("CorsPolicy", builder =>
             {
                 builder
@@ -33,17 +37,17 @@ namespace Eze.AdminConsole
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app)
-        {         
+        {
             app.UseCors("CorsPolicy");
-            app.UseStaticFiles();
-
+            app.UseDefaultFiles();
+            app.UseStaticFiles();            
+            app.UseSwagger();
+            app.UseSwaggerUi3();
             app.UseSignalR(routes =>
             {
                 routes.MapHub<ServiceMgmtHub>("/ServiceMgmtHub");
             });
-
             app.UseMvcWithDefaultRoute();
-
         }
     }
 }

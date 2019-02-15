@@ -29,6 +29,7 @@ namespace Eze.AdminConsole
                 .UseKestrel()
                 .UseIISIntegration()
                 .UseStartup<Startup>()
+                .UseWebRoot(Path.Combine(Directory.GetCurrentDirectory(), "..\\client\\dist"))
                 .ConfigureKestrel((context, options) =>
                 {
                     // Set properties and call methods on options

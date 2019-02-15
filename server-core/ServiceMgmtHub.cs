@@ -3,7 +3,7 @@ using SignalRSimpleChat.ServiceMgmt;
 using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
-using Wask.Lib.Utils;
+using Eze.AdminConsole.Utils;
 
 namespace SignalRSimpleChat
 {
@@ -22,7 +22,8 @@ namespace SignalRSimpleChat
 
         public async Task GetServices()
         {
-            var list = ServiceUtils.GetAllEzeServices();
+            //var list = ServiceUtils.GetAllEzeServices();
+            await Clients.All.SendAsync("GetServices", "GetServices", "GetServices");
         }
     }
 }

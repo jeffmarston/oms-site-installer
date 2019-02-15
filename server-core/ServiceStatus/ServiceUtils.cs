@@ -2,11 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-//using System.Management;
 using System.ServiceProcess;
-using Wask.Lib.Model;
+using Eze.AdminConsole.Model;
+using System.Management;
 
-namespace Wask.Lib.Utils
+namespace Eze.AdminConsole.Utils
 {
     public static class ServiceUtils
     {
@@ -30,25 +30,35 @@ namespace Wask.Lib.Utils
         
         public static Service GetService(ServiceController svcTemp)
         {
-            // ManagementObject service = new ManagementObject(@"Win32_service.Name='" + svcTemp.ServiceName + "'");
-            // object o = service.GetPropertyValue("ProcessId");
-            // int processId = (int)((UInt32)o);
-            // Process process = Process.GetProcessById(processId);
+            ManagementObject service = new ManagementObject(@"Win32_service.Name='" + svcTemp.ServiceName + "'");
+            object o = service.GetPropertyValue("ProcessId");
+            int processId = (int)((UInt32)o);
+            Process process = Process.GetProcessById(processId);
             
             var svc = new Service()
             {
                 name = svcTemp.ServiceName,
                 status = svcTemp.Status.ToString()
             };
-            // if (processId > 0)
-            // {
-            //     svc.pid = processId;
-            //     svc.startTime = process.StartTime;
-            //     svc.cpuTimeSpan = process.TotalProcessorTime;
-            //     svc.memory = process.PrivateMemorySize64;
-            // }
+            if (processId > 0)
+            {
+                svc.pid = processId;
+                svc.startTime = process.StartTime;
+                svc.cpuTimeSpan = process.TotalProcessorTime;
+                svc.memory = process.PrivateMemorySize64;
+            }
 
             return svc;
+        }
+
+        public static ServerStats GetSystemInfo()
+        {
+            var pcMem = new PerformanceCounter("Memory", "Available MBytes");
+            var pcCpu = new PerformanceCounter("Processor", "% Idle Time", "_Total");
+            return new ServerStats() {
+                idleCpuTime = pcCpu.RawValue,
+                memoryMb = pcMem.RawValue
+            };
         }
 
         public static List<Service> GetAllEzeServices()

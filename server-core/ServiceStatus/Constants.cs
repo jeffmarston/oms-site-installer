@@ -1,5 +1,5 @@
 
-namespace Wask.Lib.SignalR
+namespace Eze.AdminConsole.SignalR
 {
     class Constants
     {

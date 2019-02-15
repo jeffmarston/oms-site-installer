@@ -5,15 +5,14 @@ using System.ServiceProcess;
 using System.Timers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
-using Wask.Lib.Model;
-using Wask.Lib.Utils;
+using Eze.AdminConsole.Model;
+using Eze.AdminConsole.Utils;
 
 namespace SignalRSimpleChat.ServiceMgmt
 {
     public class ServiceInfoController : Controller
     {
         private IHubContext<ServiceMgmtHub> _context;
-        private List<ServiceInfo> _allServices;
         private Timer _statusWatchTimer = new Timer();
 
         public ServiceInfoController(IHubContext<ServiceMgmtHub> context)

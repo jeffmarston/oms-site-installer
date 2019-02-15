@@ -1,8 +1,7 @@
-using Newtonsoft.Json;
 using System.Collections.Generic;
 using System;
 
-namespace Wask.Lib.Model
+namespace Eze.AdminConsole.Model
 {
     public class Service
     {

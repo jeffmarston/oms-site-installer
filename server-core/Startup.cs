@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Wask.Lib.Model;
-using Wask.Lib.Utils;
+using Eze.AdminConsole.Model;
+using Eze.AdminConsole.Utils;
 
 namespace SignalRSimpleChat
 {

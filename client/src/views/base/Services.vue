@@ -1,9 +1,20 @@
 <template>
   <div class="animated fadeIn">
+    <h4>CPU {{ serverStats.cpu }} %</h4>
+    <h4>Memory {{ serverStats.memory }} MB</h4>
     <b-row>
-      <b-col sm="6">
+      <b-col sm="12">
+        <div>
+          <b-button :disabled="isButtonEnabled(selectedRow, 'start')" @click="startSvc()">Start</b-button>&nbsp;
+          <b-button :disabled="isButtonEnabled(selectedRow, 'stop')" @click="stopSvc()">Stop</b-button>&nbsp;
+          <a href="./analytics.log" download>
+            <b-button :disabled="isButtonEnabled(selectedRow, 'logs')">Logs</b-button>
+          </a>&nbsp;
+          <!-- <b-button @click="sendMsg(selectedRow.service)">Send</b-button>&nbsp; -->
+        </div>
+
         <ag-grid-vue
-          style="height: 500px;"
+          style
           class="ag-theme-balham"
           :columnDefs="columnDefs"
           :rowData="rowData"
@@ -17,24 +28,8 @@
         ></ag-grid-vue>
       </b-col>
 
-      <b-col sm="6" v-if="selectedRow">
-        <b-card>
-          <h4>{{ selectedRow.name}}</h4>
-          <div>
-            <b-button
-              :variant="getButtonVariant(selectedRow.status, 'Start')"
-              @click="startSvc()"
-            >Start</b-button>&nbsp;
-            <b-button
-              :variant="getButtonVariant(selectedRow.status, 'Stop')"
-              @click="stopSvc()"
-            >Stop</b-button>&nbsp;
-            <a href="./analytics.log" download>
-              <b-button>Download Logs</b-button>
-            </a>&nbsp;
-            <b-button @click="sendMsg(selectedRow.service)">Send</b-button>&nbsp;
-          </div>
-        </b-card>
+      <b-col sm="1" v-if="selectedRow">
+        <b-card></b-card>
       </b-col>
     </b-row>
   </div>
@@ -51,27 +46,6 @@ let onReady = function() {
 import SignalrHub from "../../services/SignalrHub";
 signalrHub = new SignalrHub(onReady);
 let conn = signalrHub.connection;
-
-// conn.on("AllServices", function(svcList) {
-//   serviceData.length = 0;
-//   svcList.forEach(svc => {
-//     serviceData.push({
-//       service: svc.name,
-//       status: svc.status,
-//       machine: svc.machineName
-//     });
-//   });
-// });
-
-conn.on("Response", function(cmd, svc) {
-  console.log("==================");
-  console.log(svc);
-  let serviceDelta = _.find(serviceData, o => o.service === svc.name);
-  if (serviceDelta) {
-    serviceDelta.status = svc.status;
-  }
-});
-
 let today = new Date();
 let todaysDate =
   today.getMonth() + 1 + "/" + today.getDate() + "/" + today.getFullYear();
@@ -87,7 +61,8 @@ export default {
       rowData: null,
       selectedRow: null,
       gridOptions: null,
-      rowClassRules: null
+      rowClassRules: null,
+      serverStats: { cpu: 0, memory: 0 }
     };
   },
   beforeMount() {
@@ -145,44 +120,32 @@ export default {
       }
     ];
 
-    this.rowData = [
-      { name: "Discovery", status: "Running", cpu: 0 },
-      { name: "Analytics", status: "Stopped", cpu: 0 },
-      { name: "Notification", status: "Running", cpu: 0 },
-      { name: "Compliance", status: "Running", cpu: 0 },
-      { name: "DataFeed", status: "Running", cpu: 0 }
-    ];
+    this.rowData = [];
     this.gridOptions = {};
-    // this.gridOptions.getRowClass = function(params) {
-    //   return params.data.status == "Stopped"
-    //     ? "danger"
-    //     : params.data.status == "Starting"
-    //     ? "warning"
-    //     : "";
-    // };
-
-    // this.rowClassRules = {
-    //   danger: params => {
-    //     var status = params.data.status;
-    //     console.log(status);
-    //     return status == "Stopped";
-    //   }
-    // };
   },
   methods: {
     onGridReady(params) {
       this.gridApi = params.api;
       this.columnApi = params.columnApi;
       this.populateGrid();
-      setInterval(() => {
-        this.gridApi.forEachNodeAfterFilter(row => {
-          let r = Math.random();
-          if (r < 0.6 && row.data.status === "Running") {
-            row.data.cpu = Math.floor(Math.random() * 101);
-            this.gridApi.redrawRows(row);
-          }
-        });
-      }, 1000);
+      this.subscribeToServiceChange(this.gridApi, this.serverStats);
+    },
+    subscribeToServiceChange(gridApi, serverStats) {
+      conn.on("Response", function(cmd, svc) {
+        if (cmd == "serverStats") {
+          serverStats.cpu = svc.cpuPercent;
+          serverStats.memory = svc.memoryMb.toLocaleString("en-US");
+        }
+
+        if (cmd == "ServiceChanged") {
+          gridApi.forEachNodeAfterFilter(row => {
+            if (row.data.name === svc.name) {
+              row.data = svc;
+              gridApi.redrawRows(row);
+            }
+          });
+        }
+      });
     },
     populateGrid() {
       fetch("http://localhost:5000/serviceInfo/services", {
@@ -201,6 +164,16 @@ export default {
         });
       });
     },
+    isButtonEnabled(row, buttonType) {
+      if (!row) return true;
+      if (buttonType === "start") {
+        return row.status === "Running";
+      } else if (buttonType === "stop") {
+        return row.status !== "Running";
+      } else if (buttonType === "logs") {
+        return true;
+      }
+    },
     onRowSelected() {
       this.selectedRow = this.gridApi.getSelectedRows()[0];
     },
@@ -208,28 +181,15 @@ export default {
       return data.name;
     },
     startSvc() {
-      //signalrHub.send("start", this.selectedRow.service);
-
-      let svc = this.selectedRow;
       fetch("http://localhost:5000/serviceInfo/startService", {
         method: "POST",
         mode: "cors",
         cache: "no-cache",
         headers: {
           "Content-Type": "application/json"
-          // "Content-Type": "application/x-www-form-urlencoded",
         },
-        body: JSON.stringify(svc) // body data type must match "Content-Type" header
-      }).then(response => response.json()); // parses response to JSON
-
-      // let row = this.selectedRow;
-      // row.status = "Starting";
-      // this.gridApi.redrawRows();
-
-      // setTimeout(() => {
-      //   row.status = "Running";
-      //   this.gridApi.redrawRows();
-      // }, 2000);
+        body: JSON.stringify(this.selectedRow)
+      }).then(response => response.json());
     },
     stopSvc() {
       fetch("http://localhost:5000/serviceInfo/stopService", {
@@ -238,27 +198,9 @@ export default {
         cache: "no-cache",
         headers: {
           "Content-Type": "application/json"
-          // "Content-Type": "application/x-www-form-urlencoded",
         },
-        body: JSON.stringify(svc) // body data type must match "Content-Type" header
-      }).then(response => response.json()); // parses response to JSON
-
-      //signalrHub.send("stop", this.selectedRow.service);
-      // let row = this.selectedRow;
-      // setTimeout(() => {
-      //   row.status = "Stopped";
-      //   this.gridApi.redrawRows();
-      // }, 500);
-    },
-    getButtonVariant(status, button) {
-      if (button === "Start") {
-        return status === "Stopped" ? "primary" : "";
-      } else if (button === "Stop") {
-        return status === "Running" ? "primary" : "";
-      }
-    },
-    sendMsg(svc) {
-      //signalrHub.send("start", svc);
+        body: JSON.stringify(this.selectedRow)
+      }).then(response => response.json());
     }
   }
 };

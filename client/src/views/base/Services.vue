@@ -37,6 +37,7 @@
 
 <script>
 const _ = require("lodash");
+const env = require("../../environment.config.json");
 
 let signalrHub = null;
 let onReady = function() {
@@ -148,7 +149,7 @@ export default {
       });
     },
     populateGrid() {
-      fetch("http://localhost:5000/serviceInfo/services", {
+      fetch(env.serverAddress + "/serviceInfo/services", {
         mode: "cors"
       }).then(response => {
         if (response.status !== 200) {
@@ -181,7 +182,7 @@ export default {
       return data.name;
     },
     startSvc() {
-      fetch("http://localhost:5000/serviceInfo/startService", {
+      fetch(env.serverAddress + "/serviceInfo/startService", {
         method: "POST",
         mode: "cors",
         cache: "no-cache",
@@ -192,7 +193,7 @@ export default {
       }).then(response => response.json());
     },
     stopSvc() {
-      fetch("http://localhost:5000/serviceInfo/stopService", {
+      fetch(env.serverAddress + "/serviceInfo/stopService", {
         method: "POST",
         mode: "cors",
         cache: "no-cache",

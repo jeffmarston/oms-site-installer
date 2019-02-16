@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.ServiceProcess;
 using System.Threading;
 using Microsoft.AspNetCore.SignalR;
-using Eze.AdminConsole;
+using Eze.AdminConsole.Machines;
 
 namespace Eze.AdminConsole.Services
 {
     public class ServiceWatcher
     {
         private List<Service> _lastServiceStates = new List<Service>();
-        private ServerStats _lastServerStats = new ServerStats();
+        private MachineData _lastMachineData = new MachineData();
 
         private Timer _pollingTimer;
         private static IHubContext<ServiceMgmtHub> _context;
@@ -37,11 +37,11 @@ namespace Eze.AdminConsole.Services
         private void DoPoll(object state)
         {
             var newSvrStats = ServiceUtils.GetSystemInfo();
-            newSvrStats.cpuPercent = 100 - (newSvrStats.idleCpuTime - _lastServerStats.idleCpuTime) / (TimeSpan.TicksPerMillisecond * 10); // only works with 1 second interval;
-            _lastServerStats = newSvrStats;
+            newSvrStats.cpuPercent = 100 - (newSvrStats.idleCpuTime - _lastMachineData.idleCpuTime) / (TimeSpan.TicksPerMillisecond * 10); // only works with 1 second interval;
+            _lastMachineData = newSvrStats;
             if (newSvrStats.cpuPercent >= 0 && newSvrStats.cpuPercent <= 100)
             {
-                _context.Clients.All.SendAsync("Response", "serverStats", newSvrStats);
+                _context.Clients.All.SendAsync("Response", "MachineData", newSvrStats);
             }
             foreach (var prevState in _lastServiceStates)
             {

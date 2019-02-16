@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.SignalR;
 
 namespace Eze.AdminConsole.Services
 {
-    public class ServiceInfoController : Controller
+    public class ServiceInfoController: Controller
     {
         private IHubContext<ServiceMgmtHub> _context;
         private Timer _statusWatchTimer = new Timer();

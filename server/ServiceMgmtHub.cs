@@ -1,9 +1,8 @@
 ﻿using Microsoft.AspNetCore.SignalR;
-using Eze.AdminConsole.ServiceMgmt;
+using Eze.AdminConsole.Services;
 using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
-using Eze.AdminConsole.Services;
 
 namespace Eze.AdminConsole
 {

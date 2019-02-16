@@ -1,4 +1,4 @@
-namespace Eze.AdminConsole.ServiceMgmt
+namespace Eze.AdminConsole.Services
 {
     public class Topology
     {
@@ -19,22 +19,6 @@ namespace Eze.AdminConsole.ServiceMgmt
             database = new MachineSpec[] { 
                 new MachineSpec("eze-db")
             };
-
-// { 
-//   "servers": [
-//     { "name": "eze-app01" },
-//     { "name": "eze-apple02" },
-//     { "name": "eze-app99" }
-//   ],
-//   "clients": [
-//     { "name": "marston9020b" },
-//     { "name": "brucewayne1000" }
-//   ],
-//   "database": [
-//     { "name": "eze-db01" }
-//   ]
-// }
-
         }
     }
 

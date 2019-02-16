@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.ServiceProcess;
 using System.Management;
+using Eze.AdminConsole.Machines;
 
 namespace Eze.AdminConsole.Services
 {
@@ -50,11 +51,11 @@ namespace Eze.AdminConsole.Services
             return svc;
         }
 
-        public static ServerStats GetSystemInfo()
+        public static MachineData GetSystemInfo()
         {
             var pcMem = new PerformanceCounter("Memory", "Available MBytes");
             var pcCpu = new PerformanceCounter("Processor", "% Idle Time", "_Total");
-            return new ServerStats() {
+            return new MachineData() {
                 idleCpuTime = pcCpu.RawValue,
                 memoryMb = pcMem.RawValue
             };

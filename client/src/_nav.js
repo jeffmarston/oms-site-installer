@@ -1,4 +1,4 @@
-const navTreeData = require('./nav-data.json');
+//const navTreeData = require('./nav-data.json');
 
 let items = [
   {
@@ -62,23 +62,27 @@ let items = [
   }
 ]
 
-let currentEnv = navTreeData;
-currentEnv.servers.forEach(svr => {
-  items[2].children.push({
-    name: svr.name,
-    url: '/servers/' + svr.name
+
+const envProvider = require('@/services/environmentProvider');
+
+envProvider.getNavTree().then(navTreeData => {
+  navTreeData.servers.forEach(svr => {
+    items[2].children.push({
+      name: svr.name,
+      url: '/servers/' + svr.name
+    });
   });
-});
-currentEnv.clients.forEach(cli => {
-  items[3].children.push({
-    name: cli.name,
-    url: '/clients/' + cli.name
+  navTreeData.clients.forEach(cli => {
+    items[3].children.push({
+      name: cli.name,
+      url: '/clients/' + cli.name
+    });
   });
-});
-currentEnv.database.forEach(db => {
-  items[4].children.push({
-    name: db.name,
-    url: '/database/' + db.name
+  navTreeData.database.forEach(db => {
+    items[4].children.push({
+      name: db.name,
+      url: '/database/' + db.name
+    });
   });
 });
 

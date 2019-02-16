@@ -5,10 +5,8 @@ using System.ServiceProcess;
 using System.Timers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
-using Eze.AdminConsole.Model;
-using Eze.AdminConsole.Utils;
 
-namespace Eze.AdminConsole.ServiceMgmt
+namespace Eze.AdminConsole.Services
 {
     public class ServiceInfoController : Controller
     {

@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.ServiceProcess;
-using Eze.AdminConsole.Model;
 using System.Management;
 
-namespace Eze.AdminConsole.Utils
+namespace Eze.AdminConsole.Services
 {
     public static class ServiceUtils
     {

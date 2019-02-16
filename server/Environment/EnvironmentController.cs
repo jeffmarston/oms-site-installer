@@ -12,9 +12,10 @@ namespace Eze.AdminConsole.ServiceMgmt
     {
         // GET api/values
         [HttpGet]
-        public ActionResult<IEnumerable<string>> Get()
+        public ActionResult<Topology> Get()
         {
-            return new string[] { "value1", "value2" };
+            var envTopology = new Topology();
+            return envTopology;
         }
 
         // GET api/values/5

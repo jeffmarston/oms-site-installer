@@ -1,13 +1,11 @@
-using Eze.AdminConsole.Utils;
 using System;
 using System.Collections.Generic;
 using System.ServiceProcess;
 using System.Threading;
-using Eze.AdminConsole.SignalR;
 using Microsoft.AspNetCore.SignalR;
 using Eze.AdminConsole;
 
-namespace Eze.AdminConsole.Model
+namespace Eze.AdminConsole.Services
 {
     public class ServiceWatcher
     {

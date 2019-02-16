@@ -21,115 +21,119 @@ const Icons = () => import('@/views/icons/CoreUIIcons');
 const Page404 = () => import('@/views/pages/Page404')
 const Login = () => import('@/views/pages/Login')
 
-const navTreeData = require('../nav-data.json');
+const envProvider = require('@/services/environmentProvider');
 const _ = require('lodash');
-
-function createSubRoute(items, component) {
-  return _.map(items, machine => {
-    return {
-      path: machine.name,
-      name: machine.name,
-      component: component
-    };
-  });
-}
-
-
 
 Vue.use(Router)
 
-let routes = [
-  {
-    path: '/',
-    redirect: '/dashboard',
-    name: 'home',
-    component: DefaultContainer,
-    children: [
-      {
-        path: 'dashboard',
-        name: 'dashboard',
-        component: Dashboard
-      },
-      {
-        path: 'servers',
-        name: 'servers',
-        component: {
-          render(c) { return c('router-view') }
-        },
-        children: createSubRoute(navTreeData.servers, Services)
-      },
-      {
-        path: 'clients',
-        name: 'clients',
-        component: {
-          render(c) { return c('router-view') }
-        },
-        children: createSubRoute(navTreeData.clients, ClientDetail)
-      },
-      {
-        path: 'database',
-        name: 'database',
-        component: {
-          render(c) { return c('router-view') }
-        },
-        children: createSubRoute(navTreeData.database, DatabaseDetail)
-      },
-      {
-        path: 'upgrade',
-        name: 'upgrade',
-        component: UpgradeEnvironment
-      },
-      {
-        path: 'credentials',
-        name: 'credentials',
-        component: {
-          render(c) { return c('router-view') }
-        },
-        children: [
-          {
-            path: 'users',
-            name: 'users',
-            component: Users
-          },
-          {
-            path: 'services',
-            name: 'services',
-            component: ServiceLogins
-          }
-        ]
-      },
-      {
-        path: 'icons',
-        name: 'icons',
-        component: Icons
-      }
-    ]
-  },
-  {
-    path: '/pages',
-    redirect: '/pages/404',
-    name: 'Pages',
-    component: {
-      render(c) { return c('router-view') }
-    },
-    children: [
-      {
-        path: '404',
-        name: 'Page404',
-        component: Page404
-      },
-      {
-        path: 'login',
-        name: 'Login',
-        component: Login
-      }
-    ]
-  }
-];
-
-export default new Router({
+const router = new Router({
   mode: 'hash', // https://router.vuejs.org/api/#mode
   linkActiveClass: 'open active',
   scrollBehavior: () => ({ y: 0 }),
-  routes: routes
+  routes: []
 })
+
+
+envProvider.getNavTree().then(navTreeData => {
+  
+  let createSubRoute = (items, component) => {
+    return _.map(items, machine => {
+      return {
+        path: machine.name,
+        name: machine.name,
+        component: component
+      };
+    });
+  };
+
+  router.addRoutes([
+    {
+      path: '/',
+      redirect: '/dashboard',
+      name: 'home',
+      component: DefaultContainer,
+      children: [
+        {
+          path: 'dashboard',
+          name: 'dashboard',
+          component: Dashboard
+        },
+        {
+          path: 'servers',
+          name: 'servers',
+          component: {
+            render(c) { return c('router-view') }
+          },
+          children: createSubRoute(navTreeData.servers, Services)
+        },
+        {
+          path: 'clients',
+          name: 'clients',
+          component: {
+            render(c) { return c('router-view') }
+          },
+          children: createSubRoute(navTreeData.clients, ClientDetail)
+        },
+        {
+          path: 'database',
+          name: 'database',
+          component: {
+            render(c) { return c('router-view') }
+          },
+          children: createSubRoute(navTreeData.database, DatabaseDetail)
+        },
+        {
+          path: 'upgrade',
+          name: 'upgrade',
+          component: UpgradeEnvironment
+        },
+        {
+          path: 'credentials',
+          name: 'credentials',
+          component: {
+            render(c) { return c('router-view') }
+          },
+          children: [
+            {
+              path: 'users',
+              name: 'users',
+              component: Users
+            },
+            {
+              path: 'services',
+              name: 'services',
+              component: ServiceLogins
+            }
+          ]
+        },
+        {
+          path: 'icons',
+          name: 'icons',
+          component: Icons
+        }
+      ]
+    },
+    {
+      path: '/pages',
+      redirect: '/pages/404',
+      name: 'Pages',
+      component: {
+        render(c) { return c('router-view') }
+      },
+      children: [
+        {
+          path: '404',
+          name: 'Page404',
+          component: Page404
+        },
+        {
+          path: 'login',
+          name: 'Login',
+          component: Login
+        }
+      ]
+    }
+  ]);
+});
+
+export default router;

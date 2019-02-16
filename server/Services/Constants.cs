@@ -1,5 +1,5 @@
 
-namespace Eze.AdminConsole.SignalR
+namespace Eze.AdminConsole.Services
 {
     class Constants
     {

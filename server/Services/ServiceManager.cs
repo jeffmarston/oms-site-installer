@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ServiceProcess;
 
-namespace Eze.AdminConsole.ServiceMgmt
+namespace Eze.AdminConsole.Services
 {
     public class ServiceManager
     {

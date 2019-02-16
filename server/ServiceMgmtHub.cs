@@ -3,7 +3,7 @@ using Eze.AdminConsole.ServiceMgmt;
 using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
-using Eze.AdminConsole.Utils;
+using Eze.AdminConsole.Services;
 
 namespace Eze.AdminConsole
 {

@@ -1,4 +1,4 @@
-namespace Eze.AdminConsole.Model
+namespace Eze.AdminConsole.Services
 {
     public class ServerStats
     {

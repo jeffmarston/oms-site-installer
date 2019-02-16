@@ -1,8 +1,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Eze.AdminConsole.Model;
-using Eze.AdminConsole.Utils;
 using Microsoft.Extensions.FileProviders;
 using System.IO;
 using System.Diagnostics;

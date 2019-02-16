@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System;
 
-namespace Eze.AdminConsole.Model
+namespace Eze.AdminConsole.Services
 {
     public class Service
     {

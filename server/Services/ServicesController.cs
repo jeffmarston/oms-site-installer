@@ -2,10 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Eze.AdminConsole.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 
-namespace Eze.AdminConsole.Services
+namespace Eze.AdminConsole.Environment
 {
     [Route("api/services")]
     [ApiController]

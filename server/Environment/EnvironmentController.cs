@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Eze.AdminConsole.Services
+namespace Eze.AdminConsole.Environment
 {
     [Route("api/[controller]")]
     [ApiController]

@@ -1,4 +1,4 @@
-namespace Eze.AdminConsole.Services
+namespace Eze.AdminConsole.Environment
 {
     public class Topology
     {
@@ -8,9 +8,9 @@ namespace Eze.AdminConsole.Services
         public Topology()
         {
             servers = new MachineSpec[] { 
-                new MachineSpec("eze-app01"),
-                new MachineSpec("eze-app02"),
-                new MachineSpec("eze-app03"),
+                // new MachineSpec("eze-app01"),
+                // new MachineSpec("eze-app02"),
+                // new MachineSpec("eze-app03"),
                 new MachineSpec("localhost")
             };
             clients = new MachineSpec[] { 

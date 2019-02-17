@@ -7,7 +7,7 @@
         <b-card :no-body="true">
           <b-card-body class="p-3 clearfix">
             <i class="fa fa-cogs bg-info p-3 font-2xl mr-3 float-left"></i>
-            <div class="h5 text-info mb-0 mt-2">15%</div>
+            <div class="h5 text-info mb-0 mt-2">{{ serverStats.cpu }} %</div>
             <div class="text-muted text-uppercase font-weight-bold font-xs">CPU</div>
           </b-card-body>
         </b-card>
@@ -16,7 +16,7 @@
         <b-card :no-body="true">
           <b-card-body class="p-3 clearfix">
             <i class="fa fa-laptop bg-danger p-3 font-2xl mr-3 float-left"></i>
-            <div class="h5 text-danger mb-0 mt-2">13,770 MB</div>
+            <div class="h5 text-danger mb-0 mt-2">{{ serverStats.memory }} MB</div>
             <div class="text-muted text-uppercase font-weight-bold font-xs">Memory</div>
           </b-card-body>
         </b-card>
@@ -155,14 +155,15 @@ export default {
       this.subscribeToServiceChange();
     },
     subscribeToServiceChange() {
-      //signalrHub.subscribe("abcd", "1234");
+
+      conn.on("machine", (machineName, machineData) => {
+        console.log(`machine: ${machineName}`);
+        this.serverStats.cpu = machineData.cpuPercent;
+        this.serverStats.memory = machineData.memoryMb.toLocaleString("en-US");
+      });
+
       conn.on("service", (machineName, svcName, svcData) => {
         console.log(`service: ${machineName}, ${svcName}`);
-        // if (cmd == "machine") {
-        //   vm.serverStats.cpu = svc.cpuPercent;
-        //   vm.serverStats.memory = svc.memoryMb.toLocaleString("en-US");
-        // }
-
         if (machineName === this.$route.params.name) {
           this.gridApi.forEachNodeAfterFilter(row => {
             if (row.data.name === svcName) {

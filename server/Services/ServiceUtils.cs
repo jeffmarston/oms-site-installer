@@ -56,17 +56,6 @@ namespace Eze.AdminConsole.Services
             return (svcContollers.Count() == 0) ? null : GetServiceDetails(svcContollers[0]);
         }
 
-        public static MachineData GetSystemInfo()
-        {
-            var pcMem = new PerformanceCounter("Memory", "Available MBytes");
-            var pcCpu = new PerformanceCounter("Processor", "% Idle Time", "_Total");
-            return new MachineData()
-            {
-                idleCpuTime = pcCpu.RawValue,
-                memoryMb = pcMem.RawValue
-            };
-        }
-
         public static List<Service> GetAllEzeServices(string machineName)
         {
             var svcContollers = ServiceController.GetServices(machineName).Where(o => o.ServiceName.StartsWith("A"));

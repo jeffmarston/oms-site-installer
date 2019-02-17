@@ -4,8 +4,10 @@ using System.ServiceProcess;
 using System.Threading;
 using Microsoft.AspNetCore.SignalR;
 using Eze.AdminConsole.Machines;
+using System.Diagnostics;
+using Eze.AdminConsole.Services;
 
-namespace Eze.AdminConsole.Services
+namespace Eze.AdminConsole.Environment
 {
     public class ServiceWatcher
     {
@@ -30,20 +32,11 @@ namespace Eze.AdminConsole.Services
         private ServiceWatcher(string machineName, List<Service> servicesToMonitor)
         {
             _lastServiceStates[machineName] = servicesToMonitor;
-            _pollingTimer = new Timer(DoPoll, null, 0, TimerIntervalMs);
+            //_pollingTimer = new Timer(DoPoll, null, 0, TimerIntervalMs);
         }
 
         private void DoPoll(object state)
         {
-            Console.WriteLine(".");
-            var newSvrStats = ServiceUtils.GetSystemInfo();
-            newSvrStats.cpuPercent = 100 - (newSvrStats.idleCpuTime - _lastMachineData.idleCpuTime) / (TimeSpan.TicksPerMillisecond * 10); // only works with 1 second interval;
-            _lastMachineData = newSvrStats;
-            if (newSvrStats.cpuPercent >= 0 && newSvrStats.cpuPercent <= 100)
-            {
-                _signalrClients.All.SendAsync("Response", "MachineData", newSvrStats);
-            }
-
             foreach (var key in _lastServiceStates.Keys)
             {
                 foreach (var prevState in _lastServiceStates[key])
@@ -53,7 +46,6 @@ namespace Eze.AdminConsole.Services
 
                     if (newState.pid > 0)
                     {
-                        newSvrStats.cpuPercent = 100 - (newSvrStats.idleCpuTime - _lastMachineData.idleCpuTime) / (TimeSpan.TicksPerMillisecond * 10); // only works with 1 second interval;
                         if (prevState.cpuTimeSpan != newState.cpuTimeSpan)
                         {
                             newState.cpu = (newState.cpuTimeSpan.Ticks - prevState.cpuTimeSpan.Ticks) / (TimeSpan.TicksPerMillisecond * 10);
@@ -76,6 +68,7 @@ namespace Eze.AdminConsole.Services
                 }
             }
         }
+
         private void PublishServiceChange(string machineName, string svcName, Service svcInfo)
         {
             _signalrClients.All.SendAsync("service", machineName, svcName, svcInfo);

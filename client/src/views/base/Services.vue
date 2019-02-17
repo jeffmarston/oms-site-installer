@@ -1,7 +1,28 @@
 <template>
   <div class="animated fadeIn">
-    <h4>CPU {{ serverStats.cpu }} %</h4>
-    <h4>Memory {{ serverStats.memory }} MB</h4>
+    <!-- <h4>CPU {{ serverStats.cpu }} %</h4>
+    <h4>Memory {{ serverStats.memory }} MB</h4>-->
+    <b-row>
+      <b-col cols="12" sm="6" lg="3">
+        <b-card :no-body="true">
+          <b-card-body class="p-3 clearfix">
+            <i class="fa fa-cogs bg-info p-3 font-2xl mr-3 float-left"></i>
+            <div class="h5 text-info mb-0 mt-2">15%</div>
+            <div class="text-muted text-uppercase font-weight-bold font-xs">CPU</div>
+          </b-card-body>
+        </b-card>
+      </b-col>
+      <b-col cols="12" sm="6" lg="3">
+        <b-card :no-body="true">
+          <b-card-body class="p-3 clearfix">
+            <i class="fa fa-laptop bg-danger p-3 font-2xl mr-3 float-left"></i>
+            <div class="h5 text-danger mb-0 mt-2">13,770 MB</div>
+            <div class="text-muted text-uppercase font-weight-bold font-xs">Memory</div>
+          </b-card-body>
+        </b-card>
+      </b-col>
+    </b-row>
+
     <b-row>
       <b-col sm="12">
         <div>
@@ -41,7 +62,7 @@ const env = require("../../environment.config.json");
 
 let signalrHub = null;
 let onReady = function() {
-  signalrHub.getServices();
+  signalrHub.subscribe("111", "222");
 };
 
 import SignalrHub from "../../services/SignalrHub";
@@ -52,6 +73,7 @@ let todaysDate =
   today.getMonth() + 1 + "/" + today.getDate() + "/" + today.getFullYear();
 
 import { AgGridVue } from "ag-grid-vue";
+import Router from "vue-router";
 
 export default {
   name: "services",
@@ -63,7 +85,8 @@ export default {
       selectedRow: null,
       gridOptions: null,
       rowClassRules: null,
-      serverStats: { cpu: 0, memory: 0 }
+      serverStats: { cpu: 0, memory: 0 },
+      routeName: null
     };
   },
   beforeMount() {
@@ -129,27 +152,29 @@ export default {
       this.gridApi = params.api;
       this.columnApi = params.columnApi;
       this.populateGrid();
-      this.subscribeToServiceChange(this.gridApi, this.serverStats);
+      this.subscribeToServiceChange();
     },
-    subscribeToServiceChange(gridApi, serverStats) {
-      conn.on("Response", function(cmd, svc) {
-        if (cmd == "serverStats") {
-          serverStats.cpu = svc.cpuPercent;
-          serverStats.memory = svc.memoryMb.toLocaleString("en-US");
-        }
+    subscribeToServiceChange() {
+      //signalrHub.subscribe("abcd", "1234");
+      conn.on("service", (machineName, svcName, svcData) => {
+        console.log(`service: ${machineName}, ${svcName}`);
+        // if (cmd == "machine") {
+        //   vm.serverStats.cpu = svc.cpuPercent;
+        //   vm.serverStats.memory = svc.memoryMb.toLocaleString("en-US");
+        // }
 
-        if (cmd == "ServiceChanged") {
-          gridApi.forEachNodeAfterFilter(row => {
-            if (row.data.name === svc.name) {
-              row.data = svc;
-              gridApi.redrawRows(row);
+        if (machineName === this.$route.params.name) {
+          this.gridApi.forEachNodeAfterFilter(row => {
+            if (row.data.name === svcName) {
+              row.data = svcData;
+              this.gridApi.redrawRows(row);
             }
           });
         }
       });
     },
     populateGrid() {
-      fetch(env.serverAddress + "/serviceInfo/services", {
+      fetch(env.serverAddress + "/api/services/" + this.$route.params.name, {
         mode: "cors"
       }).then(response => {
         if (response.status !== 200) {
@@ -182,26 +207,40 @@ export default {
       return data.name;
     },
     startSvc() {
-      fetch(env.serverAddress + "/serviceInfo/startService", {
-        method: "POST",
-        mode: "cors",
-        cache: "no-cache",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(this.selectedRow)
-      }).then(response => response.json());
+      fetch(
+        env.serverAddress +
+          "/api/services/" +
+          this.$route.params.name +
+          "/start/" +
+          this.selectedRow.name,
+        {
+          method: "POST",
+          mode: "cors",
+          cache: "no-cache",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(this.selectedRow)
+        }
+      ).then(response => response.json());
     },
     stopSvc() {
-      fetch(env.serverAddress + "/serviceInfo/stopService", {
-        method: "POST",
-        mode: "cors",
-        cache: "no-cache",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(this.selectedRow)
-      }).then(response => response.json());
+      fetch(
+        env.serverAddress +
+          "/api/services/" +
+          this.$route.params.name +
+          "/stop/" +
+          this.selectedRow.name,
+        {
+          method: "POST",
+          mode: "cors",
+          cache: "no-cache",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(this.selectedRow)
+        }
+      ).then(response => response.json());
     }
   }
 };

@@ -8,7 +8,7 @@ namespace Eze.AdminConsole.Services
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TemplateController : ControllerBase
+    public class MachinesController : ControllerBase
     {
         // GET api/values
         [HttpGet]

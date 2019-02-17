@@ -12,6 +12,7 @@ namespace Eze.AdminConsole.Services
         public string instance { get; set; }
         public string exe { get; set; }
         public int pid { get; set; }
+        public long cpu { get; set; }
         public DateTime startTime { get; internal set; }
         
         public TimeSpan cpuTimeSpan { get; internal set; }

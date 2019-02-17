@@ -17,8 +17,8 @@ export default class SignalrHub {
 
   connection = connection;
 
-  send(cmd, servicename) {
-    connection.invoke("Request", cmd, servicename).catch(err => console.error(err));
+  subscribe(cmd, servicename) {
+    connection.invoke("subscribe", cmd, servicename).catch(err => console.error(err));
   }
 
   getServices() {

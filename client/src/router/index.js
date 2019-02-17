@@ -35,17 +35,6 @@ const router = new Router({
 
 
 envProvider.getNavTree().then(navTreeData => {
-  
-  let createSubRoute = (items, component) => {
-    return _.map(items, machine => {
-      return {
-        path: machine.name,
-        name: machine.name,
-        component: component
-      };
-    });
-  };
-
   router.addRoutes([
     {
       path: '/',
@@ -59,48 +48,39 @@ envProvider.getNavTree().then(navTreeData => {
           component: Dashboard
         },
         {
-          path: 'servers',
+          path: '/servers/:name',
           name: 'servers',
-          component: {
-            render(c) { return c('router-view') }
-          },
-          children: createSubRoute(navTreeData.servers, Services)
+          component: Services
         },
         {
-          path: 'clients',
+          path: '/clients/:name',
           name: 'clients',
-          component: {
-            render(c) { return c('router-view') }
-          },
-          children: createSubRoute(navTreeData.clients, ClientDetail)
+          component: ClientDetail
         },
         {
-          path: 'database',
+          path: '/database/:name',
           name: 'database',
-          component: {
-            render(c) { return c('router-view') }
-          },
-          children: createSubRoute(navTreeData.database, DatabaseDetail)
+          component: DatabaseDetail
         },
         {
-          path: 'upgrade',
+          path: '/upgrade',
           name: 'upgrade',
           component: UpgradeEnvironment
         },
         {
-          path: 'credentials',
+          path: '/credentials',
           name: 'credentials',
           component: {
             render(c) { return c('router-view') }
           },
           children: [
             {
-              path: 'users',
+              path: '/users',
               name: 'users',
               component: Users
             },
             {
-              path: 'services',
+              path: '/services',
               name: 'services',
               component: ServiceLogins
             }

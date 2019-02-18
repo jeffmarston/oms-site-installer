@@ -10,8 +10,8 @@ namespace Eze.AdminConsole.Environment
             servers = new MachineSpec[] { 
                 // new MachineSpec("eze-app01"),
                 // new MachineSpec("eze-app02"),
-                // new MachineSpec("eze-app03"),
-                new MachineSpec("localhost")
+                new MachineSpec("aedttlhq00app01"),
+                new MachineSpec("marston9020b")
             };
             clients = new MachineSpec[] { 
                 new MachineSpec("venom.qalab.net"),

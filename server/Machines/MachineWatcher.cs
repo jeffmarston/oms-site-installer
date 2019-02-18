@@ -43,7 +43,7 @@ namespace Eze.AdminConsole.Machines
             } catch (Exception e ) {
                 Console.WriteLine(e);
             }
-            pollingTimer = new Timer(DoPoll, null, 0, TimerIntervalMs);
+           // pollingTimer = new Timer(DoPoll, null, 0, TimerIntervalMs);
         }
 
         private MachineData GetNextPerfCounters(string machineName)

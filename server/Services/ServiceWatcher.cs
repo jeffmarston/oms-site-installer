@@ -14,7 +14,6 @@ namespace Eze.AdminConsole.Environment
         private Dictionary<string, List<Service>> _lastServiceStates = new Dictionary<string, List<Service>>();
         private MachineData _lastMachineData = new MachineData();
         private static Timer _pollingTimer = null;
-        //private static IHubContext<ServiceMgmtHub> _context;
         private static IHubCallerClients _signalrClients;
 
         public static void Init(IHubCallerClients clients, string machineName, List<Service> services)
@@ -32,7 +31,7 @@ namespace Eze.AdminConsole.Environment
         private ServiceWatcher(string machineName, List<Service> servicesToMonitor)
         {
             _lastServiceStates[machineName] = servicesToMonitor;
-            //_pollingTimer = new Timer(DoPoll, null, 0, TimerIntervalMs);
+            _pollingTimer = new Timer(DoPoll, null, 0, TimerIntervalMs);
         }
 
         private void DoPoll(object state)

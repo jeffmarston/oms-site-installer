@@ -30,23 +30,28 @@ namespace Eze.AdminConsole.Services
 
         public static Service GetServiceDetails(ServiceController svcTemp)
         {
-            ManagementObject service = new ManagementObject(@"Win32_service.Name='" + svcTemp.ServiceName + "'");
-            object o = service.GetPropertyValue("ProcessId");
-            int processId = (int)((UInt32)o);
-            Process process = Process.GetProcessById(processId);
+            // ManagementScope scope = new ManagementScope("\\\\aedttlhq00app01\\root\\cimv2");
+            // scope.Connect();
+            // ObjectQuery query = new ObjectQuery("SELECT * FROM Win32_OperatingSystem");
+            // ManagementObjectSearcher searcher = new ManagementObjectSearcher(scope, query);
+
+            // ManagementObject service = new ManagementObject(@"\Win32_service.Name='" + svcTemp.ServiceName + "'");
+            // object o = service.GetPropertyValue("ProcessId");
+            // int processId = (int)((UInt32)o);
+            // Process process = Process.GetProcessById(processId);
 
             var svc = new Service()
             {
                 name = svcTemp.ServiceName,
                 status = svcTemp.Status.ToString()
             };
-            if (processId > 0)
-            {
-                svc.pid = processId;
-                svc.startTime = process.StartTime;
-                svc.cpuTimeSpan = process.TotalProcessorTime;
-                svc.memory = process.PrivateMemorySize64;
-            }
+            // if (processId > 0)
+            // {
+            //     svc.pid = processId;
+            //     svc.startTime = process.StartTime;
+            //     svc.cpuTimeSpan = process.TotalProcessorTime;
+            //     svc.memory = process.PrivateMemorySize64;
+            // }
             return svc;
         }
 

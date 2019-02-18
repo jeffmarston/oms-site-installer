@@ -75,12 +75,12 @@ envProvider.getNavTree().then(navTreeData => {
           },
           children: [
             {
-              path: '/users',
+              path: 'users',
               name: 'users',
               component: Users
             },
             {
-              path: '/services',
+              path: 'services',
               name: 'services',
               component: ServiceLogins
             }

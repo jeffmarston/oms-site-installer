@@ -14,7 +14,7 @@ const ClientDetail = () => import('@/views/base/ClientDetail')
 const DatabaseDetail = () => import('@/views/base/DatabaseDetail')
 const Users = () => import('@/views/users/Users')
 const ServiceLogins = () => import('@/views/users/ServiceLogins')
-
+const Settings = () => import('@/views/base/Settings')
 const Icons = () => import('@/views/icons/CoreUIIcons');
 
 // Views - Pages
@@ -90,6 +90,11 @@ envProvider.getNavTree().then(navTreeData => {
           path: 'icons',
           name: 'icons',
           component: Icons
+        },
+        {
+          path: 'settings',
+          name: 'settings',
+          component: Settings
         }
       ]
     },

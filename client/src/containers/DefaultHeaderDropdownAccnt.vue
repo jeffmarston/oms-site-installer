@@ -10,7 +10,7 @@
         <strong>Settings</strong>
       </b-dropdown-header>
       <b-dropdown-item><i class="icon-user" /> Permissions</b-dropdown-item>
-      <b-dropdown-item><i class="icon-settings" /> Settings</b-dropdown-item>
+      <b-dropdown-item><router-link to="/settings"><i class="icon-settings" /> Settings</router-link></b-dropdown-item>
       <b-dropdown-item><i class="icon-note" /> Audit Trail</b-dropdown-item>
       <b-dropdown-divider />
       <b-dropdown-item><i class="icon-lock" /> Logout</b-dropdown-item>

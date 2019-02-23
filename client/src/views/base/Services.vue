@@ -26,10 +26,10 @@
     <b-row>
       <b-col sm="12">
         <div>
-          <b-button :disabled="isButtonEnabled(selectedRow, 'start')" @click="startSvc()">Start</b-button>&nbsp;
-          <b-button :disabled="isButtonEnabled(selectedRow, 'stop')" @click="stopSvc()">Stop</b-button>&nbsp;
+          <b-button :disabled="disableButton(selectedRow, 'start')" @click="startSvc()">Start</b-button>&nbsp;
+          <b-button :disabled="disableButton(selectedRow, 'stop')" @click="stopSvc()">Stop</b-button>&nbsp;
           <a href="./analytics.log" download>
-            <b-button :disabled="isButtonEnabled(selectedRow, 'logs')">Logs</b-button>
+            <b-button :disabled="disableButton(selectedRow, 'logs')">Logs</b-button>
           </a>&nbsp;
           <!-- <b-button @click="sendMsg(selectedRow.service)">Send</b-button>&nbsp; -->
         </div>
@@ -40,7 +40,7 @@
           :columnDefs="columnDefs"
           :rowData="rowData"
           :gridOptions="gridOptions"
-          rowSelection="single"
+          rowSelection="multiple"
           suppressCellSelection
           animate-rows
           @grid-ready="onGridReady"
@@ -62,7 +62,12 @@ const env = require("../../environment.config.json");
 
 let signalrHub = null;
 let onReady = function() {
-  signalrHub.subscribe("111", "222");
+  try {
+    signalrHub.subscribe("localhost", "");
+  } catch (e) {
+    console.error("Failed to subscribe to SignalR updates: ");
+    console.error(e);
+  }
 };
 
 import SignalrHub from "../../services/SignalrHub";
@@ -75,6 +80,19 @@ let todaysDate =
 import { AgGridVue } from "ag-grid-vue";
 import Router from "vue-router";
 
+function actionCellRendererFunc(params) {
+  if (params.data.status === "Stopped") {
+    return `<a class="icon-hover-hightlight"><i style="display: inline" class="icon-control-play icons"></i></a>`;
+  }
+  if (params.data.status === "Running") {
+    return `<i style="display: inline" class="icon-control-pause"></i>`;
+  }
+}
+
+function logCellRendererFunc(params) {
+  console.log();
+  return `<i style="display: inline" class="icon-paper-clip"></i>`;
+}
 export default {
   name: "services",
   components: { AgGridVue },
@@ -100,12 +118,25 @@ export default {
         cellStyle: function(params) {
           return params.data.status == "Stopped"
             ? { color: "white", backgroundColor: "#f64846" }
-            : params.data.status == "Starting"
+            : params.data.status == "StartPending" ||
+              params.data.status == "StopPending"
             ? { color: "black", backgroundColor: "#ffc107" }
             : params.data.status == "Running"
             ? { color: "white", backgroundColor: "#4dbd74" }
             : null;
         }
+      },
+      {
+        headerName: "Action",
+        pinned: true,
+        width: 40,
+        cellRenderer: actionCellRendererFunc
+      },
+      {
+        headerName: "Logs",
+        pinned: true,
+        width: 34,
+        cellRenderer: logCellRendererFunc
       },
       {
         headerName: "Name",
@@ -151,11 +182,12 @@ export default {
     onGridReady(params) {
       this.gridApi = params.api;
       this.columnApi = params.columnApi;
+      this.gridOptions.onRowDoubleClicked = this.onDoubleClick;
+
       this.populateGrid();
       this.subscribeToServiceChange();
     },
     subscribeToServiceChange() {
-
       conn.on("machine", (machineName, machineData) => {
         console.log(`machine: ${machineName}`);
         this.serverStats.cpu = machineData.cpuPercent;
@@ -163,15 +195,14 @@ export default {
       });
 
       conn.on("service", (machineName, svcName, svcData) => {
-        console.log(`service: ${machineName}, ${svcName}`);
-        if (machineName === this.$route.params.name) {
-          this.gridApi.forEachNodeAfterFilter(row => {
-            if (row.data.name === svcName) {
-              row.data = svcData;
-              this.gridApi.redrawRows(row);
-            }
-          });
-        }
+        //if (machineName === this.$route.params.name) {
+        this.gridApi.forEachNodeAfterFilter(row => {
+          if (row.data.name === svcName) {
+            row.data = svcData;
+            this.gridApi.redrawRows(row);
+          }
+        });
+        //}
       });
     },
     populateGrid() {
@@ -191,18 +222,25 @@ export default {
         });
       });
     },
-    isButtonEnabled(row, buttonType) {
+    disableButton(row, buttonType) {
       if (!row) return true;
       if (buttonType === "start") {
         return row.status === "Running";
       } else if (buttonType === "stop") {
         return row.status !== "Running";
       } else if (buttonType === "logs") {
-        return true;
+        return false;
       }
     },
     onRowSelected() {
       this.selectedRow = this.gridApi.getSelectedRows()[0];
+    },
+    onDoubleClick() {
+      if (this.selectedRow.status === "Running") {
+        this.stopSvc();
+      } else {
+        this.startSvc();
+      }
     },
     getRowNodeId(data) {
       return data.name;
@@ -223,7 +261,7 @@ export default {
           },
           body: JSON.stringify(this.selectedRow)
         }
-      ).then(response => response.json());
+      );
     },
     stopSvc() {
       fetch(
@@ -241,7 +279,7 @@ export default {
           },
           body: JSON.stringify(this.selectedRow)
         }
-      ).then(response => response.json());
+      );
     }
   }
 };

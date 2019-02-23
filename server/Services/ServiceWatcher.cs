@@ -43,17 +43,6 @@ namespace Eze.AdminConsole.Environment
                     bool dirty = false;
                     var newState = ServiceUtils.GetServiceDetails(new ServiceController(prevState.name));
 
-                    if (newState.pid > 0)
-                    {
-                        if (prevState.cpuTimeSpan != newState.cpuTimeSpan)
-                        {
-                            newState.cpu = (newState.cpuTimeSpan.Ticks - prevState.cpuTimeSpan.Ticks) / (TimeSpan.TicksPerMillisecond * 10);
-                            prevState.cpuTimeSpan = newState.cpuTimeSpan;
-                            dirty = true;
-                        }
-
-                    }
-
                     if (prevState != null && prevState.status != newState.status)
                     {
                         prevState.status = newState.status;

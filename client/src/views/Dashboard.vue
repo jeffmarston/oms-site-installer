@@ -1,31 +1,54 @@
 <template>
   <div class="animated fadeIn">
-    <b-row>
-      <b-col sm="4" lg="2">
-        <b-card no-body class="bg-primary" @click="$router.push('prod')">
-          <b-card-body class="pb-0">
-            <h4 class="mb-0">Prod</h4>
-            <p>SR10 P18.4</p>
-          </b-card-body>
-        </b-card>
-      </b-col>
-      <b-col sm="4" lg="2">
-        <b-card no-body class="bg-warning" @click="$router.push('uat')">
-          <b-card-body class="pb-0">
-            <h4 class="mb-0">UAT</h4>
-            <p>2018.3</p>
-          </b-card-body>
-        </b-card>
-      </b-col>
-      <b-col sm="4" lg="2">
-        <b-card no-body class="bg-danger" @click="$router.push('dev')">
-          <b-card-body class="pb-0">
-            <h4 class="mb-0">Dev Test</h4>
-            <p>2018.3</p>
-          </b-card-body>
-        </b-card>
-      </b-col>
-    </b-row>
+
+    <b-card>
+      <b-row>
+        <b-col sm="5">
+          <h4 id="traffic" class="card-title mb-0">FIX Traffic</h4>
+          <div class="small text-muted">Feb 20, 2019</div>
+        </b-col>
+        <b-col sm="7" class="d-none d-md-block">
+          <b-button type="button" variant="primary" class="float-right"><i class="icon-cloud-download"></i></b-button>
+          <b-button-toolbar class="float-right" aria-label="Toolbar with buttons group">
+            <b-form-radio-group class="mr-3" id="radiosBtn" buttons button-variant="outline-secondary" v-model="selected" name="radiosBtn">
+              <b-form-radio class="mx-0" value="Day">Day</b-form-radio>
+              <b-form-radio class="mx-0" value="Month">Month</b-form-radio>
+              <b-form-radio class="mx-0" value="Year">Year</b-form-radio>
+            </b-form-radio-group>
+          </b-button-toolbar>
+        </b-col>
+      </b-row>
+      <main-chart-example chartId="main-chart-01" class="chart-wrapper" style="height:300px;margin-top:40px;" height="300"></main-chart-example>
+      <div slot="footer">
+        <b-row class="text-center">
+          <b-col class="mb-sm-2 mb-0">
+            <div class="text-muted">Visits</div>
+            <strong>29.703 Users (40%)</strong>
+            <b-progress height={} class="progress-xs mt-2" :precision="1" variant="success" :value="40"></b-progress>
+          </b-col>
+          <b-col class="mb-sm-2 mb-0 d-md-down-none">
+            <div class="text-muted">Unique</div>
+            <strong>24.093 Users (20%)</strong>
+            <b-progress height={} class="progress-xs mt-2" :precision="1" variant="info" :value="20"></b-progress>
+          </b-col>
+          <b-col class="mb-sm-2 mb-0">
+            <div class="text-muted">Pageviews</div>
+            <strong>78.706 Views (60%)</strong>
+            <b-progress height={} class="progress-xs mt-2" :precision="1" variant="warning" :value="60"></b-progress>
+          </b-col>
+          <b-col class="mb-sm-2 mb-0">
+            <div class="text-muted">New Users</div>
+            <strong>22.123 Users (80%)</strong>
+            <b-progress height={} class="progress-xs mt-2" :precision="1" variant="danger" :value="80"></b-progress>
+          </b-col>
+          <b-col class="mb-sm-2 mb-0 d-md-down-none">
+            <div class="text-muted">Bounce Rate</div>
+            <strong>Average Rate (40.15%)</strong>
+            <b-progress height={} class="progress-xs mt-2" :precision="1" :value="40"></b-progress>
+          </b-col>
+        </b-row>
+      </div>
+    </b-card>
 
     <b-row>
       <b-col md="12">

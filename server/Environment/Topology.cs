@@ -8,9 +8,9 @@ namespace Eze.AdminConsole.Environment
         public Topology()
         {
             servers = new MachineSpec[] { 
-                // new MachineSpec("eze-app01"),
-                // new MachineSpec("eze-app02"),
-                new MachineSpec("aedttlhq00app01"),
+                new MachineSpec("aesdrrzq00db01"),
+                new MachineSpec("aesdrrzq00app01"),
+                new MachineSpec("aefhrwjf00app01"),
                 new MachineSpec("marston9020b")
             };
             clients = new MachineSpec[] { 

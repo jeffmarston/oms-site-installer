@@ -26,11 +26,12 @@ namespace Eze.AdminConsole
 
         public async Task Subscribe(string command, string serviceName)
         {
-            var svcs = ServiceUtils.GetAllEzeServices("localhost");            
-            ServiceWatcher.Init(Clients, "localhost", svcs);
-            MachineWatcher.Init(Clients, new Topology());
+            var machineName = "localhost";
+            var svcs = ServiceUtils.GetAllEzeServices(machineName);            
+            ServiceWatcher.Init(Clients, machineName, svcs);
+            // MachineWatcher.Init(Clients, new Topology());
             
-            await Clients.All.SendAsync("subscribed", command, serviceName);
+            await Clients.All.SendAsync("subscribed", machineName);
         }
     }
 }

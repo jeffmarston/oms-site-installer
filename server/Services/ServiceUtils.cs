@@ -30,28 +30,11 @@ namespace Eze.AdminConsole.Services
 
         public static Service GetServiceDetails(ServiceController svcTemp)
         {
-            // ManagementScope scope = new ManagementScope("\\\\aedttlhq00app01\\root\\cimv2");
-            // scope.Connect();
-            // ObjectQuery query = new ObjectQuery("SELECT * FROM Win32_OperatingSystem");
-            // ManagementObjectSearcher searcher = new ManagementObjectSearcher(scope, query);
-
-            // ManagementObject service = new ManagementObject(@"\Win32_service.Name='" + svcTemp.ServiceName + "'");
-            // object o = service.GetPropertyValue("ProcessId");
-            // int processId = (int)((UInt32)o);
-            // Process process = Process.GetProcessById(processId);
-
             var svc = new Service()
             {
                 name = svcTemp.ServiceName,
                 status = svcTemp.Status.ToString()
             };
-            // if (processId > 0)
-            // {
-            //     svc.pid = processId;
-            //     svc.startTime = process.StartTime;
-            //     svc.cpuTimeSpan = process.TotalProcessorTime;
-            //     svc.memory = process.PrivateMemorySize64;
-            // }
             return svc;
         }
 
@@ -63,13 +46,45 @@ namespace Eze.AdminConsole.Services
 
         public static List<Service> GetAllEzeServices(string machineName)
         {
-            var svcContollers = ServiceController.GetServices(machineName).Where(o => o.ServiceName.StartsWith("A"));
-            var services = new List<Service>();
-            foreach (var scTemp in svcContollers)
+            try
             {
-                services.Add(GetServiceDetails(scTemp));
+                // ConnectionOptions op = new ConnectionOptions();
+                // op.Username = "qalab\\analyst";
+                // op.Password = "Boston09";
+                // ManagementScope scope = new ManagementScope(@"\\" + machineName + @".qalab.net\root\cimv2", op);
+                // scope.Connect();
+                // ManagementPath path = new ManagementPath("Win32_Service");
+                // ManagementClass services;
+                // services = new ManagementClass(scope, path, null);
+
+                // var serviceData = new List<Service>();
+                // foreach (ManagementObject service in services.GetInstances())
+                // {
+                //     var svcName = service.GetPropertyValue("Name").ToString();
+                //     if (svcName.StartsWith("E")) {
+                //         serviceData.Add(new Service() {
+                //             name = svcName,
+                //             status = service.GetPropertyValue("State").ToString(),
+                //             pid = Int32.Parse(service.GetPropertyValue("ProcessId").ToString()),
+                //             path = service.GetPropertyValue("PathName").ToString()
+                //         });
+                //     }
+                // }
+                var svcContollers = ServiceController.GetServices();
+                var ezeSvcs = svcContollers.Where(o => o.ServiceName.StartsWith("E"));
+
+                var serviceData = new List<Service>();
+                foreach (var scTemp in ezeSvcs)
+                {
+                    serviceData.Add(GetServiceDetails(scTemp));
+                }
+                return serviceData;
             }
-            return services;
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return new List<Service>();
+            }
         }
     }
 }

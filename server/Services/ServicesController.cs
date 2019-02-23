@@ -30,7 +30,6 @@ namespace Eze.AdminConsole.Environment
                     throw new Exception("Server not configured: " + machineName);
                 }
                 var svcs = ServiceUtils.GetAllEzeServices(machineName);
-                // ServiceWatcher.Init(_context, machineName, svcs);
                 return svcs.ToArray();
             }
             catch (Exception)

@@ -26,7 +26,7 @@ namespace Eze.AdminConsole
 
         public async Task Subscribe(string command, string serviceName)
         {
-            var machineName = "localhost";
+            var machineName = "marston9020b";
             var svcs = ServiceUtils.GetAllEzeServices(machineName);            
             ServiceWatcher.Init(Clients, machineName, svcs);
             // MachineWatcher.Init(Clients, new Topology());

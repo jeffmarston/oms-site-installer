@@ -71,7 +71,7 @@ namespace Eze.AdminConsole.Services
                 //     }
                 // }
                 var svcContollers = ServiceController.GetServices();
-                var ezeSvcs = svcContollers.Where(o => o.ServiceName.StartsWith("E"));
+                var ezeSvcs = svcContollers.Where(o => o.ServiceName.StartsWith("M"));
 
                 var serviceData = new List<Service>();
                 foreach (var scTemp in ezeSvcs)

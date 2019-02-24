@@ -35,7 +35,6 @@
         </div>
 
         <ag-grid-vue
-          style
           class="ag-theme-balham"
           :columnDefs="columnDefs"
           :rowData="rowData"

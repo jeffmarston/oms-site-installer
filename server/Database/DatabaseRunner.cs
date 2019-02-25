@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Dynamic;
 
@@ -10,10 +11,10 @@ namespace Eze.AdminConsole.Database
             return "Data Source=marston9020b.ezesoft.net;Initial Catalog=TC;"
                 + "User Id=sa;Password=ezetc;";
         }
-        public string RunDiagnostics()
+        public List<dynamic> RunDiagnostics()
         {
             string queryString = "exec sp_Blitz";
-            string sqlResult = "";
+            var sqlResult = new List<dynamic>();
             using (SqlConnection connection = new SqlConnection(GetConnectionString()))
             {
                 SqlCommand command = new SqlCommand(queryString, connection);
@@ -25,7 +26,11 @@ namespace Eze.AdminConsole.Database
                     {
                         if (reader[3].ToString() == "TC")
                         {
-                            sqlResult += (string)reader[5] + '\n';
+                            dynamic expando = new ExpandoObject();
+                            expando.loginName = reader[3].ToString();
+                            expando.programName = "";
+                            expando.queryText = reader[5].ToString();
+                            sqlResult.Add(expando);
                         }
                     }
                 }

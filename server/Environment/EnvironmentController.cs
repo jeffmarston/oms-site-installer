@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace Eze.AdminConsole.Environment
 {
@@ -10,37 +11,35 @@ namespace Eze.AdminConsole.Environment
     [ApiController]
     public class EnvironmentController : ControllerBase
     {
-        // GET api/values
+        // GET api/environment
         [HttpGet]
         public ActionResult<Topology> Get()
         {
-            var envTopology = new Topology();
+            // var envTopology = new Topology();
+            var envTopology = Load();
             return envTopology;
         }
 
-        // GET api/values/5
-        [HttpGet("{id}")]
-        public ActionResult<string> Get(int id)
+        // PUT api/environment
+        [HttpPut()]
+        public void Put([FromBody] Topology topology)
         {
-            return "value";
+            Save(topology);
         }
 
-        // POST api/values
-        [HttpPost]
-        public void Post([FromBody] string value)
+        private Topology Load()
         {
+            string folderbase = System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData);
+            string txt = System.IO.File.ReadAllText(folderbase + @"\Eze\Admin\environment.json");
+            return JsonConvert.DeserializeObject<Topology>(txt);
         }
 
-        // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        private void Save(Topology topology)
         {
-        }
-
-        // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+            string json = JsonConvert.SerializeObject(topology);
+            
+            string folderbase = System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData);
+            System.IO.File.WriteAllText(folderbase + @"\Eze\Admin\environment.json", json);
         }
     }
 }

@@ -12,7 +12,7 @@ namespace Eze.AdminConsole.Database
     {
         // GET api/values/5
         [HttpGet("diagnostics")]
-        public ActionResult<string> Diagnostics()
+        public ActionResult<IEnumerable<dynamic>> Diagnostics()
         {
             var diag = new DatabaseRunner();
             return diag.RunDiagnostics();

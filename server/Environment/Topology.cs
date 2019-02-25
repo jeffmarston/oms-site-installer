@@ -11,17 +11,13 @@ namespace Eze.AdminConsole.Environment
         public Topology()
         {
             servers = new MachineSpec[] {
-                new MachineSpec("aesdrrzq00db01"),
-                new MachineSpec("aesdrrzq00app01"),
-                new MachineSpec("aefhrwjf00app01"),
-                new MachineSpec("marston9020b")
+                new MachineSpec("localhost")
             };
             clients = new MachineSpec[] {
-                new MachineSpec("venom.qalab.net"),
-                new MachineSpec("marston9020b")
+                new MachineSpec("localhost")
             };
             database = new MachineSpec[] {
-                new MachineSpec("eze-db")
+                new MachineSpec("localhost")
             };
         }
     }

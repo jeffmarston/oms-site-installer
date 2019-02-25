@@ -30,16 +30,22 @@ namespace Eze.AdminConsole.Environment
         private Topology Load()
         {
             string folderbase = System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData);
-            string txt = System.IO.File.ReadAllText(folderbase + @"\Eze\Admin\environment.json");
-            return JsonConvert.DeserializeObject<Topology>(txt);
+            string filePath = System.IO.Path.Combine(folderbase, "Eze", "Admin", "environment.json");
+            if (System.IO.File.Exists(filePath)) {
+                string txt = System.IO.File.ReadAllText(filePath);
+                return JsonConvert.DeserializeObject<Topology>(txt);
+            }
+            return new Topology();
         }
 
         private void Save(Topology topology)
         {
             string json = JsonConvert.SerializeObject(topology);
-            
             string folderbase = System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData);
-            System.IO.File.WriteAllText(folderbase + @"\Eze\Admin\environment.json", json);
+            string folderPath = System.IO.Path.Combine(folderbase, "Eze", "Admin");
+            // If directory doesn't exist, create it
+            System.IO.Directory.CreateDirectory(folderPath);
+            System.IO.File.WriteAllText(System.IO.Path.Combine(folderPath, "environment.json"), json);
         }
     }
 }

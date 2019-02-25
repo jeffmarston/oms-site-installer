@@ -2,7 +2,13 @@
   <b-row>
     <b-col cols="12" xl="6">
       <transition name="slide">
-        <b-card :header="caption">
+        <b-card header-tag="header" footer-tag="footer">
+          <div slot="header">
+            <strong>Service Logins</strong>
+            <div class="card-header-actions">
+              <b-button variant="primary">Rotate passwords</b-button>
+            </div>
+          </div>
           <b-table
             hover
             striped
@@ -14,15 +20,6 @@
             :per-page="perPage"
             @row-clicked="rowClicked"
           >
-            <template slot="id" slot-scope="data">
-              <strong>{{data.item.id}}</strong>
-            </template>
-            <template slot="name" slot-scope="data">
-              <strong>{{data.item.name}}</strong>
-            </template>
-            <template slot="status" slot-scope="data">
-              <b-badge :variant="getBadge(data.item.status)">{{data.item.status}}</b-badge>
-            </template>
           </b-table>
           <nav>
             <b-pagination
@@ -38,33 +35,28 @@
         </b-card>
       </transition>
     </b-col>
-    
-      <b-col v-if="selectedRow"  cols="12" xl="6">
-        <b-card>
-          <h4>{{ selectedRow.name}}</h4>
-          <b-form>
-            <b-form-group
-              label="Username"
-              label-for="horizEmail"
-              :label-cols="3"
-              :horizontal="true">
-              <b-form-input id="horizEmail" :value="selectedRow.name"></b-form-input>
-            </b-form-group>
-            <b-form-group
-              label="Password"
-              label-for="horizPass"
-              :label-cols="3"
-              :horizontal="true">
-              <b-form-input id="horizPass" type="password"></b-form-input>
-            </b-form-group>
-            <div slot="footer">
-              <b-button type="submit" size="sm" variant="primary"><i class="fa fa-dot-circle-o"></i> Submit</b-button>
-              <b-button type="reset" size="sm" variant="danger"><i class="fa fa-ban"></i> Reset</b-button>
-            </div>
-          </b-form>
-        </b-card>
-      </b-col>
 
+    <b-col v-if="selectedRow" cols="12" xl="6">
+      <b-card>
+        <h4>{{ selectedRow.name}}</h4>
+        <b-form>
+          <b-form-group label="Username" label-for="horizEmail" :label-cols="3" :horizontal="true">
+            <b-form-input id="horizEmail" :value="selectedRow.name"></b-form-input>
+          </b-form-group>
+          <b-form-group label="Password" label-for="horizPass" :label-cols="3" :horizontal="true">
+            <b-form-input id="horizPass" type="password"></b-form-input>
+          </b-form-group>
+          <div slot="footer">
+            <b-button type="submit" size="sm" variant="primary">
+              <i class="fa fa-dot-circle-o"></i> Submit
+            </b-button>
+            <b-button type="reset" size="sm" variant="danger">
+              <i class="fa fa-ban"></i> Reset
+            </b-button>
+          </div>
+        </b-form>
+      </b-card>
+    </b-col>
   </b-row>
 </template>
 
@@ -82,11 +74,7 @@ export default {
     return {
       items: usersData,
       selectedRow: null,
-      fields: [
-        { key: "name" },
-        { key: "password" },
-        { key: "role" }
-      ],
+      fields: [{ key: "name" }, { key: "password" }, { key: "role" }],
       currentPage: 1,
       perPage: 10,
       totalRows: 0

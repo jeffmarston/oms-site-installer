@@ -45,6 +45,7 @@
           @grid-ready="onGridReady"
           @row-selected="onRowSelected"
           :getRowNodeId="getRowNodeId"
+          @cell-clicked="cellClick"
         ></ag-grid-vue>
       </b-col>
 
@@ -84,13 +85,13 @@ function actionCellRendererFunc(params) {
     return `<a class="icon-hover-hightlight"><i style="display: inline" class="icon-control-play icons"></i></a>`;
   }
   if (params.data.status === "Running") {
-    return `<i style="display: inline" class="icon-control-pause"></i>`;
+    return `<a class="icon-hover-hightlight"><i style="display: inline" class="icon-control-pause"></i></a>`;
   }
 }
 
 function logCellRendererFunc(params) {
   console.log();
-  return `<i style="display: inline" class="icon-paper-clip"></i>`;
+  return `<a class="icon-hover-hightlight"><i style="display: inline" class="icon-paper-clip"></i></a>`;
 }
 export default {
   name: "services",
@@ -178,6 +179,9 @@ export default {
     this.gridOptions = {};
   },
   methods: {
+    cellClick(event) {
+      console.log(event);
+    },
     onGridReady(params) {
       this.gridApi = params.api;
       this.columnApi = params.columnApi;

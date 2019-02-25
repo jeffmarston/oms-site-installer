@@ -1,6 +1,12 @@
 <template>
   <div class="animated fadeIn">
     <b-row>
+      <ul>
+        <li>For Support: High level flags for bad configuration, performance problems, detected deadlocks</li>
+        <li>For Client Admins: throughput and performance numbers. Visualizations (like Trace Analyzer) of long-running queries.</li>
+      </ul>
+    </b-row>
+    <b-row>
       <b-col sm="12" v-if="showDiagnostics">
         <b-card>
           <div slot="header">Diagnostics</div>
@@ -14,7 +20,7 @@
       <b-nav pills>
         <b-nav-item @click="runDiagnostics()" size="sm">Diagnostics</b-nav-item>
         <b-nav-item @click="whatsRunning()" size="sm">Active Queries</b-nav-item>
-        
+
         <b-nav-item-dropdown id="nav7_ddown" text="Dropdown" right>
           <b-dropdown-item @click="whatsRunning()">sp_BlitzWho</b-dropdown-item>
           <b-dropdown-item>two</b-dropdown-item>
@@ -105,12 +111,10 @@ export default {
           return;
         }
 
-
         // Examine the text in the response
         response.json().then(data => {
           if (data.length > 0) {
-
-            this.rowData = (data);
+            this.rowData = data;
           }
           this.whatsRunningContent = data;
         });

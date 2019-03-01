@@ -1,6 +1,5 @@
 <template>
   <div class="animated fadeIn">
-
     <b-card>
       <b-row>
         <b-col sm="5">
@@ -8,9 +7,18 @@
           <div class="small text-muted">Feb 20, 2019</div>
         </b-col>
         <b-col sm="7" class="d-none d-md-block">
-          <b-button type="button" variant="primary" class="float-right"><i class="icon-cloud-download"></i></b-button>
+          <b-button type="button" variant="primary" class="float-right">
+            <i class="icon-cloud-download"></i>
+          </b-button>
           <b-button-toolbar class="float-right" aria-label="Toolbar with buttons group">
-            <b-form-radio-group class="mr-3" id="radiosBtn" buttons button-variant="outline-secondary" v-model="selected" name="radiosBtn">
+            <b-form-radio-group
+              class="mr-3"
+              id="radiosBtn"
+              buttons
+              button-variant="outline-secondary"
+              v-model="selected"
+              name="radiosBtn"
+            >
               <b-form-radio class="mx-0" value="Day">Day</b-form-radio>
               <b-form-radio class="mx-0" value="Month">Month</b-form-radio>
               <b-form-radio class="mx-0" value="Year">Year</b-form-radio>
@@ -18,47 +26,79 @@
           </b-button-toolbar>
         </b-col>
       </b-row>
-      <main-chart-example chartId="main-chart-01" class="chart-wrapper" style="height:300px;margin-top:40px;" height="300"></main-chart-example>
+      <main-chart-example
+        chartId="main-chart-01"
+        class="chart-wrapper"
+        style="height:300px;margin-top:40px;"
+        height="300"
+      ></main-chart-example>
       <div slot="footer">
         <b-row class="text-center">
           <b-col class="mb-sm-2 mb-0">
             <div class="text-muted">Visits</div>
             <strong>29.703 Users (40%)</strong>
-            <b-progress height={} class="progress-xs mt-2" :precision="1" variant="success" :value="40"></b-progress>
+            <b-progress
+              height="{}"
+              class="progress-xs mt-2"
+              :precision="1"
+              variant="success"
+              :value="40"
+            ></b-progress>
           </b-col>
           <b-col class="mb-sm-2 mb-0 d-md-down-none">
             <div class="text-muted">Unique</div>
             <strong>24.093 Users (20%)</strong>
-            <b-progress height={} class="progress-xs mt-2" :precision="1" variant="info" :value="20"></b-progress>
+            <b-progress
+              height="{}"
+              class="progress-xs mt-2"
+              :precision="1"
+              variant="info"
+              :value="20"
+            ></b-progress>
           </b-col>
           <b-col class="mb-sm-2 mb-0">
             <div class="text-muted">Pageviews</div>
             <strong>78.706 Views (60%)</strong>
-            <b-progress height={} class="progress-xs mt-2" :precision="1" variant="warning" :value="60"></b-progress>
+            <b-progress
+              height="{}"
+              class="progress-xs mt-2"
+              :precision="1"
+              variant="warning"
+              :value="60"
+            ></b-progress>
           </b-col>
           <b-col class="mb-sm-2 mb-0">
             <div class="text-muted">New Users</div>
             <strong>22.123 Users (80%)</strong>
-            <b-progress height={} class="progress-xs mt-2" :precision="1" variant="danger" :value="80"></b-progress>
+            <b-progress
+              height="{}"
+              class="progress-xs mt-2"
+              :precision="1"
+              variant="danger"
+              :value="80"
+            ></b-progress>
           </b-col>
           <b-col class="mb-sm-2 mb-0 d-md-down-none">
             <div class="text-muted">Bounce Rate</div>
             <strong>Average Rate (40.15%)</strong>
-            <b-progress height={} class="progress-xs mt-2" :precision="1" :value="40"></b-progress>
+            <b-progress height="{}" class="progress-xs mt-2" :precision="1" :value="40"></b-progress>
           </b-col>
         </b-row>
       </div>
     </b-card>
 
     <b-row>
-      <b-col md="12">
-        <b-card header="Traffic &amp; Sales">
+      <b-col md="6">
+        <b-card>
+          <h4 id="traffic" class="card-title mb-0">Tradewinds - File Transfers</h4>
+          <div class="small text-muted">Feb 20, 2019</div>
+
           <b-row>
-            <b-col sm="12" lg="6">
+            <b-col sm="12">
               <b-row>
                 <b-col sm="6">
                   <Callout variant="info">
-                    <small class="text-muted">New Clients</small>
+                    <small class="text-muted">Peanuts</small>
                     <br>
                     <strong class="h4">9,123</strong>
                     <div class="chart-wrapper" :style="{ top: '-10px'}">
@@ -93,65 +133,57 @@
               <hr class="mt-0">
               <div class="progress-group mb-4">
                 <div class="progress-group-prepend">
-                  <span class="progress-group-text">Monday</span>
+                  <span class="progress-group-text">Goldman&nbsp;Sachs</span>
                 </div>
+
                 <div class="progress-group-bars">
-                  <b-progress class="progress-xs" variant="info" :value="34" height="{}"/>
-                  <b-progress class="progress-xs" variant="danger" :value="78" height="{}"/>
+                  <b-progress height="{}" class="progress-xs" :value="94" variant="danger">
+                    <b-progress-bar :value="20" variant="info"/>
+                    <b-progress-bar :value="33" variant="warning"/>
+                  </b-progress>
                 </div>
               </div>
               <div class="progress-group mb-4">
                 <div class="progress-group-prepend">
-                  <span class="progress-group-text">Tuesday</span>
+                  <span class="progress-group-text">Morgan&nbsp;Stanley</span>
                 </div>
                 <div class="progress-group-bars">
-                  <b-progress height="{}" class="progress-xs" :value="56" variant="info"></b-progress>
+                  <b-progress height="{}" class="progress-xs" :value="94" variant="danger">
+                    <b-progress-bar :value="50" variant="info"/>
+                    <b-progress-bar :value="30" variant="warning"/>
+                  </b-progress>
+                </div>
+              </div>
+              <div class="progress-group mb-4">
+                <div class="progress-group-prepend">
+                  <span class="progress-group-text">JP&nbsp;Morgan</span>
+                </div>
+                <div class="progress-group-bars">
+                  <b-progress height="{}" class="progress-xs" :value="94" variant="danger">
+                    <b-progress-bar :value="44" variant="info"/>
+                    <b-progress-bar :value="13" variant="warning"/>
+                    <b-progress-bar :value="8" variant="danger"/>
+                  </b-progress>
+                </div>
+              </div>
+              <div class="progress-group mb-4">
+                <div class="progress-group-prepend">
+                  <span class="progress-group-text">Bank&nbsp;Of&nbsp;America</span>
+                </div>
+                <div class="progress-group-bars">
+                  <b-progress height="{}" class="progress-xs" :value="100" variant="info"></b-progress>
+                  <b-progress height="{}" class="progress-xs" :value="100" variant="warning"></b-progress>
                   <b-progress height="{}" class="progress-xs" :value="94" variant="danger"></b-progress>
                 </div>
               </div>
               <div class="progress-group mb-4">
                 <div class="progress-group-prepend">
-                  <span class="progress-group-text">Wednesday</span>
+                  <span class="progress-group-text">Barclays</span>
                 </div>
                 <div class="progress-group-bars">
-                  <b-progress height="{}" class="progress-xs" :value="12" variant="info"></b-progress>
-                  <b-progress height="{}" class="progress-xs" :value="67" variant="danger"></b-progress>
-                </div>
-              </div>
-              <div class="progress-group mb-4">
-                <div class="progress-group-prepend">
-                  <span class="progress-group-text">Thursday</span>
-                </div>
-                <div class="progress-group-bars">
-                  <b-progress height="{}" class="progress-xs" :value="43" variant="info"></b-progress>
-                  <b-progress height="{}" class="progress-xs" :value="91" variant="danger"></b-progress>
-                </div>
-              </div>
-              <div class="progress-group mb-4">
-                <div class="progress-group-prepend">
-                  <span class="progress-group-text">Friday</span>
-                </div>
-                <div class="progress-group-bars">
-                  <b-progress height="{}" class="progress-xs" :value="22" variant="info"></b-progress>
-                  <b-progress height="{}" class="progress-xs" :value="73" variant="danger"></b-progress>
-                </div>
-              </div>
-              <div class="progress-group mb-4">
-                <div class="progress-group-prepend">
-                  <span class="progress-group-text">Saturday</span>
-                </div>
-                <div class="progress-group-bars">
-                  <b-progress height="{}" class="progress-xs" :value="53" variant="info"></b-progress>
-                  <b-progress height="{}" class="progress-xs" :value="82" variant="danger"></b-progress>
-                </div>
-              </div>
-              <div class="progress-group mb-4">
-                <div class="progress-group-prepend">
-                  <span class="progress-group-text">Sunday</span>
-                </div>
-                <div class="progress-group-bars">
-                  <b-progress height="{}" class="progress-xs" :value="9" variant="info"></b-progress>
-                  <b-progress height="{}" class="progress-xs" :value="69" variant="danger"></b-progress>
+                  <b-progress height="{}" class="progress-xs" :value="50" variant="info"></b-progress>
+                  <b-progress height="{}" class="progress-xs" :value="0" variant="warning"></b-progress>
+                  <b-progress height="{}" class="progress-xs" :value="0" variant="danger"></b-progress>
                 </div>
               </div>
               <div class="legend text-center">
@@ -159,16 +191,29 @@
                   <sup>
                     <b-badge pill variant="info">&nbsp;</b-badge>
                   </sup>
-                  New clients
+                  Extract
+                  &nbsp;&nbsp;
+                  <sup>
+                    <b-badge pill variant="warning">&nbsp;</b-badge>
+                  </sup>
+                  Transform
                   &nbsp;&nbsp;
                   <sup>
                     <b-badge pill variant="danger">&nbsp;</b-badge>
                   </sup>
-                  Recurring clients
+                  FTP
                 </small>
               </div>
             </b-col>
-            <b-col sm="12" lg="6">
+          </b-row>
+        </b-card>
+      </b-col>
+      <b-col md="6">
+        <b-card>
+          <h4 id="traffic" class="card-title mb-0">API - Trades Created</h4>
+          <div class="small text-muted">Feb 20, 2019</div>
+          <b-row>
+            <b-col sm="12">
               <b-row>
                 <b-col sm="6">
                   <Callout variant="warning">

@@ -25,6 +25,7 @@ namespace Eze.AdminConsole
             // var host = builder.Build();
 
             var host = new WebHostBuilder()
+                .UseUrls("http://0.0.0.0:5000")
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseKestrel()
                 .UseIISIntegration()

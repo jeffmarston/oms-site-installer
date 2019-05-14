@@ -1,71 +1,67 @@
 <template>
   <b-row>
-    <b-col cols="12" xl="6">
-      <transition name="slide">
-        <b-card :header="caption">
-          <b-table
-            hover
-            striped
-            small
-            :fixed="fixed"
-            responsive="sm"
-            :items="items"
-            :fields="fields"
-            :current-page="currentPage"
-            :per-page="perPage"
-            @row-clicked="rowClicked"
-          >
-            <template slot="id" slot-scope="data">
-              <strong>{{data.item.id}}</strong>
-            </template>
-            <template slot="name" slot-scope="data">
-              <strong>{{data.item.name}}</strong>
-            </template>
-            <template slot="status" slot-scope="data">
-              <b-badge :variant="getBadge(data.item.status)">{{data.item.status}}</b-badge>
-            </template>
-          </b-table>
-          <nav>
-            <b-pagination
-              size="sm"
-              :total-rows="getRowCount(items)"
-              :per-page="perPage"
-              v-model="currentPage"
-              prev-text="Prev"
-              next-text="Next"
-              hide-goto-end-buttons
-            />
-          </nav>
-        </b-card>
-      </transition>
-    </b-col>
-    
-      <b-col v-if="selectedRow"  cols="12" xl="6">
-        <b-card>
-          <h4>{{ selectedRow.name}}</h4>
-          <b-form>
-            <b-form-group
-              label="Email"
-              label-for="horizEmail"
-              :label-cols="3"
-              :horizontal="true">
-              <b-form-input id="horizEmail" type="email" placeholder="Enter Email.." autocomplete="username email"></b-form-input>
-            </b-form-group>
-            <b-form-group
-              label="Password"
-              label-for="horizPass"
-              :label-cols="3"
-              :horizontal="true">
-              <b-form-input id="horizPass" type="password" placeholder="Enter Password.." autocomplete="current-password"></b-form-input>
-            </b-form-group>
-            <div slot="footer">
-              <b-button type="submit" size="sm" variant="primary"><i class="fa fa-dot-circle-o"></i> Submit</b-button>
-              <b-button type="reset" size="sm" variant="danger"><i class="fa fa-ban"></i> Reset</b-button>
-            </div>
-          </b-form>
-        </b-card>
-      </b-col>
+    <b-table
+      hover
+      striped
+      small
+      :fixed="fixed"
+      responsive="sm"
+      :items="items"
+      :fields="fields"
+      :current-page="currentPage"
+      :per-page="perPage"
+      @row-clicked="rowClicked"
+    >
+      <template slot="status" slot-scope="data">
+        <b-badge :variant="getBadge(data.item.status)">{{data.item.status}}</b-badge>
+      </template>
+    </b-table>
 
+    <b-col v-if="selectedRow" cols="12" xl="6">
+      <b-card>
+        <div>
+        <small class="float-right">Last Logged in: 2019-3-12 4:33:02 PM</small>
+        <h4 class="">{{ selectedRow.name}}</h4>
+          </div>
+        <b-form>
+          <b-form-group label="Email" label-for="horizEmail" :label-cols="3" :horizontal="true">
+            <b-form-input
+              id="horizEmail"
+              type="email"
+              placeholder="Enter Email.."
+              autocomplete="username email"
+            ></b-form-input>
+          </b-form-group>
+
+          <b-form-group
+            label="Entitlements"
+            label-for="portEntitlementsMultiSelect"
+            :label-cols="3"
+            :horizontal="true"
+          >
+            <b-form-select
+              id="portEntitlementsMultiSelect"
+              :plain="true"
+              :multiple="true"
+              :options="[
+                { text: 'Port0001', value: 'Port0001'}, 
+                { text: 'Port0002', value: 'Port0002'}, 
+                { text: 'Port0003', value: 'Port0003'}, 
+                { text: 'Port0004', value: 'Port0004'}, 
+                { text: 'Port0005', value: 'Port0005'}, 
+                { text: 'Port_Master', value: 'Port_Master',disabled: true}
+              ]"
+              :value="[null,'c']"
+            ></b-form-select>
+          </b-form-group>
+
+          <div slot="footer" class="float-right">
+            <b-button type="submit" size="sm" variant="primary">Save</b-button>
+            <b-button type="reset" size="sm" variant="secondary">Reset</b-button>
+          </div>
+        </b-form>
+      </b-card>
+    </b-col>
   </b-row>
 </template>
 
@@ -104,9 +100,8 @@ export default {
       items: usersData.filter(user => user.id < 42),
       selectedRow: null,
       fields: [
-        { key: "id" },
         { key: "name" },
-        { key: "registered" },
+        { key: "lastLogin" },
         { key: "role" },
         { key: "status" }
       ],
@@ -118,15 +113,7 @@ export default {
   computed: {},
   methods: {
     getBadge(status) {
-      return status === "Active"
-        ? "success"
-        : status === "Inactive"
-        ? "secondary"
-        : status === "Pending"
-        ? "warning"
-        : status === "Banned"
-        ? "danger"
-        : "primary";
+      return status === "Active" ? "success" : "Inactive";
     },
     getRowCount(items) {
       return items.length;

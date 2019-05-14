@@ -28,7 +28,7 @@ namespace Eze.AdminConsole
                     .AllowAnyHeader()
                     .AllowCredentials()
                 //    .AllowAnyOrigin();
-                .WithOrigins("http://localhost:8080", "http://localhost:8081");
+                .WithOrigins("http://localhost:8080", "http://localhost:8081", "http://localhost:5000", "http://marston9020b.ezesoft.net:5000");
             }));
             services.AddSignalR();
         }

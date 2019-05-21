@@ -20,17 +20,12 @@ namespace Eze.AdminConsole.Environment
             _context = context;
         }
         // GET api/values
-        [HttpGet("{machineName}")]
-        public ActionResult<IEnumerable<Service>> Get(string machineName)
+        [HttpGet()]
+        public ActionResult<IEnumerable<Service>> Get()
         {
             try
             {
-                _topology = new EnvironmentController().Load();
-                if (_topology.servers.FirstOrDefault(o => o.name.ToLower() == machineName.ToLower()) == null)
-                {
-                    throw new Exception("Server not configured: " + machineName);
-                }
-                var svcs = ServiceUtils.GetAllEzeServices(machineName);
+                var svcs = ServiceUtils.GetAllEzeServices();
                 return svcs.ToArray();
             }
             catch (Exception)
@@ -40,17 +35,17 @@ namespace Eze.AdminConsole.Environment
         }
 
         // POST api/services/start
-        [HttpPost("{machineName}/start/{svcName}")]
-        public void Start(string machineName, string svcName)
+        [HttpPost("start/{svcName}")]
+        public void Start(string svcName)
         {
-            ServiceUtils.StartService(machineName, svcName);
+            ServiceUtils.StartService( svcName);
         }
 
         // POST api/services/stop
-        [HttpPost("{machineName}/stop/{svcName}")]
-        public void Stop(string machineName, string svcName)
+        [HttpPost("stop/{svcName}")]
+        public void Stop(string svcName)
         {
-            ServiceUtils.StopService(machineName, svcName);
+            ServiceUtils.StopService(svcName);
         }
     }
 }

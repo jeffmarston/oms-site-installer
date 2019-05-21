@@ -43,6 +43,11 @@ let items = [
     }
   },
   {
+    name: 'Services',
+    url: '/services',
+    icon: 'cui-screen-smartphone'
+  },
+  {
     name: 'Credentials',
     url: '/credentials',
     icon: 'icon-settings',

@@ -5,6 +5,9 @@ using System.Linq;
 using System.ServiceProcess;
 using System.Management;
 using Eze.AdminConsole.Machines;
+using System.IO;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace Eze.AdminConsole.Services
 {
@@ -38,47 +41,25 @@ namespace Eze.AdminConsole.Services
             return svc;
         }
 
-        public static Service GetService(string svcName)
+        private static async Task<Service[]> GetServicesAsync(string machineName)
         {
-            var svcContollers = ServiceController.GetServices().Where(o => o.ServiceName.ToLower() == svcName.ToLower()).ToList();
-            return (svcContollers.Count() == 0) ? null : GetServiceDetails(svcContollers[0]);
+            HttpClient client = new HttpClient();
+            Service[] services = null;
+            var path = "http://" + machineName + ":5001/api/services";
+            HttpResponseMessage response = await client.GetAsync(path);
+            if (response.IsSuccessStatusCode)
+            {
+                services = await response.Content.ReadAsAsync<Service[]>();
+            }
+            return services;
         }
 
         public static List<Service> GetAllEzeServices(string machineName)
         {
             try
             {
-                // ConnectionOptions op = new ConnectionOptions();
-                // op.Username = "qalab\\analyst";
-                // op.Password = "Boston09";
-                // ManagementScope scope = new ManagementScope(@"\\" + machineName + @".qalab.net\root\cimv2", op);
-                // scope.Connect();
-                // ManagementPath path = new ManagementPath("Win32_Service");
-                // ManagementClass services;
-                // services = new ManagementClass(scope, path, null);
-
-                // var serviceData = new List<Service>();
-                // foreach (ManagementObject service in services.GetInstances())
-                // {
-                //     var svcName = service.GetPropertyValue("Name").ToString();
-                //     if (svcName.StartsWith("E")) {
-                //         serviceData.Add(new Service() {
-                //             name = svcName,
-                //             status = service.GetPropertyValue("State").ToString(),
-                //             pid = Int32.Parse(service.GetPropertyValue("ProcessId").ToString()),
-                //             path = service.GetPropertyValue("PathName").ToString()
-                //         });
-                //     }
-                // }
-                var svcContollers = ServiceController.GetServices();
-                var ezeSvcs = svcContollers.Where(o => o.ServiceName.StartsWith("M"));
-
-                var serviceData = new List<Service>();
-                foreach (var scTemp in ezeSvcs)
-                {
-                    serviceData.Add(GetServiceDetails(scTemp));
-                }
-                return serviceData;
+                var serviceData = GetServicesAsync(machineName).Result;
+                return new List<Service>(serviceData);
             }
             catch (Exception e)
             {

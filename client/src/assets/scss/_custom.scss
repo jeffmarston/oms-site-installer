@@ -1,5 +1,25 @@
 // Here you can add other styles
 
+body {
+    background: white;
+}
+
+.main .container-fluid {
+    padding: 0 10px;
+}
+.breadcrumb {
+    margin-bottom: 10px;
+}
+
+.btn {
+    margin: 4px 6px 4px 0;
+}
+.btn-primary {
+    background-color: rgb(29, 66, 97);
+    background-color: rgb(41, 93, 136);
+    border-color: #20a8d8;
+}
+
 .ag-theme-balham {
     .ag-row:not(.ag-row-first) {
         border-width: 0;
@@ -7,12 +27,13 @@
     font-size: 14px;
 }
 
-.icon-hover-hightlight {
-    :hover {
-        color: rgb(52, 140, 240);
+.sidebar {
+    background-color: rgb(29, 66, 97);
+    .nav-link.active {
+        background-color: rgb(17, 37, 54);
     }
 }
 
-button {
-    margin: 0 2px;
+* {
+    font-family: 'Montserrat', sans-serif;
 }

@@ -1,44 +1,14 @@
 <template>
   <div class="animated fadeIn">
-    <!-- <h4>CPU {{ serverStats.cpu }} %</h4>
-    <h4>Memory {{ serverStats.memory }} MB</h4>-->
-    <b-row>
-      <b-col cols="12" sm="6" lg="3">
-        <b-card :no-body="true">
-          <b-card-body class="p-3 clearfix">
-            <i class="fa fa-cogs bg-info p-3 font-2xl mr-3 float-left"></i>
-            <div class="h5 text-info mb-0 mt-2">{{ serverStats.cpu }} %</div>
-            <div class="text-muted text-uppercase font-weight-bold font-xs">CPU</div>
-          </b-card-body>
-        </b-card>
-      </b-col>
-      <b-col cols="12" sm="6" lg="3">
-        <b-card :no-body="true">
-          <b-card-body class="p-3 clearfix">
-            <i class="fa fa-laptop bg-danger p-3 font-2xl mr-3 float-left"></i>
-            <div class="h5 text-danger mb-0 mt-2">{{ serverStats.memory }} MB</div>
-            <div class="text-muted text-uppercase font-weight-bold font-xs">Memory</div>
-          </b-card-body>
-        </b-card>
-      </b-col>
-    </b-row>
-
     <b-row>
       <b-col sm="12">
-        <div>
-          <b-button :disabled="disableButton(selectedRow, 'start')" @click="startSvc()">Start</b-button>&nbsp;
-          <b-button :disabled="disableButton(selectedRow, 'stop')" @click="stopSvc()">Stop</b-button>&nbsp;
-          <a href="./analytics.log" download>
-            <b-button :disabled="disableButton(selectedRow, 'logs')">Logs</b-button>
-          </a>&nbsp;
-          <!-- <b-button @click="sendMsg(selectedRow.service)">Send</b-button>&nbsp; -->
-        </div>
-
         <ag-grid-vue
+          style="height: calc(100vh - 170px)"
           class="ag-theme-balham"
           :columnDefs="columnDefs"
           :rowData="rowData"
           :gridOptions="gridOptions"
+          :floatingFilter="true"
           rowSelection="multiple"
           suppressCellSelection
           animate-rows
@@ -47,10 +17,6 @@
           :getRowNodeId="getRowNodeId"
           @cell-clicked="cellClick"
         ></ag-grid-vue>
-      </b-col>
-
-      <b-col sm="1" v-if="selectedRow">
-        <b-card></b-card>
       </b-col>
     </b-row>
   </div>
@@ -93,6 +59,9 @@ function logCellRendererFunc(params) {
   console.log();
   return `<a class="icon-hover-hightlight"><i style="display: inline" class="icon-paper-clip"></i></a>`;
 }
+
+const envProvider = require("@/services/environmentProvider");
+
 export default {
   name: "services",
   components: { AgGridVue },
@@ -113,7 +82,7 @@ export default {
         headerName: "Status",
         field: "status",
         sortable: true,
-        filter: true,
+        filter: 'agTextColumnFilter',
         resizable: true,
         cellStyle: function(params) {
           return params.data.status == "Stopped"
@@ -139,38 +108,55 @@ export default {
         cellRenderer: logCellRendererFunc
       },
       {
+        headerName: "Server",
+        field: "server",
+        sortable: true,
+        filter: 'agTextColumnFilter',
+        resizable: true
+      },
+      {
         headerName: "Name",
         field: "name",
         sortable: true,
-        filter: true,
+        filter: 'agTextColumnFilter',
+        floatingFilterComponentParams:{
+          debounceMs:1000
+        },
         resizable: true
       },
       {
         headerName: "PID",
         field: "pid",
         sortable: true,
-        filter: true,
+        filter: 'agTextColumnFilter',
         resizable: true
       },
       {
-        headerName: "CPU",
-        field: "cpu",
+        headerName: "FileName",
+        field: "filename",
         sortable: true,
-        filter: true,
+        filter: 'agTextColumnFilter',
         resizable: true
       },
       {
-        headerName: "Memory",
-        field: "memory",
+        headerName: "StartMode",
+        field: "startMode",
         sortable: true,
-        filter: true,
+        filter: 'agTextColumnFilter',
+        resizable: true
+      },
+      {
+        headerName: "Start Name",
+        field: "startName",
+        sortable: true,
+        filter: 'agTextColumnFilter',
         resizable: true
       },
       {
         headerName: "Path",
         field: "path",
         sortable: true,
-        filter: true,
+        filter: 'agTextColumnFilter',
         resizable: true
       }
     ];
@@ -208,19 +194,25 @@ export default {
       });
     },
     populateGrid() {
-      fetch(env.serverAddress + "/api/services/" + this.$route.params.name, {
-        mode: "cors"
-      }).then(response => {
-        if (response.status !== 200) {
-          console.error("!! Status Code: " + response.status);
-          console.error(response);
-          return;
-        }
-
-        // Examine the text in the response
-        response.json().then(data => {
-          data.memory = data.memory / 1024;
-          this.rowData = data;
+      envProvider.getNavTree().then(navTreeData => {
+        navTreeData.servers.forEach(svr => {
+          fetch(
+            env.serverAddress + "/api/services/" + svr.name,
+            { mode: "cors" }
+          ).then(response => {
+            if (response.status !== 200) {
+              console.error("!! Status Code: " + response.status);
+              console.error(response);
+              return;
+            }
+            // Examine the text in the response
+            response.json().then(data => {
+              data.forEach(service => {
+                service.server = svr.name;
+                this.rowData.push(service);
+              });
+            });
+          });
         });
       });
     },
@@ -245,13 +237,13 @@ export default {
       }
     },
     getRowNodeId(data) {
-      return data.name;
+      return data.name+"|"+data.server;
     },
     startSvc() {
       fetch(
         env.serverAddress +
           "/api/services/" +
-          this.$route.params.name +
+          this.selectedRow.server +
           "/start/" +
           this.selectedRow.name,
         {

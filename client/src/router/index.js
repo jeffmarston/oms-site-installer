@@ -10,6 +10,7 @@ const Dashboard = () => import('@/views/Dashboard')
 // Views - Components
 const UpgradeEnvironment = () => import('@/views/base/UpgradeEnvironment')
 const Services = () => import('@/views/base/Services')
+const Services2 = () => import('@/views/base/Services2')
 const ClientDetail = () => import('@/views/base/ClientDetail')
 const DatabaseDetail = () => import('@/views/base/DatabaseDetail')
 const Users = () => import('@/views/users/Users')
@@ -68,6 +69,11 @@ envProvider.getNavTree().then(navTreeData => {
           component: UpgradeEnvironment
         },
         {
+          path: '/services',
+          name: 'services',
+          component: Services2
+        },
+        {
           path: '/credentials',
           name: 'credentials',
           component: {
@@ -80,8 +86,8 @@ envProvider.getNavTree().then(navTreeData => {
               component: Users
             },
             {
-              path: 'services',
-              name: 'services',
+              path: 'service',
+              name: 'serviceCreds',
               component: ServiceLogins
             }
           ]

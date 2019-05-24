@@ -9,13 +9,13 @@
       <SidebarToggler class="d-md-down-none" display="lg" />
           
           <b-nav>
-            <b-nav-item to="/prod" active>Prod</b-nav-item>
-            <b-nav-item to="/uat" >UAT</b-nav-item>
-            <b-nav-item to="/dev" >Dev</b-nav-item>
+            <b-button variant="success" class="btn-pill">Prod</b-button>
+            <b-button variant="ghost" class="btn-pill">UAT</b-button>
+            <b-button variant="ghost" class="btn-pill">Dev</b-button>
           </b-nav>
 
       <b-navbar-nav class="ml-auto">
-        <b-nav-item class="d-md-down-none">
+        <b-nav-item class="d-md-down-none" to="/alerts">
           <i class="icon-bell"></i>
           <b-badge pill variant="danger">5</b-badge>
         </b-nav-item>

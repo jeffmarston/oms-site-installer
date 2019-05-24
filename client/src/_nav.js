@@ -2,55 +2,76 @@
 
 let items = [
   {
-    name: 'Dashboard',
-    url: '/dashboard',
-    icon: 'icon-speedometer',
+    name: 'Dashboards', title: true
   },
   {
-    title: true,
-    name: 'Support',
-    class: '',
-    wrapper: {
-      element: '',
-      attributes: {}
-    }
+    name: 'System',
+    url: '/dashboard/system',
+    icon: 'icon-speedometer'
   },
   {
-    name: 'Diagnostics',
-    url: '/diagnostics',
-    icon: 'fa fa-database'
+    name: 'Networking',
+    url: '/dashboard/network',
+    icon: 'icon-speedometer'
   },
   {
-    title: true,
-    name: 'Administration',
-    class: '',
-    wrapper: {
-      element: '',
-      attributes: {}
-    }
+    name: 'Administration', title: true
   },
   {
     name: 'Services',
-    url: '/services',
+    url: '/admin/services',
     icon: 'cui-screen-smartphone'
   },
   {
-    name: 'Credentials',
-    url: '/credentials',
-    icon: 'icon-settings',
-    children: [{
-      name: 'Users',
-      url: '/credentials/users'
-    },
-    {
-      name: 'Services',
-      url: '/credentials/services'
-    }]
+    name: 'Log Management',
+    url: '/admin/logs',
+    icon: 'cui-file'
+  },
+   {
+    name: 'Users and Roles',
+    url: '/admin/userroles',
+    icon: 'icon-people'
+  },
+  {
+    name: 'Services Logins',
+    url: '/admin/servicelogins',
+    icon: 'icon-settings'
+  },
+  {
+    name: 'API Portal',
+    url: '/admin/apis',
+    icon: 'icon-list'
+  },
+  {
+    name: 'Diagnostics', title: true
+  },
+  {
+    name: 'Database',
+    url: '/diagnostics/database',
+    icon: 'fa fa-database'
+  },
+  {
+    name: 'Data Integrity',
+    url: '/diagnostics/dataintegrity',
+    icon: 'fa fa-code'
+  },
+  {
+    name: 'Eze Monitor',
+    url: '/diagnostics/ezemonitor',
+    icon: 'icon-bell'
+  },
+  {
+    name: 'Version', title: true
   },
   {
     name: 'Upgrade',
-    url: '/upgrade',
+    url: '/version/upgrade',
     icon: 'icon-arrow-up-circle'
+  },
+  {
+    name: 'Release Notes',
+    url: '/version/releasenotes',
+    icon: 'icon-note'
   }
 ]
 

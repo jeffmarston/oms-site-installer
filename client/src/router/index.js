@@ -4,25 +4,22 @@ import Router from 'vue-router'
 // Containers
 const DefaultContainer = () => import('@/containers/DefaultContainer')
 
-// Views
-const Dashboard = () => import('@/views/Dashboard')
-
 // Views - Components
+const SystemUsageDash = () => import('@/views/dashboard/SystemUsage')
+const NetworkingDash = () => import('@/views/dashboard/Networking')
 const UpgradeEnvironment = () => import('@/views/base/UpgradeEnvironment')
 const Services = () => import('@/views/base/Services')
-const Services2 = () => import('@/views/base/Services2')
-const ClientDetail = () => import('@/views/base/ClientDetail')
 const DatabaseDetail = () => import('@/views/base/DatabaseDetail')
 const Users = () => import('@/views/users/Users')
 const ServiceLogins = () => import('@/views/users/ServiceLogins')
 const Settings = () => import('@/views/base/Settings')
-const Icons = () => import('@/views/icons/CoreUIIcons');
+const Alerts = () => import('@/views/notifications/Alerts')
 
 // Views - Pages
 const Page404 = () => import('@/views/pages/Page404')
 const Login = () => import('@/views/pages/Login')
 
-const envProvider = require('@/services/environmentProvider');
+const envProvider = require('@/shared/environmentProvider');
 const _ = require('lodash');
 
 Vue.use(Router)
@@ -46,51 +43,112 @@ envProvider.getNavTree().then(navTreeData => {
         {
           path: 'dashboard',
           name: 'dashboard',
-          component: Dashboard
-        },
-        {
-          path: '/diagnostics',
-          name: 'diagnostics',
-          component: DatabaseDetail
-        },
-        {
-          path: '/upgrade',
-          name: 'upgrade',
-          component: UpgradeEnvironment
-        },
-        {
-          path: '/services',
-          name: 'services',
-          component: Services2
-        },
-        {
-          path: '/credentials',
-          name: 'credentials',
+          redirect: '/dashboard/system',
           component: {
             render(c) { return c('router-view') }
           },
           children: [
             {
-              path: 'users',
-              name: 'users',
-              component: Users
+              path: 'system',
+              name: 'system',
+              component: SystemUsageDash
             },
             {
-              path: 'service',
-              name: 'serviceCreds',
-              component: ServiceLogins
+              path: 'network',
+              name: 'network',
+              component: NetworkingDash
             }
           ]
         },
         {
-          path: 'icons',
-          name: 'icons',
-          component: Icons
+          path: 'admin',
+          name: 'administration',
+          redirect: '/admin/services',
+          component: {
+            render(c) { return c('router-view') }
+          },
+          children: [
+            {
+              path: 'services',
+              name: 'services',
+              component: Services
+            },
+            {
+              path: 'logs',
+              name: 'log management',
+              component: Page404
+            },
+            {
+              path: 'userRoles',
+              name: 'users and roles',
+              component: Users
+            },
+            {
+              path: 'serviceLogins',
+              name: 'service logins',
+              component: ServiceLogins
+            },
+            {
+              path: 'apis',
+              name: 'API portal',
+              component: Page404
+            }
+          ]
+        },
+        {
+          path: 'diagnostics',
+          name: 'diagnostics',
+          redirect: '/diagnostics/database',
+          component: {
+            render(c) { return c('router-view') }
+          },
+          children: [
+            {
+              path: 'database',
+              name: 'database',
+              component: DatabaseDetail
+            },
+            {
+              path: 'dataintegrity',
+              name: 'data integrity',
+              component: Page404
+            },
+            {
+              path: 'ezemonitor',
+              name: 'Eze Monitor',
+              component: Page404
+            }
+          ]
+        },
+        {
+          path: 'version',
+          name: 'version',
+          redirect: '/version/upgrade',
+          component: {
+            render(c) { return c('router-view') }
+          },
+          children: [
+            {
+              path: 'upgrade',
+              name: 'upgrade',
+              component: UpgradeEnvironment
+            },
+            {
+              path: 'releasenotes',
+              name: 'release notes',
+              component: Page404
+            }
+          ]
         },
         {
           path: 'settings',
           name: 'settings',
           component: Settings
+        },
+        {
+          path: 'alerts',
+          name: 'alerts',
+          component: Alerts
         }
       ]
     },

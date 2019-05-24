@@ -26,4 +26,5 @@ export default {
   // Import ag-grid styles
   @import "../node_modules/ag-grid-community/dist/styles/ag-grid.css";
   @import "../node_modules/ag-grid-community/dist/styles/ag-theme-balham.css";
+  @import url('https://fonts.googleapis.com/css?family=Montserrat&display=swap');
 </style>

@@ -29,6 +29,10 @@ namespace Eze.AdminConsole.Environment
         {
             try
             {
+                if (Topology.UseDummyData) {
+                    return  GetDummyData();
+                }
+
                 _topology = new EnvironmentController().Load();
                 if (_topology.servers.FirstOrDefault(o => o.name.ToLower() == machineName.ToLower()) == null)
                 {
@@ -67,5 +71,15 @@ namespace Eze.AdminConsole.Environment
         {
             ServiceUtils.StopService(machineName, svcName);
         }
+
+        
+
+        private ActionResult<IEnumerable<Service>> GetDummyData()
+        {
+            return new Service[] {
+                new Service() { name="Eze.Disco.Svc", status="Running" }
+             }; 
+        }
+
     }
 }

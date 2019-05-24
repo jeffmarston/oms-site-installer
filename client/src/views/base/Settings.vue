@@ -17,9 +17,9 @@
 
           <b-form-input
             type="text"
-            placeholder="[new server]"
+            placeholder="New server"
             v-model="newServer"
-            @change="addServer()"
+            @blur="addServer()"
           ></b-form-input>
 
           <div slot="footer">

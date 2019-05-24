@@ -5,6 +5,8 @@ namespace Eze.AdminConsole.Environment
 {
     public class Topology
     {
+        public static bool UseDummyData = true; 
+
         public MachineSpec[] servers { get; set; }
         public MachineSpec[] clients { get; set; }
         public MachineSpec[] database { get; set; }

@@ -1,6 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Eze.AdminConsole.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -37,6 +41,17 @@ namespace Eze.AdminConsole.Environment
             {
                 return new Service[] { };
             }
+        }
+
+        // POST api/services/logs
+        [HttpGet("{machineName}/{svcName}/logs.txt")]
+        public async Task<IActionResult> Logs(string machineName, string svcName)
+        {
+            var filePath = @"D:\temp\logfile.log";
+            Stream stream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
+            if (stream == null)
+                return NotFound(); // returns a NotFoundResult with Status404NotFound response.
+            return File(stream, "application/octet-stream"); // returns a FileStreamResult
         }
 
         // POST api/services/start

@@ -49,18 +49,8 @@ envProvider.getNavTree().then(navTreeData => {
           component: Dashboard
         },
         {
-          path: '/servers/:name',
-          name: 'servers',
-          component: Services
-        },
-        {
-          path: '/clients/:name',
-          name: 'clients',
-          component: ClientDetail
-        },
-        {
-          path: '/database/:name',
-          name: 'database',
+          path: '/diagnostics',
+          name: 'diagnostics',
           component: DatabaseDetail
         },
         {

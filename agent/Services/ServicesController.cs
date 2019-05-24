@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Eze.AdminConsole.Services;
@@ -34,11 +35,29 @@ namespace Eze.AdminConsole.Environment
             }
         }
 
+        // POST api/services/logs
+        [HttpGet("{svcName}/logs")]
+        public async Task<IActionResult> Logs(string svcName)
+        {
+            var svcs = ServiceUtils.GetAllEzeServices();
+            var svc = svcs.Find(o => o.name == svcName);
+
+            var DbRunner = new DatabaseRunner();
+            var obj = DbRunner.GetServiceLogPath();
+
+
+            var filePath = svc.path;
+            Stream stream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
+            if (stream == null)
+                return NotFound(); // returns a NotFoundResult with Status404NotFound response.
+            return File(stream, "application/octet-stream"); // returns a FileStreamResult
+        }
+
         // POST api/services/start
         [HttpPost("start/{svcName}")]
         public void Start(string svcName)
         {
-            ServiceUtils.StartService( svcName);
+            ServiceUtils.StartService(svcName);
         }
 
         // POST api/services/stop

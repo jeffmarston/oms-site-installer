@@ -21,7 +21,7 @@
                 id="elementsAppendButton"
                 size="lg"
                 :plain="true"
-                :options="['Please select','2018.8', '2019.1', '2019.2']"
+                :options="['Please select', '2019.4','2019.3', '2019.2', '2019.1']"
                 value="Please select"
               ></b-form-select>
               <b-input-group-append>
@@ -71,7 +71,6 @@
 
 <script>
 import { shuffleArray } from "@/shared/utils";
-import cTable from "./Table.vue";
 
 const serverData = () =>
   shuffleArray([
@@ -100,7 +99,7 @@ const serverData = () =>
 
 export default {
   name: "servers",
-  components: { cTable },
+  components: {  },
   data: () => {
     return {
       isDownloading: false,

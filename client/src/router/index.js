@@ -1,23 +1,24 @@
-import Vue from 'vue'
-import Router from 'vue-router'
+import Vue from 'vue';
+import Router from 'vue-router';
 
 // Containers
-const DefaultContainer = () => import('@/containers/DefaultContainer')
+const DefaultContainer = () => import('@/containers/DefaultContainer');
 
 // Views - Components
-const SystemUsageDash = () => import('@/views/dashboard/SystemUsage')
-const NetworkingDash = () => import('@/views/dashboard/Networking')
-const UpgradeEnvironment = () => import('@/views/base/UpgradeEnvironment')
-const Services = () => import('@/views/base/Services')
-const DatabaseDetail = () => import('@/views/base/DatabaseDetail')
-const Users = () => import('@/views/users/Users')
-const ServiceLogins = () => import('@/views/users/ServiceLogins')
-const Settings = () => import('@/views/base/Settings')
-const Alerts = () => import('@/views/notifications/Alerts')
+const SystemUsageDash = () => import('@/views/dashboard/SystemUsage');
+const NetworkingDash = () => import('@/views/dashboard/Networking');
+const UpgradeEnvironment = () => import('@/views/version/UpgradeEnvironment');
+const Services = () => import('@/views/admin/Services');
+const DatabaseDetail = () => import('@/views/diagnostics/DatabaseDetail');
+const DataIntegrity = () => import('@/views/diagnostics/DataIntegrity');
+const Users = () => import('@/views/admin/Users');
+const ServiceLogins = () => import('@/views/admin/ServiceLogins');
+const Settings = () => import('@/views/general/Settings');
+const Alerts = () => import('@/views/notifications/Alerts');
 
 // Views - Pages
-const Page404 = () => import('@/views/pages/Page404')
-const Login = () => import('@/views/pages/Login')
+const Page404 = () => import('@/views/pages/Page404');
+const Login = () => import('@/views/pages/Login');
 
 const envProvider = require('@/shared/environmentProvider');
 const _ = require('lodash');
@@ -79,12 +80,12 @@ envProvider.getNavTree().then(navTreeData => {
               component: Page404
             },
             {
-              path: 'userRoles',
+              path: 'userroles',
               name: 'users and roles',
               component: Users
             },
             {
-              path: 'serviceLogins',
+              path: 'servicelogins',
               name: 'service logins',
               component: ServiceLogins
             },
@@ -111,7 +112,7 @@ envProvider.getNavTree().then(navTreeData => {
             {
               path: 'dataintegrity',
               name: 'data integrity',
-              component: Page404
+              component: DataIntegrity
             },
             {
               path: 'ezemonitor',

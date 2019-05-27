@@ -18,7 +18,7 @@ namespace Eze.AdminConsole.Services
             var serviceController = new ServiceController(svcName, machineName);
             if (serviceController.Status.ToString() == "Stopped")
             {
-                serviceController.Start();
+              //  serviceController.Start();
             }
         }
 
@@ -27,7 +27,7 @@ namespace Eze.AdminConsole.Services
             var serviceController = new ServiceController(svcName, machineName);
             if (serviceController.Status.ToString() == "Running")
             {
-                serviceController.Stop();
+              //  serviceController.Stop();
             }
         }
 

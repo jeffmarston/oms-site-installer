@@ -22,11 +22,6 @@ let items = [
     url: '/admin/services',
     icon: 'cui-screen-smartphone'
   },
-  {
-    name: 'Log Management',
-    url: '/admin/logs',
-    icon: 'cui-file'
-  },
    {
     name: 'Users and Roles',
     url: '/admin/userroles',
@@ -49,6 +44,11 @@ let items = [
     name: 'Database',
     url: '/diagnostics/database',
     icon: 'fa fa-database'
+  },
+  {
+    name: 'Logs',
+    url: '/diagnostics/logs',
+    icon: 'cui-file'
   },
   {
     name: 'Data Integrity',

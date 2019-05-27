@@ -5,6 +5,7 @@ namespace Eze.AdminConsole.Services
 {
     public class Service
     {
+        public string uptime;
         public string path { get; set; }
         public string status { get; set; }
         public string name { get; set; }

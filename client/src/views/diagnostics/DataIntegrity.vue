@@ -7,6 +7,8 @@
             <strong>Bootstrap Alert</strong>
           </div>
           <div>
+          </div>
+          <div>
             <b-alert show variant="primary">Primary Alert</b-alert>
             <b-alert show variant="secondary">Secondary Alert</b-alert>
             <b-alert show variant="success">Success Alert</b-alert>
@@ -24,7 +26,7 @@
 
 <script>
 export default {
-  name: "data integrity",
+  name: "data-integrity",
   data() {
     return {
       dataChecks: [{ name: "", checked: false }]

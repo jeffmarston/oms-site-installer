@@ -17,7 +17,7 @@
       <b-navbar-nav class="ml-auto">
         <b-nav-item class="d-md-down-none" to="/alerts">
           <i class="icon-bell"></i>
-          <b-badge pill variant="danger">5</b-badge>
+          <b-badge pill variant="danger">3</b-badge>
         </b-nav-item>
         <DefaultHeaderDropdownAccnt/>
       </b-navbar-nav>

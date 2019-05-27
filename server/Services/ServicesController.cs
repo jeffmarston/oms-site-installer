@@ -29,8 +29,9 @@ namespace Eze.AdminConsole.Environment
         {
             try
             {
-                if (Topology.UseDummyData) {
-                    return  GetDummyData();
+                if (Topology.UseDummyData)
+                {
+                    return GetDummyData();
                 }
 
                 _topology = new EnvironmentController().Load();
@@ -72,13 +73,16 @@ namespace Eze.AdminConsole.Environment
             ServiceUtils.StopService(machineName, svcName);
         }
 
-        
+
 
         private ActionResult<IEnumerable<Service>> GetDummyData()
         {
+            var rand = new Random();
             return new Service[] {
-                new Service() { name="Eze.Disco.Svc", status="Running" }
-             }; 
+                new Service() { name="Eze.Disco.Svc", status="Running", uptime=rand.Next(100) + " days, "+rand.Next(24) + " hours" },
+                new Service() { name="Eze.Analytics.Svc", status="Running", uptime=rand.Next(100) + " days, " + rand.Next(24) + " hours" },
+                new Service() { name="Eze.Compliance.Svc", status="Stopped" }
+             };
         }
 
     }

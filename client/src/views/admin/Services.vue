@@ -1,9 +1,17 @@
 <template>
   <div class="animated fadeIn">
     <b-row>
+      <b-col xl="12">
+        <b-button variant="primary">
+          <i class="icon-refresh"/>&nbsp;Restart All
+        </b-button>
+        <b-button type="button" variant="secondary" @click="myModal = true" class="mr-1">Log setup</b-button>
+      </b-col>
+    </b-row>
+    <b-row>
       <b-col sm="12">
         <ag-grid-vue
-          style="height: calc(100vh - 170px)"
+          style="height: calc(100vh - 210px)"
           class="ag-theme-balham"
           :columnDefs="columnDefs"
           :rowData="rowData"
@@ -19,6 +27,14 @@
         ></ag-grid-vue>
       </b-col>
     </b-row>
+
+    <!-- Modal Component -->
+    <b-modal title="Log Setup" v-model="myModal" @ok="myModal = false">
+      <b-checkbox v-model="forceAllLogs">Log everything to the same place</b-checkbox>
+      <b-form-group label="Log Location" label-for="logLocationInput" label-cols="3">
+        <b-form-file id="logLocationInput" directory :disabled="!forceAllLogs"></b-form-file>
+      </b-form-group>
+    </b-modal>
   </div>
 </template>
 
@@ -67,13 +83,12 @@ export default {
   components: { AgGridVue },
   data: () => {
     return {
+      myModal: false,
+      forceAllLogs: false,
       columnDefs: null,
       rowData: null,
       selectedRow: null,
-      gridOptions: null,
-      rowClassRules: null,
-      serverStats: { cpu: 0, memory: 0 },
-      routeName: null
+      gridOptions: null
     };
   },
   beforeMount() {
@@ -82,7 +97,7 @@ export default {
         headerName: "Status",
         field: "status",
         sortable: true,
-        filter: 'agTextColumnFilter',
+        filter: "agTextColumnFilter",
         resizable: true,
         cellStyle: function(params) {
           return params.data.status == "Stopped"
@@ -111,52 +126,52 @@ export default {
         headerName: "Server",
         field: "server",
         sortable: true,
-        filter: 'agTextColumnFilter',
+        filter: "agTextColumnFilter",
         resizable: true
       },
       {
         headerName: "Name",
         field: "name",
         sortable: true,
-        filter: 'agTextColumnFilter',
-        floatingFilterComponentParams:{
-          debounceMs:1000
+        filter: "agTextColumnFilter",
+        floatingFilterComponentParams: {
+          debounceMs: 1000
         },
         resizable: true
       },
       {
-        headerName: "PID",
-        field: "pid",
+        headerName: "Uptime",
+        field: "uptime",
         sortable: true,
-        filter: 'agTextColumnFilter',
+        filter: "agTextColumnFilter",
         resizable: true
       },
       {
         headerName: "FileName",
         field: "filename",
         sortable: true,
-        filter: 'agTextColumnFilter',
+        filter: "agTextColumnFilter",
         resizable: true
       },
       {
         headerName: "StartMode",
         field: "startMode",
         sortable: true,
-        filter: 'agTextColumnFilter',
+        filter: "agTextColumnFilter",
         resizable: true
       },
       {
         headerName: "Start Name",
         field: "startName",
         sortable: true,
-        filter: 'agTextColumnFilter',
+        filter: "agTextColumnFilter",
         resizable: true
       },
       {
         headerName: "Path",
         field: "path",
         sortable: true,
-        filter: 'agTextColumnFilter',
+        filter: "agTextColumnFilter",
         resizable: true
       }
     ];
@@ -176,30 +191,21 @@ export default {
       this.subscribeToServiceChange();
     },
     subscribeToServiceChange() {
-      conn.on("machine", (machineName, machineData) => {
-        console.log(`machine: ${machineName}`);
-        this.serverStats.cpu = machineData.cpuPercent;
-        this.serverStats.memory = machineData.memoryMb.toLocaleString("en-US");
-      });
-
       conn.on("service", (machineName, svcName, svcData) => {
-        //if (machineName === this.$route.params.name) {
         this.gridApi.forEachNodeAfterFilter(row => {
           if (row.data.name === svcName) {
             row.data = svcData;
             this.gridApi.redrawRows(row);
           }
         });
-        //}
       });
     },
     populateGrid() {
       envProvider.getNavTree().then(navTreeData => {
         navTreeData.servers.forEach(svr => {
-          fetch(
-            env.serverAddress + "/api/services/" + svr.name,
-            { mode: "cors" }
-          ).then(response => {
+          fetch(env.serverAddress + "/api/services/" + svr.name, {
+            mode: "cors"
+          }).then(response => {
             if (response.status !== 200) {
               console.error("!! Status Code: " + response.status);
               console.error(response);
@@ -237,7 +243,7 @@ export default {
       }
     },
     getRowNodeId(data) {
-      return data.name+"|"+data.server;
+      return data.name + "|" + data.server;
     },
     startSvc() {
       fetch(

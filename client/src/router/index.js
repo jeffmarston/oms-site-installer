@@ -10,6 +10,7 @@ const NetworkingDash = () => import('@/views/dashboard/Networking');
 const UpgradeEnvironment = () => import('@/views/version/UpgradeEnvironment');
 const Services = () => import('@/views/admin/Services');
 const DatabaseDetail = () => import('@/views/diagnostics/DatabaseDetail');
+const Logs = () => import('@/views/diagnostics/Logs');
 const DataIntegrity = () => import('@/views/diagnostics/DataIntegrity');
 const Users = () => import('@/views/admin/Users');
 const ServiceLogins = () => import('@/views/admin/ServiceLogins');
@@ -75,11 +76,6 @@ envProvider.getNavTree().then(navTreeData => {
               component: Services
             },
             {
-              path: 'logs',
-              name: 'log management',
-              component: Page404
-            },
-            {
               path: 'userroles',
               name: 'users and roles',
               component: Users
@@ -108,6 +104,11 @@ envProvider.getNavTree().then(navTreeData => {
               path: 'database',
               name: 'database',
               component: DatabaseDetail
+            },
+            {
+              path: 'logs',
+              name: 'logs',
+              component: Logs
             },
             {
               path: 'dataintegrity',

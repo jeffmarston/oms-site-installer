@@ -3,28 +3,33 @@
     <b-row>
       <b-col xl="12">
         <b-button variant="primary">
-          <i class="icon-refresh"/>&nbsp;Restart All
+          <i class="icon-refresh" />&nbsp;Restart All
         </b-button>
         <b-button type="button" variant="secondary" @click="myModal = true" class="mr-1">Log setup</b-button>
+        <b-button type="button" variant="secondary" @click="myModal = true" class="mr-1">Configure</b-button>
+        <b-button type="button" variant="secondary" @click="myModal = true" class="mr-1">View</b-button>
+        <b-button type="button" variant="secondary" @click="myModal = true" class="mr-1">Tools</b-button>
       </b-col>
     </b-row>
     <b-row>
       <b-col sm="12">
-        <ag-grid-vue
-          style="height: calc(100vh - 210px)"
-          class="ag-theme-balham"
-          :columnDefs="columnDefs"
-          :rowData="rowData"
-          :gridOptions="gridOptions"
-          :floatingFilter="true"
-          rowSelection="multiple"
-          suppressCellSelection
-          animate-rows
-          @grid-ready="onGridReady"
-          @row-selected="onRowSelected"
-          :getRowNodeId="getRowNodeId"
-          @cell-clicked="cellClick"
-        ></ag-grid-vue>
+        <div class="drop-shadow">
+          <ag-grid-vue
+            style="height: calc(100vh - 210px)"
+            class="ag-theme-balham"
+            :columnDefs="columnDefs"
+            :rowData="rowData"
+            :gridOptions="gridOptions"
+            :floatingFilter="true"
+            rowSelection="multiple"
+            suppressCellSelection
+            animate-rows
+            @grid-ready="onGridReady"
+            @row-selected="onRowSelected"
+            :getRowNodeId="getRowNodeId"
+            @cell-clicked="cellClick"
+          ></ag-grid-vue>
+        </div>
       </b-col>
     </b-row>
 
@@ -72,8 +77,13 @@ function actionCellRendererFunc(params) {
 }
 
 function logCellRendererFunc(params) {
-  console.log();
-  return `<a class="icon-hover-hightlight"><i style="display: inline" class="icon-paper-clip"></i></a>`;
+  return `<a class="icon-hover-hightlight" onclick="getLogs(${params.data.id})"><i style="display: inline" class="icon-paper-clip"></i></a>`;
+}
+
+function getLogs(params) {
+  console.log(params);
+  // console.log(params.node.id);
+  // console.log(params.colDef.headerName);
 }
 
 const envProvider = require("@/shared/environmentProvider");
@@ -119,7 +129,7 @@ export default {
       {
         headerName: "Logs",
         pinned: true,
-        width: 34,
+        width: 40,
         cellRenderer: logCellRendererFunc
       },
       {
@@ -284,3 +294,8 @@ export default {
   }
 };
 </script>
+<style lang="scss" scoped>
+.btn-primary {
+  margin-left: 0;
+}
+</style>

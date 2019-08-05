@@ -16,6 +16,7 @@ const Users = () => import('@/views/admin/Users');
 const ServiceLogins = () => import('@/views/admin/ServiceLogins');
 const Settings = () => import('@/views/general/Settings');
 const Alerts = () => import('@/views/notifications/Alerts');
+const ColumnPlugins = () => import('@/views/admin/ColumnPlugins');
 
 // Views - Pages
 const Page404 = () => import('@/views/pages/Page404');
@@ -84,6 +85,20 @@ envProvider.getNavTree().then(navTreeData => {
               path: 'servicelogins',
               name: 'service logins',
               component: ServiceLogins
+            },
+            {
+              path: 'plugins',
+              name: 'plugins', 
+              component: {
+                render(c) { return c('router-view') }
+              },
+              children: [
+                {
+                  path: 'columns',
+                  name: 'columns',
+                  component: ColumnPlugins
+                }
+              ]
             },
             {
               path: 'apis',

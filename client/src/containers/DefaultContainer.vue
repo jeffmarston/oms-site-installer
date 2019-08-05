@@ -24,11 +24,7 @@
     </AppHeader>
     <div class="app-body">
       <AppSidebar fixed>
-        <SidebarHeader/>
-        <SidebarForm/>
         <SidebarNav :navItems="nav"></SidebarNav>
-        <SidebarFooter/>
-        <SidebarMinimizer/>
       </AppSidebar>
       <main class="main">
         <Breadcrumb :list="list"/>
@@ -36,17 +32,7 @@
           <router-view :key="$route.fullPath"></router-view>
         </div>
       </main>
-      <AppAside fixed>
-        <!--aside-->
-        <DefaultAside/>
-      </AppAside>
     </div>
-    <TheFooter>
-      <!--footer-->
-      <div>
-        <a href="https://ezesoftware.com">SS&C Eze</a>
-      </div>
-    </TheFooter>
   </div>
 </template>
 

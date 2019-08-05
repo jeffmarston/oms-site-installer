@@ -22,15 +22,38 @@ let items = [
     url: '/admin/services',
     icon: 'cui-screen-smartphone'
   },
-   {
-    name: 'Users and Roles',
-    url: '/admin/userroles',
-    icon: 'icon-people'
+  {
+    name: 'Accounts',
+    url: '/admin/acounts',
+    icon: 'icon-people',
+    children: [
+      {
+        name: 'Users and Roles',
+        url: '/admin/userroles'
+      },
+      {
+        name: 'Services Logins',
+        url: '/admin/servicelogins'
+      }]
   },
   {
-    name: 'Services Logins',
-    url: '/admin/servicelogins',
-    icon: 'icon-settings'
+    name: 'Get Plugins',
+    url: '/admin/plugins',
+    icon: 'fa fa-plug',
+    children: [
+      {
+        name: 'Columns',
+        url: '/admin/plugins/columns'
+      },
+      {
+        name: 'Compliance',
+        url: '/admin/plugins/compliance'
+      },
+      {
+        name: 'Trade Rules',
+        url: '/admin/plugins/tradeRules'
+      }
+    ]
   },
   {
     name: 'API Portal',

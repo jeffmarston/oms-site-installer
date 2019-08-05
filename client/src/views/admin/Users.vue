@@ -3,8 +3,9 @@
     <b-col xl="12">
       <b-button variant="primary"><i class="fa fa-plus" />&nbsp;Add User</b-button>
     </b-col>
-    <b-col xl="4">
+    <b-col xl="5">
       <b-table
+        class="nice-table user-table"
         hover
         small
         responsive="sm"
@@ -18,8 +19,8 @@
       </b-table>
     </b-col>
 
-    <b-col v-if="selectedRow" xl="8">
-      <b-card>
+    <b-col v-if="selectedRow" xl="7">
+      <b-card class="drop-shadow">
         <div>
           <small class="float-right">Last Logged in: 2019-3-12 4:33:02 PM</small>
           <h4 class>{{ selectedRow.name}}</h4>
@@ -152,5 +153,8 @@ export default {
 }
 .card-body >>> table > tbody > tr > td {
   cursor: pointer;
+}
+.user-table {
+  height: calc(100vh - 170px);
 }
 </style>

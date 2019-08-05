@@ -5,10 +5,12 @@ body {
 }
 
 .main .container-fluid {
-    padding: 0 10px;
+    padding: 0;
+    height: calc(100vh - 103px);
+    overflow: auto;
 }
 .breadcrumb {
-    margin-bottom: 10px;
+    margin-bottom: 0;
 }
 
 .row {
@@ -17,12 +19,13 @@ body {
 }
 
 .btn {
-    margin: 4px 6px 4px 0;
+    margin: 4px 6px 4px 6px;
+    box-shadow: 2px 2px 5px #ccc;
+    border-radius: 0;
 }
 .btn-primary {
-    background-color: rgb(29, 66, 97);
     background-color: rgb(41, 93, 136);
-    border-color: #20a8d8;
+    border-color: rgb(41, 93, 136);
 }
 
 .ag-theme-balham {
@@ -42,9 +45,10 @@ body {
     }
 }
 
-* {
-    font-family: 'Montserrat', sans-serif;
+// * {
+//     font-family: 'Montserrat', sans-serif;
+// }
+
+.drop-shadow {
+    box-shadow: 2px 2px 5px #ccc;
 }
-
-
-

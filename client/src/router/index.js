@@ -17,6 +17,7 @@ const ServiceLogins = () => import('@/views/admin/ServiceLogins');
 const Settings = () => import('@/views/general/Settings');
 const Alerts = () => import('@/views/notifications/Alerts');
 const ColumnPlugins = () => import('@/views/admin/ColumnPlugins');
+const CompliancePlugins = () => import('@/views/admin/CompliancePlugins');
 
 // Views - Pages
 const Page404 = () => import('@/views/pages/Page404');
@@ -97,6 +98,11 @@ envProvider.getNavTree().then(navTreeData => {
                   path: 'columns',
                   name: 'columns',
                   component: ColumnPlugins
+                },
+                {
+                  path: 'compliance',
+                  name: 'compliance',
+                  component: CompliancePlugins
                 }
               ]
             },

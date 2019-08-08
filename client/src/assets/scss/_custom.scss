@@ -1,54 +1,134 @@
 // Here you can add other styles
 
 body {
-    background: white;
+  background: white;
 }
 
 .main .container-fluid {
-    padding: 0;
-    height: calc(100vh - 103px);
-    overflow: auto;
+  padding: 10px 0 0 0;
+  height: calc(100vh - 103px);
+  overflow: auto;
 }
 .breadcrumb {
-    margin-bottom: 0;
+  margin-bottom: 0;
 }
 
 .row {
-    margin-right:0;
-    margin-left:0;
+  margin-right: 0;
+  margin-left: 0;
 }
 
 .btn {
-    margin: 4px 6px 4px 6px;
-    box-shadow: 2px 2px 5px #ccc;
-    border-radius: 0;
+  margin: 4px 6px 4px 6px;
+  box-shadow: 2px 2px 5px #ccc;
+  border-radius: 0;
 }
 .btn-primary {
-    background-color: rgb(41, 93, 136);
-    border-color: rgb(41, 93, 136);
+  background-color: rgb(41, 93, 136);
+  border-color: rgb(41, 93, 136);
 }
 
 .ag-theme-balham {
-    .ag-row:not(.ag-row-first) {
-        border-width: 0;
-    }
-    font-size: 14px;
+  .ag-row:not(.ag-row-first) {
+    border-width: 0;
+  }
+  font-size: 14px;
 }
 
 .sidebar {
-    background-color: rgb(29, 66, 97);
-    .nav-link.active {
-        background-color: rgb(17, 37, 54);
-    }
-    .nav-title {
-        color: #73818f;
-    }
+  background-color: rgb(29, 66, 97);
+  .nav-link.active {
+    background-color: rgb(17, 37, 54);
+  }
+  .nav-title {
+    color: #73818f;
+  }
 }
 
-// * {
-//     font-family: 'Montserrat', sans-serif;
-// }
+* {
+  font-family: "Montserrat", sans-serif;
+  font-size: 12px;
+}
 
 .drop-shadow {
-    box-shadow: 2px 2px 5px #ccc;
+  box-shadow: 2px 2px 5px #ccc;
+}
+
+.nice-table {
+  margin: 5px;
+  border: 1px solid #ccc;
+  background: rgb(29, 66, 97);
+  table {
+    display: flex;
+    flex-flow: column;
+    height: 100%;
+    th {
+      border-bottom: 1px solid transparent;
+      font-weight: 400;
+      color: white;
+    }
+    td {
+      padding: 3px;
+    }
+    button {
+      margin: 0;
+      padding: 2px 14px;
+      background: white;
+    }
+    i {
+      margin-left: 18px;
+      font-size: 16px;
+      // height: 23px;
+    }
+  }
+  tbody {
+    flex: 1 1 auto;
+    display: block;
+    overflow-y: scroll;
+    background: #fff;
+    tr {
+      width: 100%;
+      //outline: 1px solid lightblue;
+    }
+  }
+  thead {
+    flex: 0 0 auto;
+    width: calc(100% - 20px);
+  }
+  thead,
+  tbody tr {
+    display: table;
+    table-layout: fixed;
+  }
+  th,
+  td {
+    border: none;
+    white-space: nowrap;
+    overflow-x: hidden;
+  }
+}
+.btn-outline-success {
+  padding: 2px 8px;
+  margin: 0;
+}
+.checkmark {
+  color: #4dbd74;
+  height: 20px;
+}
+
+.splitpanes--horizontal > .splitpanes__splitter {
+  min-height: 8px;
+  border: 1px solid #ccc;
+}
+.splitpanes--horizontal > .splitpanes__splitter:hover {
+  background: #ccc;
+  transition: background linear 200ms;
+}
+.splitpanes--vertical > .splitpanes__splitter {
+  min-width: 8px;
+  border: 1px solid #ccc;
+}
+.splitpanes--vertical > .splitpanes__splitter:hover {
+  background: #ccc;
+  transition: background linear 200ms;
 }

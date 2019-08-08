@@ -1,6 +1,6 @@
 <template style="backgroud: red;">
   <div class="panel-container">
-    <div class="panel-top">
+    <div class="panel-left">
       <form>
         <div class="search-wrapper drop-shadow">
           <input placeholder="search" class="search-box" v-model="searchText" />
@@ -42,9 +42,9 @@
       ></ag-grid-vue>-->
     </div>
 
-    <footer v-if="selectedRow" class="panel-bottom">
+    <div v-if="selectedRow" class="panel-right">
       <codemirror v-model="code" :options="cmOptions"></codemirror>
-    </footer>
+    </div>
   </div>
 </template>
 
@@ -156,107 +156,45 @@ export default {
 .panel-container {
   height: 100%;
   display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  flex-wrap: nowrap;
-  align-items: stretch;
-  overflow: auto;
+  flex-direction: row;
 }
 
-.panel-top {
-  flex: 1 1 auto;
+.panel-left {
+  flex: 1 1;
+  width: 100%;
+  height: 100%;
   padding: 0 15px;
+  display: flex;
+  flex-direction: column;
 }
 
-.panel-bottom {
-  border-top: 1px solid gray;
-  height: 200px;
+.panel-right {
+  flex: 1 1;
   overflow: auto;
 }
 
+.nice-table {
+  flex: 1 1 auto;
+}
+
+.CodeMirror {
+  height: 100%
+}
 .search-wrapper {
   margin: 10px 5px;
   padding: 0;
   display: flex;
-  width: 400px;
+  border: 1px solid #ccc;
   input {
     padding: 5px;
     flex: 1 1 auto;
-    border: 1px solid #ccc;
+    border: none;
     border-radius: 2px;
   }
   button {
-    background: #ccc;
+    background: #fff;
     margin: 0;
     box-shadow: none;
-    display: none;
-  }
-}
-</style>
-
-<style lang="scss">S
-.btn-outline-success {
-  padding: 2px 8px;
-  margin: 0;
-}
-.checkmark {
-  color: #4dbd74;
-  height: 20px;
-}
-
-.nice-table {
-  height: 200px;
-  margin: 5px;
-  border: 1px solid #ccc;
-  background: rgb(29,66,97);
-  table {
-    display: flex;
-    flex-flow: column;
-    height: 100%;
-    width: 100%;
-    th {
-    border-bottom: 1px solid transparent;
-      font-weight: 400;
-      color: white;
-    }
-    td {
-      padding: 3px;
-    }
-    button {
-      margin: 0;
-      padding: 2px 14px;
-      background: white;
-    } 
-    i {
-      margin-left: 18px;
-      font-size: 16px;
-      // height: 23px;
-    }
-  }
-  tbody {
-    flex: 1 1 auto;
-    display: block;
-    overflow-y: scroll;
-    background: #fff;
-    tr {
-      width: 100%;
-      outline: none;
-    }
-  }
-  thead {
-    flex: 0 0 auto;
-    width: calc(100% - 20px);
-  }
-  thead,
-  tbody tr {
-    display: table;
-    table-layout: fixed;
-  }
-  th,
-  td {
-    border: none;
-    white-space: nowrap;
-    overflow-x: hidden;
   }
 }
 </style>

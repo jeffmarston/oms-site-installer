@@ -18,6 +18,28 @@ let items = [
     name: 'Administration', title: true
   },
   {
+    name: 'Configuration',
+    url: '/admin/config',
+    icon: 'fa fa-cog',
+    children: [
+      {
+        name: 'FIX Setup',
+        url: '/admin/fixsetup'
+      },
+      {
+        name: 'Settings Browser',
+        url: '/admin/settingsbrowser'
+      },
+      {
+        name: 'Network Communicator',
+        url: '/admin/communicator'
+      },
+      {
+        name: 'Logging',
+        url: '/admin/logging'
+      }]
+  },
+  {
     name: 'Services',
     url: '/admin/services',
     icon: 'cui-screen-smartphone'

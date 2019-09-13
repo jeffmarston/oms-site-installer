@@ -2,8 +2,8 @@
   <div class="animated fadeIn">
     <b-row>
       <b-col sm="12" lg="12">
-        <b-alert show variant="success">
-          <h3>Prod</h3>
+        <b-alert show variant="success" style="margin-top: 10px;">
+          <h3>Environment: Prod</h3>
           <h5>5.7 SR10 P18.4</h5>
         </b-alert>
       </b-col>

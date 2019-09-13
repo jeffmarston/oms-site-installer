@@ -5,7 +5,7 @@ body {
 }
 
 .main .container-fluid {
-  padding: 10px 0 0 0;
+  padding: 0;
   height: calc(100vh - 103px);
   overflow: auto;
 }
@@ -46,8 +46,8 @@ body {
 }
 
 * {
-  font-family: "Montserrat", sans-serif;
-  font-size: 12px;
+  //font-family: "Montserrat", sans-serif;
+  font-size: 13px;
 }
 
 .drop-shadow {
@@ -55,19 +55,16 @@ body {
 }
 
 .nice-table {
-  margin: 5px;
-  border: 1px solid #ccc;
-  background: rgb(29, 66, 97);
+  margin: 0 15px;
   table {
-    display: flex;
-    flex-flow: column;
-    height: 100%;
     th {
-      border-bottom: 1px solid transparent;
+      border: 1px solid #ccc;
+      background: #f5f7f7;
       font-weight: 400;
-      color: white;
+      color: black;
     }
     td {
+      border: none;
       padding: 3px;
     }
     button {
@@ -78,33 +75,7 @@ body {
     i {
       margin-left: 18px;
       font-size: 16px;
-      // height: 23px;
     }
-  }
-  tbody {
-    flex: 1 1 auto;
-    display: block;
-    overflow-y: scroll;
-    background: #fff;
-    tr {
-      width: 100%;
-      //outline: 1px solid lightblue;
-    }
-  }
-  thead {
-    flex: 0 0 auto;
-    width: calc(100% - 20px);
-  }
-  thead,
-  tbody tr {
-    display: table;
-    table-layout: fixed;
-  }
-  th,
-  td {
-    border: none;
-    white-space: nowrap;
-    overflow-x: hidden;
   }
 }
 .btn-outline-success {
@@ -126,7 +97,8 @@ body {
 }
 .splitpanes--vertical > .splitpanes__splitter {
   min-width: 8px;
-  border: 1px solid #ccc;
+  border-left: 1px solid #ccc;
+  border-right: 1px solid #ccc;
 }
 .splitpanes--vertical > .splitpanes__splitter:hover {
   background: #ccc;

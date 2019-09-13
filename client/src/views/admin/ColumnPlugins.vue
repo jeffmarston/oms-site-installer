@@ -1,17 +1,20 @@
 <template style="backgroud: red;">
   <div class="panel-container">
-    <div class="panel-left">
-      <form>
-        <div class="search-wrapper drop-shadow">
-          <input placeholder="search" class="search-box" v-model="searchText" />
-          <b-button variant="ghost">
-            <i class="fa fa-search"></i>
+      <div class="panel-left">
+        <form class="header-bar">
+          <div class="search-wrapper">
+            <input placeholder="search" class="search-box" v-model="searchText" />
+            <b-button variant="ghost" class="search-button">
+              <i class="fa fa-search"></i>
+            </b-button>
+          </div>
+          <b-button variant="primary" class="tool-button" v-b-modal.showNewModal>
+            <i class="fa fa-plus"></i>Add
           </b-button>
-        </div>
-      </form>
+        </form>
 
       <b-table
-        class="nice-table drop-shadow"
+        class="nice-table"
         hover
         small
         responsive="sm"
@@ -42,7 +45,7 @@
       ></ag-grid-vue>-->
     </div>
 
-    <div v-if="selectedRow" class="panel-right">
+    <div class="panel-right">
       <codemirror v-model="code" :options="cmOptions"></codemirror>
     </div>
   </div>
@@ -54,58 +57,15 @@ import "codemirror/lib/codemirror.css";
 import "codemirror/mode/clike/clike.js";
 import "codemirror/theme/darcula.css";
 import { setTimeout } from "timers";
-import pluginCode from "./PluginData";
+import { pluginCode, columns }  from "./PluginData";
 import { AgGridVue } from "ag-grid-vue";
 
 export default {
-  name: "Users",
+  name: "ColumnPluginView",
   components: { codemirror, AgGridVue },
   data: () => {
     return {
-      items: [
-        {
-          author: "jmarston",
-          calcName: "InTheMoney",
-          type: "Blotter",
-          status: null
-        },
-        {
-          author: "shyde",
-          calcName: "absoluteValue",
-          type: "Blotter",
-          status: null
-        },
-        {
-          author: "dfredlund",
-          calcName: "shortP&L",
-          type: "Analytics",
-          status: "installed"
-        },
-        {
-          author: "dfredlund",
-          calcName: "longP&L",
-          type: "Analytics",
-          status: null
-        },
-        {
-          author: "shyde",
-          calcName: "absoluteValue",
-          type: "Blotter",
-          status: null
-        },
-        {
-          author: "dfredlund",
-          calcName: "shortP&L",
-          type: "Analytics",
-          status: "installed"
-        },
-        {
-          author: "dfredlund",
-          calcName: "longP&L",
-          type: "Analytics",
-          status: null
-        }
-      ],
+      items: columns,
       selectedRow: null,
       searchText: "",
       fields: [
@@ -146,7 +106,7 @@ export default {
     },
     rowClicked(item, index) {
       this.selectedRow = item;
-      this.code = pluginCode[index];
+      this.code = pluginCode[Math.floor(Math.random() * 3)];
     }
   }
 };
@@ -154,34 +114,33 @@ export default {
 
 <style scoped lang="scss">
 .panel-container {
-  height: 100%;
   display: flex;
   flex-direction: row;
 }
-
 .panel-left {
-  flex: 1 1;
-  width: 100%;
-  height: 100%;
-  padding: 0 15px;
+  flex: 0 0 auto;
+  width: 450px;
   display: flex;
   flex-direction: column;
+  overflow-y: auto;
 }
-
 .panel-right {
-  flex: 1 1;
+  flex: 1 1 auto;
   overflow: auto;
 }
-
-.nice-table {
-  flex: 1 1 auto;
+.header-bar {
+  display: flex;
+  padding: 10px 15px;
 }
-
-.CodeMirror {
-  height: 100%
+.tool-button {
+  margin: 0 0 0 6px;
+  width: 60px;
+  i {
+    margin: 0 4px;
+  }
 }
 .search-wrapper {
-  margin: 10px 5px;
+  flex: 1 1 auto;
   padding: 0;
   display: flex;
   border: 1px solid #ccc;
@@ -191,7 +150,7 @@ export default {
     border: none;
     border-radius: 2px;
   }
-  button {
+  .search-button {
     background: #fff;
     margin: 0;
     box-shadow: none;

@@ -1,4 +1,97 @@
-const pluginCode = [
+export const columns = [
+  {
+    author: "jmarston",
+    calcName: "InTheMoney",
+    type: "Blotter",
+    status: null
+  },
+  {
+    author: "shyde",
+    calcName: "absoluteValue",
+    type: "Blotter",
+    status: null
+  },
+  {
+    author: "dfredlund",
+    calcName: "shortP&L",
+    type: "Analytics",
+    status: "installed"
+  },
+  {
+    author: "dfredlund",
+    calcName: "longP&L",
+    type: "Analytics",
+    status: null
+  },
+  {
+    author: "shyde",
+    calcName: "absoluteValue",
+    type: "Blotter",
+    status: null
+  },
+  {
+    author: "dfredlund",
+    calcName: "shortP&L",
+    type: "Analytics",
+    status: "installed"
+  },
+  {
+    author: "dfredlund",
+    calcName: "longP&L",
+    type: "Analytics",
+    status: null
+  },
+  {
+    author: "dfredlund",
+    calcName: "longP&L",
+    type: "Analytics",
+    status: null
+  },
+  {
+    author: "shyde",
+    calcName: "absoluteValue",
+    type: "Blotter",
+    status: null
+  },
+  {
+    author: "dfredlund",
+    calcName: "shortP&L",
+    type: "Analytics",
+    status: "installed"
+  },
+  {
+    author: "dfredlund",
+    calcName: "longP&L",
+    type: "Analytics",
+    status: null
+  },
+  {
+    author: "dfredlund",
+    calcName: "longP&L",
+    type: "Analytics",
+    status: null
+  },
+  {
+    author: "shyde",
+    calcName: "absoluteValue",
+    type: "Blotter",
+    status: null
+  },
+  {
+    author: "dfredlund",
+    calcName: "shortP&L",
+    type: "Analytics",
+    status: "installed"
+  },
+  {
+    author: "dfredlund",
+    calcName: "longP&L",
+    type: "Analytics",
+    status: null
+  }
+];
+
+export const pluginCode = [
   `using System;
   namespace FactorialExample
   {

@@ -15,6 +15,7 @@
           </b-nav>
 
       <b-navbar-nav class="ml-auto">
+        <span>{{ username }}</span>
         <b-nav-item class="d-md-down-none" to="/alerts">
           <i class="icon-bell"></i>
           <b-badge pill variant="danger">3</b-badge>
@@ -71,6 +72,11 @@ export default {
     },
     list () {
       return this.$route.matched.filter((route) => route.name || route.meta.label )
+    },
+    username () {
+      let user =  localStorage.getItem('username');
+      let role =  localStorage.getItem('role');
+      return `${user} (${role})`;
     }
   }
 }

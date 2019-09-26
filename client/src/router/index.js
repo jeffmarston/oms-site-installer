@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Router from 'vue-router';
+import store from '../store/store'
 
 // Containers
 const DefaultContainer = () => import('@/containers/DefaultContainer');
@@ -35,8 +36,29 @@ const router = new Router({
   routes: []
 })
 
+function guard(to, from, next) {
+  let username = localStorage.getItem('username');
+  console.log("== Here is my store ===========");
+  console.log(username);
+  console.log("===============================");
+
+  if (username != null) {
+    next(); // allow to enter route
+  } else {
+    next('/login'); // go to '/login';
+  }
+}
 
 envProvider.getNavTree().then(navTreeData => {
+  router.beforeEach((to, from, next) => {
+      let username = localStorage.getItem('username');
+      if (username != null || to.name === 'Login') {
+        next(); // allow to enter route
+      } else {
+        next('/login'); // redirect to login page;
+      }
+  })
+
   router.addRoutes([
     {
       path: '/',
@@ -75,6 +97,7 @@ envProvider.getNavTree().then(navTreeData => {
             {
               path: 'services',
               name: 'services',
+              beforeEnter: guard, // Using guard before entering the route
               component: Services
             },
             {
@@ -89,7 +112,7 @@ envProvider.getNavTree().then(navTreeData => {
             },
             {
               path: 'plugins',
-              name: 'plugins', 
+              name: 'plugins',
               component: {
                 render(c) { return c('router-view') }
               },
@@ -176,24 +199,14 @@ envProvider.getNavTree().then(navTreeData => {
       ]
     },
     {
-      path: '/pages',
-      redirect: '/pages/404',
-      name: 'Pages',
-      component: {
-        render(c) { return c('router-view') }
-      },
-      children: [
-        {
-          path: '404',
-          name: 'Page404',
-          component: Page404
-        },
-        {
-          path: 'login',
-          name: 'Login',
-          component: Login
-        }
-      ]
+      path: '/login',
+      name: 'Login',
+      component: Login
+    },
+    {
+      path: '/404',
+      name: 'Page404',
+      component: Page404
     }
   ]);
 });

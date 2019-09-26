@@ -8,15 +8,14 @@ import Vue from 'vue'
 import BootstrapVue from 'bootstrap-vue'
 import App from './App'
 import router from './router'
-
-// todo
-// cssVars()
+import { store } from './store/store'
 
 Vue.use(BootstrapVue)
 
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
+  store,
   router,
   template: '<App/>',
   components: {

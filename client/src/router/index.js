@@ -37,11 +37,6 @@ const router = new Router({
 })
 
 function guard(to, from, next) {
-  let username = localStorage.getItem('username');
-  console.log("== Here is my store ===========");
-  console.log(username);
-  console.log("===============================");
-
   if (username != null) {
     next(); // allow to enter route
   } else {

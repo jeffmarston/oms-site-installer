@@ -37,7 +37,20 @@
       </b-col>
     </b-row>
 
-    <b-row v-if="isReadyToUpgrade">
+    <b-row v-if="!isReadyToUpgrade">
+      <b-col sm="12">
+        <b-card>
+          <div slot="header">
+            <strong>Upgrade Progress</strong>
+          </div>
+          <b-card v-for="(name, idx) in itemsArray" :key="idx">
+asdf
+          </b-card>
+        </b-card>
+      </b-col>
+    </b-row>
+
+    <!-- <b-row v-if="isReadyToUpgrade">
       <b-col sm="12">
         <b-card>
           <div slot="header">
@@ -65,7 +78,8 @@
           </b-table>
         </b-card>
       </b-col>
-    </b-row>
+    </b-row> -->
+
   </div>
 </template>
 

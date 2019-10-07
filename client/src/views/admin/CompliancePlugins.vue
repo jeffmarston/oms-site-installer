@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="fullheight">
     <splitpanes style="height: 100%">
       <div class="panel-left">
         <form class="header-bar">
@@ -36,8 +36,9 @@
         </b-table>
       </div>
 
-      <div>
-        <codemirror :value="computedCode" :options="cmOptions" ref="codeEditor"></codemirror>
+      <div class="fullheight">
+        <!-- <codemirror :value="computedCode" :options="cmOptions"></codemirror> -->
+        <codemirror v-model="code" :options="cmOptions" ref="codeEditor"></codemirror>
       </div>
     </splitpanes>
 
@@ -112,14 +113,18 @@ export default {
     },
     rowClicked(item, index) {
       this.selectedRow = item;
-      this.code = "-*-*" + Math.floor(Math.random() * 20).toString();
-      //this.$refs.codeEditor.value = pluginCode[index];
+      //this.code = pluginCode[index % 3];
+      this.$refs.codeEditor.code = pluginCode[index % 3];
     }
   }
 };
 </script>
 
 <style scoped lang="scss">
+.fullheight {
+  height: 100%;
+}
+
 .panel-left {
   width: 100%;
   height: 100%;

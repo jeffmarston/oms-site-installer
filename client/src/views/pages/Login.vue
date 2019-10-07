@@ -66,7 +66,7 @@ export default {
         this.username == "eze" ? "eze" :
         "basic";
       localStorage.setItem("username", user);
-      localStorage.setItem("role", role);
+      localStorage.setItem("role", role);      
       this.$router.push({ path: "/" });
     }
   }

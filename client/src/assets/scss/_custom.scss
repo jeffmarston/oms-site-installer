@@ -6,7 +6,7 @@ body {
 
 .main .container-fluid {
   padding: 0;
-  height: calc(100vh - 103px);
+  height: calc(100vh - 95px);
   overflow: auto;
 }
 .breadcrumb {
@@ -39,6 +39,7 @@ body {
   background-color: rgb(29, 66, 97);
   .nav-link.active {
     background-color: rgb(17, 37, 54);
+    border-right: 8px solid #4dbd74 !important;
   }
   .nav-title {
     color: #73818f;
@@ -103,4 +104,10 @@ body {
 .splitpanes--vertical > .splitpanes__splitter:hover {
   background: #ccc;
   transition: background linear 200ms;
+}
+
+
+.card { 
+  margin-top: 10px;
+  margin-bottom: 10px;
 }

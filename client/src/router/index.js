@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import store from '../store/store'
+import navItems from '../_nav';
 
 // Containers
 const DefaultContainer = () => import('@/containers/DefaultContainer');
@@ -36,22 +37,15 @@ const router = new Router({
   routes: []
 })
 
-function guard(to, from, next) {
-  if (username != null) {
-    next(); // allow to enter route
-  } else {
-    next('/login'); // go to '/login';
-  }
-}
-
 envProvider.getNavTree().then(navTreeData => {
-  router.beforeEach((to, from, next) => {
-      let username = localStorage.getItem('username');
-      if (username != null || to.name === 'Login') {
-        next(); // allow to enter route
-      } else {
-        next('/login'); // redirect to login page;
-      }
+  router.beforeResolve((to, from, next) => {
+    let username = localStorage.getItem('username');
+
+    if (username != null || to.name === 'Login') {
+      next();
+    } else {
+      next('/login'); // redirect to login page;
+    }
   })
 
   router.addRoutes([
@@ -92,8 +86,27 @@ envProvider.getNavTree().then(navTreeData => {
             {
               path: 'services',
               name: 'services',
-              beforeEnter: guard, // Using guard before entering the route
               component: Services
+            },
+            {
+              path: 'fixsetup',
+              name: 'fix setup',
+              component: Page404
+            },
+            {
+              path: 'settingsbrowser',
+              name: 'settings browser',
+              component: Page404
+            },
+            {
+              path: 'communicator',
+              name: 'communicator',
+              component: Page404
+            },
+            {
+              path: 'logging',
+              name: 'logging',
+              component: Page404
             },
             {
               path: 'userroles',
@@ -104,7 +117,7 @@ envProvider.getNavTree().then(navTreeData => {
               path: 'servicelogins',
               name: 'service logins',
               component: ServiceLogins
-            },
+            }, 
             {
               path: 'plugins',
               name: 'plugins',
@@ -121,6 +134,11 @@ envProvider.getNavTree().then(navTreeData => {
                   path: 'compliance',
                   name: 'compliance',
                   component: CompliancePlugins
+                },
+                {
+                  path: 'traderules',
+                  name: 'traderules',
+                  component: ColumnPlugins
                 }
               ]
             },

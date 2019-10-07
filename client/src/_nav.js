@@ -12,7 +12,7 @@ let items = [
     name: 'Dashboards', title: true
   },
   {
-    hidden: !roleIn(['basic', 'admin', 'eze']),
+    hidden: !roleIn(['basic', 'eze']),
     name: 'System',
     url: '/dashboard/system',
     icon: 'icon-speedometer'
@@ -35,7 +35,7 @@ let items = [
     children: [{
       hidden: !roleIn(['basic', 'admin', 'eze']),
         name: 'FIX Setup',
-        url: '/admin/fixsetup'
+        url: '/admin/fixsetup' 
       },
       {
         hidden: !roleIn(['basic', 'admin', 'eze']),
@@ -95,7 +95,7 @@ let items = [
       {
         hidden: !roleIn(['basic', 'admin', 'eze']),
         name: 'Trade Rules',
-        url: '/admin/plugins/tradeRules'
+        url: '/admin/plugins/traderules'
       }
     ]
   },
@@ -116,19 +116,19 @@ let items = [
     icon: 'fa fa-database'
   },
   {
-    hidden: !roleIn(['admin', 'eze']),
+    hidden: !roleIn(['eze']),
     name: 'Logs',
     url: '/diagnostics/logs',
     icon: 'cui-file'
   },
   {
-    hidden: !roleIn(['admin', 'eze']),
+    hidden: !roleIn(['eze']),
     name: 'Data Integrity',
     url: '/diagnostics/dataintegrity',
     icon: 'fa fa-code'
   },
   {
-    hidden: !roleIn(['admin', 'eze']),
+    hidden: !roleIn(['eze']),
     name: 'Eze Monitor',
     url: '/diagnostics/ezemonitor',
     icon: 'icon-bell'
@@ -150,41 +150,6 @@ let items = [
     icon: 'icon-note'
   }
 ]
-
-
-// const envProvider = require('@/services/environmentProvider');
-
-// envProvider.getNavTree().then(navTreeData => {
-//   navTreeData.servers.forEach(svr => {
-//     items[2].children.push({
-//       name: svr.name,
-//       url: '/servers/' + svr.name
-//     });
-//   });
-//   navTreeData.clients.forEach(cli => {
-//     items[3].children.push({
-//       name: cli.name,
-//       url: '/clients/' + cli.name
-//     });
-//   });
-//   navTreeData.database.forEach(db => {
-//     items[4].children.push({
-//       name: db.name,
-//       url: '/database/' + db.name
-//     });
-//   });
-// });
-
-
-items.forEach(element => {
-
-  //console.log(currentUserRole);
-
-  // if (element.roles && element.roles.indexOf(currentUserRole) > -1) {
-  // console.log(element.name + " : " + element.roles.join(','));
-  //   //element.name = "--";
-  // }
-});
 
 export default {
   items: items
